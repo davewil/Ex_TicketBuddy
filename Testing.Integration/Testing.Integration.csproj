@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <LangVersion>default</LangVersion>
+        <RootNamespace>Integration</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Host\Host.csproj" />
+      <ProjectReference Include="..\Domain\Domain.csproj" />
+      <ProjectReference Include="..\Migrations\Migrations.csproj" />
+    </ItemGroup>
+    
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="9.0.7" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+        <PackageReference Include="NSubstitute" Version="5.3.0" />
+        <PackageReference Include="NUnit3TestAdapter" Version="5.0.0" />
+        <PackageReference Include="Microsoft.Data.SqlClient" Version="6.0.2" />
+        <PackageReference Include="NUnit" Version="4.3.2" />
+        <PackageReference Include="Testcontainers" Version="4.6.0" />
+        <PackageReference Include="Testcontainers.MsSql" Version="4.6.0" />
+        <PackageReference Include="Testing.Bdd" Version="1.0.4" />
+    </ItemGroup>
+    
+    <ItemGroup>
+      <Compile Update="Api\EventController.steps.cs">
+        <DependentUpon>EventController.specs.cs</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
+</Project>

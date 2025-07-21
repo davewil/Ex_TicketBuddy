@@ -1,0 +1,7 @@
+﻿CREATE SCHEMA [Event]
+GO
+CREATE TABLE [Event].[Events]
+(
+    [Id] UNIQUEIDENTIFIER PRIMARY KEY,
+    [Name] NVARCHAR(200) NOT NULL,
+)

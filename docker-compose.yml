@@ -1,0 +1,15 @@
+services:
+  sqlserver:
+    container_name: ticket-buddy-sql-server
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=YourStrong@Passw0rd
+    ports:
+      - "1450:1433"
+    restart: always
+    volumes:
+      - ticket_buddy_sql_server:/var/opt/mssql
+
+volumes:
+  ticket_buddy_sql_server:
