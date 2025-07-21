@@ -1,6 +1,6 @@
 services:
   sqlserver:
-    container_name: ticket-buddy-sql-server
+    container_name: sql-server
     image: mcr.microsoft.com/mssql/server:2022-latest
     environment:
       - ACCEPT_EULA=Y
@@ -10,6 +10,16 @@ services:
     restart: always
     volumes:
       - ticket_buddy_sql_server:/var/opt/mssql
+  aspiredashboard:
+    container_name: aspire-dashboard
+    image: mcr.microsoft.com/dotnet/aspire-dashboard:latest
+    environment:
+      - ASPIRE_DASHBOARD_UNSECURED_ALLOW_ANONYMOUS:true
+    ports:
+      - "18888:18888"
+      - "4317:18889"
+    depends_on:
+      - sqlserver
 
 volumes:
   ticket_buddy_sql_server:

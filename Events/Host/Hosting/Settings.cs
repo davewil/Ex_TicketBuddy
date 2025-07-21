@@ -3,7 +3,7 @@
 internal class Settings
 {
     private static IConfiguration Configuration = null!;
-    internal ApplicationInsightsSettings ApplicationInsights => new();
+    internal TelemetrySettings Telemetry => new();
     internal DatabaseSettings Database => new();
    
     internal Settings(IConfiguration theConfiguration)
@@ -11,9 +11,9 @@ internal class Settings
         Configuration = theConfiguration;
     }
    
-    internal class ApplicationInsightsSettings
+    internal class TelemetrySettings
     {
-        internal string ConnectionString => Configuration["ApplicationInsights:ConnectionString"]!;
+        internal string ConnectionString => Configuration["Telemetry:ConnectionString"]!;
     }
 
     internal class DatabaseSettings

@@ -1,6 +1,10 @@
 ﻿using System.Text.Json.Serialization;
 using Application;
 using Domain;
+using OpenTelemetry;
+using OpenTelemetry.Exporter;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Trace;
 using Persistence;
 using Repositories;
 using WebHost;
@@ -11,7 +15,7 @@ internal sealed class EventApi(WebApplicationBuilder webApplicationBuilder, ICon
 {
     private readonly Settings _settings = new(configuration);
     protected override string ApplicationName => nameof(EventApi);
-    protected override string ApplicationInsightsConnectionString => _settings.ApplicationInsights.ConnectionString;
+    protected override string TelemetryConnectionString => _settings.Telemetry.ConnectionString;
     protected override List<JsonConverter> JsonConverters => Converters.GetConverters;
 
     protected override void ConfigureServices(IServiceCollection services)
@@ -20,5 +24,27 @@ internal sealed class EventApi(WebApplicationBuilder webApplicationBuilder, ICon
         services.AddScoped<Db>(_ => new Db(_settings.Database.Connection));
         services.AddScoped<EventRepository>();
         services.AddScoped<EventService>();
+    }
+    
+    protected override OpenTelemetryBuilder ConfigureTelemetry(WebApplicationBuilder builder)
+    {
+        var otel = base.ConfigureTelemetry(builder);
+        otel.WithMetrics(metrics =>
+        {
+            metrics.AddAspNetCoreInstrumentation();
+            metrics.AddMeter("Microsoft.AspNetCore.Hosting");
+            metrics.AddMeter("Microsoft.AspNetCore.Server.Kestrel");
+        });
+        
+        otel.WithTracing(tracing =>
+        {
+            tracing.AddAspNetCoreInstrumentation();
+            tracing.AddHttpClientInstrumentation();
+        });
+        
+        Environment.SetEnvironmentVariable("OTEL_RESOURCE_ATTRIBUTES", $"service.name={ApplicationName}");
+        otel.UseOtlpExporter(OtlpExportProtocol.Grpc, new Uri(TelemetryConnectionString));
+        
+        return otel;
     }
 }
