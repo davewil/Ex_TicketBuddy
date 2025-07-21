@@ -7,8 +7,7 @@ public class EventService(EventRepository repository)
 {
     public async Task<Event?> Get(Guid id)
     {
-        var user = await repository.Get(id);
-        return user;
+        return await repository.Get(id);
     }
 
     public async Task<IList<Event>> GetAll()
