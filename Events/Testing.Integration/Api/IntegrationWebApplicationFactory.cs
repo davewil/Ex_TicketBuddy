@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Persistence;
-using Repositories;
 
 namespace Integration.Api;
 
@@ -15,7 +15,16 @@ public class IntegrationWebApplicationFactory<TProgram>(string connectionString)
     {
         builder.ConfigureTestServices(services =>
         {
-            services.AddScoped<Db>(_ => new Db(connectionString));
+            services.AddDbContext<EventDbContext>(options =>
+            {
+                options.UseSqlServer(connectionString, sqlOptions =>
+                {
+                    sqlOptions.EnableRetryOnFailure(
+                        maxRetryCount: 5,
+                        maxRetryDelay: TimeSpan.FromSeconds(30),
+                        errorNumbersToAdd: null);
+                });
+            });
             services.AddScoped<EventRepository>();
             services.AddScoped<EventService>();
         });

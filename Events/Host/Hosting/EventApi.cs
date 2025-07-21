@@ -1,12 +1,12 @@
 ﻿using System.Text.Json.Serialization;
 using Application;
 using Domain;
+using Microsoft.EntityFrameworkCore;
 using OpenTelemetry;
 using OpenTelemetry.Exporter;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Trace;
 using Persistence;
-using Repositories;
 using WebHost;
 
 namespace Api.Hosting;
@@ -21,7 +21,16 @@ internal sealed class EventApi(WebApplicationBuilder webApplicationBuilder, ICon
     protected override void ConfigureServices(IServiceCollection services)
     {
         base.ConfigureServices(services);
-        services.AddScoped<Db>(_ => new Db(_settings.Database.Connection));
+        services.AddDbContext<EventDbContext>(options =>
+        {
+            options.UseSqlServer(_settings.Database.Connection, sqlOptions =>
+            {
+                sqlOptions.EnableRetryOnFailure(
+                    maxRetryCount: 5,
+                    maxRetryDelay: TimeSpan.FromSeconds(30),
+                    errorNumbersToAdd: null);
+            });
+        });
         services.AddScoped<EventRepository>();
         services.AddScoped<EventService>();
     }
