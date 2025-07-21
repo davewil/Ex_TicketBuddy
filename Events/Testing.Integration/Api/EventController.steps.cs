@@ -97,7 +97,7 @@ public partial class EventControllerSpecs : TruncateDbSpecification
     {
         var response = client.PutAsync(Routes.Event + $"/{returned_id}", content).GetAwaiter().GetResult();
         response_code = response.StatusCode;
-        response_code.ShouldBe(HttpStatusCode.OK);
+        response_code.ShouldBe(HttpStatusCode.NoContent);
     }     
     
     private void deleting_the_event()
