@@ -41,9 +41,9 @@ jobs:
         run: dotnet restore --no-cache --force-evaluate
 
       - name: Build solution
-        run: dotnet build Messaging.sln --configuration Release --no-restore
+        run: dotnet build TicketBuddy.sln --configuration Release --no-restore
 
       - name: Run tests
         env:
           DOCKER_HOST: tcp://localhost:2375
-        run: dotnet test Messaging.sln --configuration Release --no-build --no-restore
+        run: dotnet test TicketBuddy.sln --configuration Release --no-build --no-restore
