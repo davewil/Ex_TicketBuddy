@@ -35,7 +35,7 @@ jobs:
           NUGET_AUTH_TOKEN: ${{ github.token }}
 
       - name: Restore dependencies
-        run: dotnet restore --no-cache --force-evaluate
+        run: dotnet restore TicketBuddy.sln --no-cache --force-evaluate
 
       - name: Build solution
         run: dotnet build TicketBuddy.sln --configuration Release --no-restore
