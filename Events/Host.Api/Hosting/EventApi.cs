@@ -1,6 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 using Application;
 using Domain;
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using OpenTelemetry;
 using OpenTelemetry.Exporter;
@@ -21,18 +22,10 @@ internal sealed class EventApi(WebApplicationBuilder webApplicationBuilder, ICon
     protected override void ConfigureServices(IServiceCollection services)
     {
         base.ConfigureServices(services);
-        services.AddDbContext<EventDbContext>(options =>
-        {
-            options.UseSqlServer(_settings.Database.Connection, sqlOptions =>
-            {
-                sqlOptions.EnableRetryOnFailure(
-                    maxRetryCount: 5,
-                    maxRetryDelay: TimeSpan.FromSeconds(30),
-                    errorNumbersToAdd: null);
-            });
-        });
+        services.ConfigureDatabase(_settings);
         services.AddScoped<EventRepository>();
         services.AddScoped<EventService>();
+        services.ConfigureMessaging(_settings);
     }
     
     protected override OpenTelemetryBuilder ConfigureTelemetry(WebApplicationBuilder builder)

@@ -1,20 +1,23 @@
-﻿using Domain.Entities;
+﻿using MassTransit;
 using Microsoft.EntityFrameworkCore;
+using Event = Domain.Entities.Event;
 
 namespace Persistence;
 
-public class EventRepository(EventDbContext eventDbContext)
+public class EventRepository(EventDbContext eventDbContext, IPublishEndpoint publishEndpoint)
 {
-    public async Task Save(Event user)
+    public async Task Save(Event theEvent)
     {
-        if (await Get(user.Id) != null)
+        if (await Get(theEvent.Id) != null)
         {
-            eventDbContext.Update(user);
+            eventDbContext.Update(theEvent);
+            await publishEndpoint.Publish(new Messaging.Contracts.Event{ Name = theEvent.Name });
             await eventDbContext.SaveChangesAsync();
         }
         else
         {
-            eventDbContext.Add(user);
+            eventDbContext.Add(theEvent);
+            await publishEndpoint.Publish(new Messaging.Contracts.Event{ Name = theEvent.Name });
             await eventDbContext.SaveChangesAsync();
         }
     }

@@ -1,4 +1,5 @@
 ﻿using Application;
+using MassTransit;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
@@ -27,6 +28,23 @@ public class IntegrationWebApplicationFactory<TProgram>(string connectionString)
             });
             services.AddScoped<EventRepository>();
             services.AddScoped<EventService>();
+            services.AddMassTransitTestHarness(x =>
+            {
+                x.AddEntityFrameworkOutbox<EventDbContext>(o =>
+                {
+                    o.UseSqlServer();
+                    o.UseBusOutbox();
+                });
+
+                x.UsingRabbitMq((_, cfg) =>
+                {
+                    cfg.Host("localhost", "/", h =>
+                    {
+                        h.Username("guest");
+                        h.Password("guest");
+                    });
+                });
+            });
         });
 
         builder.UseEnvironment("Test");

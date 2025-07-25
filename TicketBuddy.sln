@@ -20,17 +20,21 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Events\Appli
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Events\Domain\Domain.csproj", "{4DDA0F49-2464-417C-B9B3-BDDDA5DCFD6C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Host", "Events\Host\Host.csproj", "{FF3F2BFC-F1F1-4158-B150-460CB7F6D810}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Host.Api", "Events\Host.Api\Host.Api.csproj", "{FF3F2BFC-F1F1-4158-B150-460CB7F6D810}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Migrations", "Events\Migrations\Migrations.csproj", "{EAB5D62F-909E-45C9-A60F-3F767F706D60}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Migrations.Host", "Events\Migrations.Host\Migrations.Host.csproj", "{211111F6-2EA8-428B-98B5-F9F2F7FC0DE0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Host.Migrations", "Events\Host.Migrations\Host.Migrations.csproj", "{211111F6-2EA8-428B-98B5-F9F2F7FC0DE0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Testing.Integration", "Events\Testing.Integration\Testing.Integration.csproj", "{0DC8E6AA-B5DD-4E42-98F3-118D8FE509B4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Testing.Unit", "Events\Testing.Unit\Testing.Unit.csproj", "{165DE302-0660-41E2-9412-D84CD9F31B32}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistence", "Events\Persistence\Persistence.csproj", "{10A1E55D-ABB1-47FD-BF45-94D60FA30984}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Host.Messaging.Outbox", "Events\Host.Messaging.Outbox\Host.Messaging.Outbox.csproj", "{55ABD74D-21F8-4BDE-BDD6-829A2D0A5F49}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messaging", "Events\Messaging\Messaging.csproj", "{F4C7CD02-3FBE-49F9-BD01-69B426B00982}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -74,6 +78,14 @@ Global
 		{10A1E55D-ABB1-47FD-BF45-94D60FA30984}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{10A1E55D-ABB1-47FD-BF45-94D60FA30984}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{10A1E55D-ABB1-47FD-BF45-94D60FA30984}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55ABD74D-21F8-4BDE-BDD6-829A2D0A5F49}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55ABD74D-21F8-4BDE-BDD6-829A2D0A5F49}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55ABD74D-21F8-4BDE-BDD6-829A2D0A5F49}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55ABD74D-21F8-4BDE-BDD6-829A2D0A5F49}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4C7CD02-3FBE-49F9-BD01-69B426B00982}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4C7CD02-3FBE-49F9-BD01-69B426B00982}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4C7CD02-3FBE-49F9-BD01-69B426B00982}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4C7CD02-3FBE-49F9-BD01-69B426B00982}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -88,5 +100,7 @@ Global
 		{0DC8E6AA-B5DD-4E42-98F3-118D8FE509B4} = {A9E5EBD2-F136-4009-8BA3-183C3FACC9EE}
 		{165DE302-0660-41E2-9412-D84CD9F31B32} = {A9E5EBD2-F136-4009-8BA3-183C3FACC9EE}
 		{10A1E55D-ABB1-47FD-BF45-94D60FA30984} = {744C08F5-E265-4E24-BDCA-96533945BC1C}
+		{55ABD74D-21F8-4BDE-BDD6-829A2D0A5F49} = {744C08F5-E265-4E24-BDCA-96533945BC1C}
+		{F4C7CD02-3FBE-49F9-BD01-69B426B00982} = {744C08F5-E265-4E24-BDCA-96533945BC1C}
 	EndGlobalSection
 EndGlobal

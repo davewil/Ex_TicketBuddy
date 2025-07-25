@@ -1,5 +1,6 @@
-﻿using Domain.Entities;
+﻿using MassTransit;
 using Persistence;
+using Event = Domain.Entities.Event;
 
 namespace Application;
 
