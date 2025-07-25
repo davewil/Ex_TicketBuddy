@@ -1,4 +1,6 @@
-﻿namespace Api.Hosting;
+﻿using Microsoft.Extensions.Configuration;
+
+namespace Host.Messaging.Outbox.Hosting;
 
 internal static class Configuration
 {
