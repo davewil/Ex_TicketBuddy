@@ -35,15 +35,6 @@ public class IntegrationWebApplicationFactory<TProgram>(string connectionString)
                     o.UseSqlServer();
                     o.UseBusOutbox();
                 });
-
-                x.UsingRabbitMq((_, cfg) =>
-                {
-                    cfg.Host("localhost", "/", h =>
-                    {
-                        h.Username("guest");
-                        h.Password("guest");
-                    });
-                });
             });
         });
 
