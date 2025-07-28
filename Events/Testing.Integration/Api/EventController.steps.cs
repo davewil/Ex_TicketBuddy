@@ -3,6 +3,8 @@ using System.Text;
 using Api.Hosting;
 using BDD;
 using Domain.Entities;
+using MassTransit.Testing;
+using Microsoft.Extensions.DependencyInjection;
 using Migrations;
 using Shouldly;
 using Testcontainers.MsSql;
@@ -22,6 +24,7 @@ public partial class EventControllerSpecs : TruncateDbSpecification
     private const string name = "wibble";
     private const string new_name = "wobble";
     private static MsSqlContainer database = null!;
+    private ITestHarness testHarness = null!;
 
     protected override void before_all()
     {
@@ -29,8 +32,6 @@ public partial class EventControllerSpecs : TruncateDbSpecification
         database.StartAsync().Await();
         database.ExecScriptAsync("CREATE DATABASE [TicketBuddy.Events]").GetAwaiter().GetResult();
         Migration.Upgrade(database.GetTicketBuddyConnectionString());
-        factory = new IntegrationWebApplicationFactory<Program>(database.GetTicketBuddyConnectionString());
-        client = factory.CreateClient();
     }
     
     protected override void before_each()
@@ -38,11 +39,18 @@ public partial class EventControllerSpecs : TruncateDbSpecification
         base.before_each();
         content = null!;
         returned_id = Guid.Empty;
+        factory = new IntegrationWebApplicationFactory<Program>(database.GetTicketBuddyConnectionString());
+        client = factory.CreateClient();
+        testHarness = factory.Services.GetRequiredService<ITestHarness>();
+        testHarness.Start().Await();
     }
 
     protected override void after_each()
     {
         Truncate(database.GetTicketBuddyConnectionString());
+        testHarness.Stop().Await();
+        client.Dispose();
+        factory.Dispose();
     }
 
     protected override void after_all()
@@ -153,6 +161,8 @@ public partial class EventControllerSpecs : TruncateDbSpecification
         response_code.ShouldBe(HttpStatusCode.OK);
         theEvent.Id.ShouldBe(returned_id);
         theEvent.Name.ToString().ShouldBe(name);
+        testHarness.Published.Select<Messaging.Contracts.Event>()
+            .Any(e => e.Context.Message.Id == returned_id && e.Context.Message.Name == name).ShouldBeTrue("Event was not published to the bus");
     }
     
     private void the_event_is_updated()
@@ -161,6 +171,10 @@ public partial class EventControllerSpecs : TruncateDbSpecification
         response_code.ShouldBe(HttpStatusCode.OK);
         theEvent.Id.ShouldBe(returned_id);
         theEvent.Name.ToString().ShouldBe(new_name);
+        testHarness.Published.Select<Messaging.Contracts.Event>()
+            .Any(e => e.Context.Message.Id == returned_id && e.Context.Message.Name == name).ShouldBeTrue("Event was not published to the bus");
+        testHarness.Published.Select<Messaging.Contracts.Event>()
+            .Any(e => e.Context.Message.Id == returned_id && e.Context.Message.Name == new_name).ShouldBeTrue("Event was not published to the bus");
     }    
     
     private void the_events_are_listed()
@@ -175,5 +189,7 @@ public partial class EventControllerSpecs : TruncateDbSpecification
     private void the_event_is_not_found()
     {
         response_code.ShouldBe(HttpStatusCode.NotFound);
+        testHarness.Published.Select<Messaging.Contracts.EventDeleted>()
+            .Single(e => e.Context.Message.Id == returned_id).ShouldNotBeNull();
     }
 }

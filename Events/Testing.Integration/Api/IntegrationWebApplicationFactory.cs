@@ -28,14 +28,7 @@ public class IntegrationWebApplicationFactory<TProgram>(string connectionString)
             });
             services.AddScoped<EventRepository>();
             services.AddScoped<EventService>();
-            services.AddMassTransitTestHarness(x =>
-            {
-                x.AddEntityFrameworkOutbox<EventDbContext>(o =>
-                {
-                    o.UseSqlServer();
-                    o.UseBusOutbox();
-                });
-            });
+            services.AddMassTransitTestHarness();
         });
 
         builder.UseEnvironment("Test");

@@ -11,13 +11,13 @@ public class EventRepository(EventDbContext eventDbContext, IPublishEndpoint pub
         if (await Get(theEvent.Id) != null)
         {
             eventDbContext.Update(theEvent);
-            await publishEndpoint.Publish(new Messaging.Contracts.Event{ Name = theEvent.Name });
+            await publishEndpoint.Publish(new Messaging.Contracts.Event{ Id = theEvent.Id, Name = theEvent.Name });
             await eventDbContext.SaveChangesAsync();
         }
         else
         {
             eventDbContext.Add(theEvent);
-            await publishEndpoint.Publish(new Messaging.Contracts.Event{ Name = theEvent.Name });
+            await publishEndpoint.Publish(new Messaging.Contracts.Event{ Id = theEvent.Id, Name = theEvent.Name });
             await eventDbContext.SaveChangesAsync();
         }
     }
@@ -28,6 +28,7 @@ public class EventRepository(EventDbContext eventDbContext, IPublishEndpoint pub
         if (user is null) return;
 
         eventDbContext.Remove(user);
+        await publishEndpoint.Publish(new Messaging.Contracts.EventDeleted { Id = id });
         await eventDbContext.SaveChangesAsync();
     }
 

@@ -2,5 +2,11 @@ namespace Messaging.Contracts;
 
 public record Event
 {
-    public string Name { get; init; } = string.Empty;
+    public Guid Id { get; init; }
+    public string Name { get; init; }
+}
+
+public record EventDeleted
+{
+    public Guid Id { get; init; }
 }

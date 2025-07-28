@@ -1,8 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 using Application;
 using Domain;
-using MassTransit;
-using Microsoft.EntityFrameworkCore;
 using OpenTelemetry;
 using OpenTelemetry.Exporter;
 using OpenTelemetry.Metrics;
@@ -23,9 +21,9 @@ internal sealed class EventApi(WebApplicationBuilder webApplicationBuilder, ICon
     {
         base.ConfigureServices(services);
         services.ConfigureDatabase(_settings);
+        services.ConfigureMessaging(_settings);
         services.AddScoped<EventRepository>();
         services.AddScoped<EventService>();
-        services.ConfigureMessaging(_settings);
     }
     
     protected override OpenTelemetryBuilder ConfigureTelemetry(WebApplicationBuilder builder)
