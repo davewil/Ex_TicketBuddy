@@ -2,12 +2,14 @@
 using System.Text;
 using Api.Hosting;
 using BDD;
-using Domain.Entities;
 using MassTransit.Testing;
+using Messaging.ExternalContracts;
+using Messaging.InternalContracts;
 using Microsoft.Extensions.DependencyInjection;
 using Migrations;
 using Shouldly;
 using Testcontainers.MsSql;
+using Event = Domain.Entities.Event;
 
 namespace Integration.Api;
 
@@ -161,7 +163,9 @@ public partial class EventControllerSpecs : TruncateDbSpecification
         response_code.ShouldBe(HttpStatusCode.OK);
         theEvent.Id.ShouldBe(returned_id);
         theEvent.Name.ToString().ShouldBe(name);
-        testHarness.Published.Select<Messaging.Contracts.Event>()
+        testHarness.Published.Select<Messaging.InternalContracts.InternalEventUpserted>()
+            .Any(e => e.Context.Message.Id == returned_id && e.Context.Message.Name == name).ShouldBeTrue("Event was not published to the bus");
+        testHarness.Published.Select<Messaging.ExternalContracts.Event>()
             .Any(e => e.Context.Message.Id == returned_id && e.Context.Message.Name == name).ShouldBeTrue("Event was not published to the bus");
     }
     
@@ -171,9 +175,13 @@ public partial class EventControllerSpecs : TruncateDbSpecification
         response_code.ShouldBe(HttpStatusCode.OK);
         theEvent.Id.ShouldBe(returned_id);
         theEvent.Name.ToString().ShouldBe(new_name);
-        testHarness.Published.Select<Messaging.Contracts.Event>()
+        testHarness.Published.Select<Messaging.InternalContracts.InternalEventUpserted>()
             .Any(e => e.Context.Message.Id == returned_id && e.Context.Message.Name == name).ShouldBeTrue("Event was not published to the bus");
-        testHarness.Published.Select<Messaging.Contracts.Event>()
+        testHarness.Published.Select<Messaging.InternalContracts.InternalEventUpserted>()
+            .Any(e => e.Context.Message.Id == returned_id && e.Context.Message.Name == new_name).ShouldBeTrue("Event was not published to the bus");
+        testHarness.Published.Select<Messaging.ExternalContracts.Event>()
+            .Any(e => e.Context.Message.Id == returned_id && e.Context.Message.Name == name).ShouldBeTrue("Event was not published to the bus");
+        testHarness.Published.Select<Messaging.ExternalContracts.Event>()
             .Any(e => e.Context.Message.Id == returned_id && e.Context.Message.Name == new_name).ShouldBeTrue("Event was not published to the bus");
     }    
     
@@ -189,7 +197,9 @@ public partial class EventControllerSpecs : TruncateDbSpecification
     private void the_event_is_not_found()
     {
         response_code.ShouldBe(HttpStatusCode.NotFound);
-        testHarness.Published.Select<Messaging.Contracts.EventDeleted>()
+        testHarness.Published.Select<InternalEventDeleted>()
+            .Single(e => e.Context.Message.Id == returned_id).ShouldNotBeNull();
+        testHarness.Published.Select<EventDeleted>()
             .Single(e => e.Context.Message.Id == returned_id).ShouldNotBeNull();
     }
 }

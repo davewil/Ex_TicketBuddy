@@ -1,12 +1,12 @@
-namespace Messaging.Contracts;
+namespace Messaging.InternalContracts;
 
-public record Event
+public record InternalEventUpserted
 {
     public Guid Id { get; init; }
     public string Name { get; init; }
 }
 
-public record EventDeleted
+public record InternalEventDeleted
 {
     public Guid Id { get; init; }
 }
