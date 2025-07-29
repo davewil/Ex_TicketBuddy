@@ -10,6 +10,8 @@ services:
     restart: always
     volumes:
       - ticket_buddy_sql_server:/var/opt/mssql
+    networks:
+      - ticketbuddy-network
   aspire-dashboard:
     container_name: aspire-dashboard
     image: mcr.microsoft.com/dotnet/aspire-dashboard:latest
@@ -20,6 +22,8 @@ services:
       - "4317:18889"
     depends_on:
       - sqlserver
+    networks:
+      - ticketbuddy-network
   rabbitmq:
     container_name: rabbitmq
     image: masstransit/rabbitmq
@@ -32,35 +36,58 @@ services:
       - RABBITMQ_DEFAULT_PASS=guest
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - ticketbuddy-network
+    healthcheck:
+      test: ["CMD", "rabbitmqctl", "status"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
   events-api:
     container_name: events-api
     build:
       context: .
       dockerfile: Events/Host.Api/Dockerfile
     depends_on:
-      - sqlserver
-      - rabbitmq
-      - aspire-dashboard
+      rabbitmq:
+        condition: service_healthy
+      sqlserver:
+        condition: service_started
+      aspire-dashboard:
+        condition: service_started
     environment:
       - ENVIRONMENT=Development
     ports:
       - "8080:8080"
       - "8081:8081"
     restart: on-failure
+    networks:
+      - ticketbuddy-network
   events-api-outbox:
     container_name: events-api-outbox
     build:
       context: .
       dockerfile: Events/Host.Messaging.Outbox/Dockerfile
     depends_on:
-      - sqlserver
-      - rabbitmq
-      - aspire-dashboard
-      - events-api
+      rabbitmq:
+        condition: service_healthy
+      sqlserver:
+        condition: service_started
+      aspire-dashboard:
+        condition: service_started
+      events-api:
+        condition: service_started
     environment:
       - ENVIRONMENT=Development
     restart: on-failure
+    networks:
+      - ticketbuddy-network
 
 volumes:
   ticket_buddy_sql_server:
   rabbitmq_data:
+  
+networks:
+  ticketbuddy-network:
+    name: ticketbuddy-network
+    driver: bridge
