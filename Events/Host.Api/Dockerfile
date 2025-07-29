@@ -4,7 +4,6 @@ WORKDIR /app
 EXPOSE 8080
 EXPOSE 8081
 
-
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
@@ -35,7 +34,6 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 
-# Copy the entrypoint script
 COPY Events/Host.Api/entrypoint.sh ./entrypoint.sh
 RUN chmod +x ./entrypoint.sh
 

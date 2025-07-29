@@ -10,7 +10,7 @@ services:
     restart: always
     volumes:
       - ticket_buddy_sql_server:/var/opt/mssql
-  aspiredashboard:
+  aspire-dashboard:
     container_name: aspire-dashboard
     image: mcr.microsoft.com/dotnet/aspire-dashboard:latest
     environment:
@@ -32,6 +32,34 @@ services:
       - RABBITMQ_DEFAULT_PASS=guest
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
+  events-api:
+    container_name: events-api
+    build:
+      context: .
+      dockerfile: Events/Host.Api/Dockerfile
+    depends_on:
+      - sqlserver
+      - rabbitmq
+      - aspire-dashboard
+    environment:
+      - ENVIRONMENT=Development
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    restart: on-failure
+  events-api-outbox:
+    container_name: events-api-outbox
+    build:
+      context: .
+      dockerfile: Events/Host.Messaging.Outbox/Dockerfile
+    depends_on:
+      - sqlserver
+      - rabbitmq
+      - aspire-dashboard
+      - events-api
+    environment:
+      - ENVIRONMENT=Development
+    restart: on-failure
 
 volumes:
   ticket_buddy_sql_server:
