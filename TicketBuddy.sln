@@ -36,7 +36,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Host.Messaging.Outbox", "Ev
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Integration.Messaging", "Events\Integration.Messaging\Integration.Messaging.csproj", "{F4C7CD02-3FBE-49F9-BD01-69B426B00982}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.Messaging", "Domain.Messaging\Domain.Messaging.csproj", "{E44C8CDD-B9CA-4379-97CF-FA2CE929D48E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.Messaging", "Events\Domain.Messaging\Domain.Messaging.csproj", "{E44C8CDD-B9CA-4379-97CF-FA2CE929D48E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
