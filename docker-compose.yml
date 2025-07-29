@@ -43,16 +43,29 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+  events-migrations:
+    container_name: events-migrations
+    build:
+      context: .
+      dockerfile: Events/Host.Migrations/Dockerfile
+    depends_on:
+      sqlserver:
+        condition: service_started
+    environment:
+      - ENVIRONMENT=Development
+    networks:
+      - ticketbuddy-network
+    restart: "no"
   events-api:
     container_name: events-api
     build:
       context: .
       dockerfile: Events/Host.Api/Dockerfile
     depends_on:
+      events-migrations:
+        condition: service_completed_successfully
       rabbitmq:
         condition: service_healthy
-      sqlserver:
-        condition: service_started
       aspire-dashboard:
         condition: service_started
     environment:
