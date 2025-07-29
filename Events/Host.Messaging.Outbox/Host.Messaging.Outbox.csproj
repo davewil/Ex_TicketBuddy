@@ -17,7 +17,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Persistence\Persistence.csproj" />
-      <ProjectReference Include="..\Messaging\Messaging.csproj" />
+      <ProjectReference Include="..\Integration.Messaging\Integration.Messaging.csproj" />
     </ItemGroup>
 
     <ItemGroup>

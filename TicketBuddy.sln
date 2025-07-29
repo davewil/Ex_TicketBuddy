@@ -34,7 +34,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistence", "Events\Persi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Host.Messaging.Outbox", "Events\Host.Messaging.Outbox\Host.Messaging.Outbox.csproj", "{55ABD74D-21F8-4BDE-BDD6-829A2D0A5F49}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messaging", "Events\Messaging\Messaging.csproj", "{F4C7CD02-3FBE-49F9-BD01-69B426B00982}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Integration.Messaging", "Events\Integration.Messaging\Integration.Messaging.csproj", "{F4C7CD02-3FBE-49F9-BD01-69B426B00982}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.Messaging", "Domain.Messaging\Domain.Messaging.csproj", "{E44C8CDD-B9CA-4379-97CF-FA2CE929D48E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -86,6 +88,10 @@ Global
 		{F4C7CD02-3FBE-49F9-BD01-69B426B00982}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F4C7CD02-3FBE-49F9-BD01-69B426B00982}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F4C7CD02-3FBE-49F9-BD01-69B426B00982}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E44C8CDD-B9CA-4379-97CF-FA2CE929D48E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E44C8CDD-B9CA-4379-97CF-FA2CE929D48E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E44C8CDD-B9CA-4379-97CF-FA2CE929D48E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E44C8CDD-B9CA-4379-97CF-FA2CE929D48E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -102,5 +108,6 @@ Global
 		{10A1E55D-ABB1-47FD-BF45-94D60FA30984} = {744C08F5-E265-4E24-BDCA-96533945BC1C}
 		{55ABD74D-21F8-4BDE-BDD6-829A2D0A5F49} = {744C08F5-E265-4E24-BDCA-96533945BC1C}
 		{F4C7CD02-3FBE-49F9-BD01-69B426B00982} = {744C08F5-E265-4E24-BDCA-96533945BC1C}
+		{E44C8CDD-B9CA-4379-97CF-FA2CE929D48E} = {744C08F5-E265-4E24-BDCA-96533945BC1C}
 	EndGlobalSection
 EndGlobal

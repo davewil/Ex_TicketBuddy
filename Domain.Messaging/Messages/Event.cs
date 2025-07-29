@@ -1,6 +1,6 @@
-namespace Messaging.ExternalContracts;
+namespace Domain.Messaging.Messages;
 
-public record Event
+public record EventUpserted
 {
     public Guid Id { get; init; }
     public string Name { get; init; }

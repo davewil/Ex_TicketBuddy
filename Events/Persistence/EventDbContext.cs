@@ -1,4 +1,5 @@
-﻿using Domain.Primitives;
+﻿using Domain.Entities;
+using Domain.Primitives;
 using MassTransit;
 using MassTransit.EntityFrameworkCoreIntegration;
 using Microsoft.EntityFrameworkCore;

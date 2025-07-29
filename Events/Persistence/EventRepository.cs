@@ -1,24 +1,23 @@
-﻿using MassTransit;
-using Messaging.InternalContracts;
+﻿using Domain.Messaging.Messages;
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
-using Event = Domain.Entities.Event;
 
 namespace Persistence;
 
 public class EventRepository(EventDbContext eventDbContext, IPublishEndpoint publishEndpoint)
 {
-    public async Task Save(Event theEvent)
+    public async Task Save(Domain.Entities.Event theEvent)
     {
         if (await Get(theEvent.Id) != null)
         {
             eventDbContext.Update(theEvent);
-            await publishEndpoint.Publish(new InternalEventUpserted{ Id = theEvent.Id, Name = theEvent.Name });
+            await publishEndpoint.Publish(new EventUpserted{ Id = theEvent.Id, Name = theEvent.Name });
             await eventDbContext.SaveChangesAsync();
         }
         else
         {
             eventDbContext.Add(theEvent);
-            await publishEndpoint.Publish(new InternalEventUpserted{ Id = theEvent.Id, Name = theEvent.Name });
+            await publishEndpoint.Publish(new EventUpserted{ Id = theEvent.Id, Name = theEvent.Name });
             await eventDbContext.SaveChangesAsync();
         }
     }
@@ -29,16 +28,16 @@ public class EventRepository(EventDbContext eventDbContext, IPublishEndpoint pub
         if (user is null) return;
 
         eventDbContext.Remove(user);
-        await publishEndpoint.Publish(new InternalEventDeleted { Id = id });
+        await publishEndpoint.Publish(new EventDeleted { Id = id });
         await eventDbContext.SaveChangesAsync();
     }
 
-    public async Task<Event?> Get(Guid id)
+    public async Task<Domain.Entities.Event?> Get(Guid id)
     {
         return await eventDbContext.Events.FindAsync(id);
     }
 
-    public async Task<IList<Event>> GetAll()
+    public async Task<IList<Domain.Entities.Event>> GetAll()
     {
         return await eventDbContext.Events.ToListAsync();
     }

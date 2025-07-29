@@ -1,4 +1,5 @@
 ﻿using Application;
+using Domain.Messaging;
 using MassTransit;
 using Messaging;
 using Microsoft.AspNetCore.Hosting;
@@ -31,11 +32,8 @@ public class IntegrationWebApplicationFactory<TProgram>(string connectionString)
             services.AddScoped<EventService>();
             services.AddMassTransitTestHarness(x =>
             {
-                var applicationAssembly = MessagingAssembly.Assembly;
+                var applicationAssembly = DomainMessagingAssembly.Assembly;
                 x.AddConsumers(applicationAssembly);
-                x.AddSagaStateMachines(applicationAssembly);
-                x.AddSagas(applicationAssembly);
-                x.AddActivities(applicationAssembly);
             });
         });
 

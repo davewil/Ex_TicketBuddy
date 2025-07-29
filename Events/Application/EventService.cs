@@ -1,5 +1,5 @@
-﻿using Persistence;
-using Event = Domain.Entities.Event;
+﻿using Domain.Entities;
+using Persistence;
 
 namespace Application;
 
