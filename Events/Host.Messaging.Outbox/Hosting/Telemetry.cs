@@ -15,20 +15,6 @@ internal static class Telemetry
                     .AddTelemetrySdk()
                     .AddEnvironmentVariableDetector())
                 .AddSource("MassTransit");
-            // .AddJaegerExporter(o =>
-            // {
-            //     o.AgentHost = HostMetadataCache.IsRunningInContainer ? "jaeger" : "localhost";
-            //     o.AgentPort = 6831;
-            //     o.MaxPayloadSizeInBytes = 4096;
-            //     o.ExportProcessorType = ExportProcessorType.Batch;
-            //     o.BatchExportProcessorOptions = new BatchExportProcessorOptions<Activity>
-            //     {
-            //         MaxQueueSize = 2048,
-            //         ScheduledDelayMilliseconds = 5000,
-            //         ExporterTimeoutMilliseconds = 30000,
-            //         MaxExportBatchSize = 512,
-            //     };
-            // });
         });
     }
 }
