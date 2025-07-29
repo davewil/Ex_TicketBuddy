@@ -1,7 +1,7 @@
 ﻿using Common.Environment;
 using Microsoft.Extensions.Configuration;
 
-namespace Host.Messaging.Outbox.Hosting;
+namespace Migrations.Host;
 
 internal static class Configuration
 {
@@ -12,14 +12,12 @@ internal static class Configuration
         if (environment is CommonEnvironment.LocalDevelopment)
         {
             var configurationBuilder = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.local.json", optional: false, reloadOnChange: false)
-                .AddEnvironmentVariables();
+                .AddJsonFile("appsettings.local.json", optional: false, reloadOnChange: false);
             return configurationBuilder.Build();  
         }
-        
+
         var theConfigurationBuilder = new ConfigurationBuilder()
-            .AddJsonFile("appsettings.docker.json", optional: false, reloadOnChange: false)
-            .AddEnvironmentVariables();
+            .AddJsonFile("appsettings.docker.json", optional: false, reloadOnChange: false);
         return theConfigurationBuilder.Build();
     }
 }

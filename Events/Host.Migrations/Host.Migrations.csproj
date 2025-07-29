@@ -13,12 +13,16 @@
     </ItemGroup>
     
     <ItemGroup>
+        <PackageReference Include="Common.Environment" Version="1.0.10" />
         <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.7" />
         <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.7" />
     </ItemGroup>
 
     <ItemGroup>
-      <None Update="appsettings.json">
+      <None Update="appsettings.local.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="appsettings.docker.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
     </ItemGroup>

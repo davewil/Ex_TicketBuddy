@@ -29,7 +29,10 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Update="appsettings.json">
+      <None Update="appsettings.local.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="appsettings.docker.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
     </ItemGroup>
