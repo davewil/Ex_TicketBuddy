@@ -1,5 +1,4 @@
 services:
-  # Infrastructure services
   sqlserver:
     container_name: sql-server
     image: mcr.microsoft.com/mssql/server:2022-latest
@@ -13,8 +12,6 @@ services:
       - ticket_buddy_sql_server:/var/opt/mssql
     networks:
       - ticketbuddy-network
-    profiles: ["infrastructure"]
-
   aspire-dashboard:
     container_name: aspire-dashboard
     image: mcr.microsoft.com/dotnet/aspire-dashboard:latest
@@ -27,8 +24,6 @@ services:
       - sqlserver
     networks:
       - ticketbuddy-network
-    profiles: ["infrastructure"]
-
   rabbitmq:
     container_name: rabbitmq
     image: masstransit/rabbitmq
@@ -48,9 +43,6 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
-    profiles: ["infrastructure"]
-
-  # Event service components
   events-migrations:
     container_name: events-migrations
     build:
@@ -64,8 +56,6 @@ services:
     networks:
       - ticketbuddy-network
     restart: "no"
-    profiles: ["event-service"]
-
   events-api:
     container_name: events-api
     build:
@@ -86,8 +76,6 @@ services:
     restart: on-failure
     networks:
       - ticketbuddy-network
-    profiles: ["event-service"]
-
   events-api-outbox:
     container_name: events-api-outbox
     build:
@@ -107,7 +95,6 @@ services:
     restart: on-failure
     networks:
       - ticketbuddy-network
-    profiles: ["event-service"]
 
 volumes:
   ticket_buddy_sql_server:
