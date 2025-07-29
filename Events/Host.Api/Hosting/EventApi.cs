@@ -34,12 +34,14 @@ internal sealed class EventApi(WebApplicationBuilder webApplicationBuilder, ICon
             metrics.AddAspNetCoreInstrumentation();
             metrics.AddMeter("Microsoft.AspNetCore.Hosting");
             metrics.AddMeter("Microsoft.AspNetCore.Server.Kestrel");
+            metrics.AddConsoleExporter();
         });
         
         otel.WithTracing(tracing =>
         {
             tracing.AddAspNetCoreInstrumentation();
             tracing.AddHttpClientInstrumentation();
+            tracing.AddConsoleExporter();
         });
         
         Environment.SetEnvironmentVariable("OTEL_RESOURCE_ATTRIBUTES", $"service.name={ApplicationName}");
