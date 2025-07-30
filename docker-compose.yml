@@ -76,8 +76,8 @@ services:
     restart: on-failure
     networks:
       - ticketbuddy-network
-  events-api-outbox:
-    container_name: events-api-outbox
+  events-messaging-outbox:
+    container_name: events-messaging-outbox
     build:
       context: .
       dockerfile: Events/Host.Messaging.Outbox/Dockerfile
