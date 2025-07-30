@@ -7,7 +7,7 @@ var host = Microsoft.Extensions.Hosting.Host.CreateDefaultBuilder()
     .ConfigureServices((_, services) =>
     {
         services.ConfigureDatabase(settings);
-        services.ConfigureTelemetry(settings, "EventApi.Outbox");
+        services.ConfigureTelemetry(settings, "TicketApi.Inbox");
         services.ConfigureMessaging(settings);
     })
     .Build();
