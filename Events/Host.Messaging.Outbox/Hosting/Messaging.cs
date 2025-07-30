@@ -1,5 +1,4 @@
 ﻿using Events.Integration.Messaging;
-using Integration.Messaging;
 using MassTransit;
 using Microsoft.Extensions.DependencyInjection;
 using Persistence;
