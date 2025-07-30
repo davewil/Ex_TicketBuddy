@@ -125,6 +125,58 @@ services:
     restart: on-failure
     networks:
       - ticketbuddy-network
+  users-migrations:
+    container_name: users-migrations
+    build:
+      context: .
+      dockerfile: Users/Host.Migrations/Dockerfile
+    depends_on:
+      sqlserver:
+        condition: service_started
+    environment:
+      - ENVIRONMENT=Development
+    networks:
+      - ticketbuddy-network
+    restart: "no"
+  users-api:
+    container_name: users-api
+    build:
+      context: .
+      dockerfile: Users/Host.Api/Dockerfile
+    depends_on:
+      users-migrations:
+        condition: service_completed_successfully
+      rabbitmq:
+        condition: service_healthy
+      aspire-dashboard:
+        condition: service_started
+    environment:
+      - ENVIRONMENT=Development
+    ports:
+      - "8082:8082"
+      - "8083:8083"
+    restart: on-failure
+    networks:
+      - ticketbuddy-network
+  users-messaging-outbox:
+    container_name: users-messaging-outbox
+    build:
+      context: .
+      dockerfile: Users/Host.Messaging.Outbox/Dockerfile
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      sqlserver:
+        condition: service_started
+      aspire-dashboard:
+        condition: service_started
+      users-api:
+        condition: service_started
+    environment:
+      - ENVIRONMENT=Development
+    restart: on-failure
+    networks:
+      - ticketbuddy-network
 
 volumes:
   ticket_buddy_sql_server:

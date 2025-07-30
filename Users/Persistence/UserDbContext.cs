@@ -21,5 +21,5 @@ public class UserDbContext(DbContextOptions<UserDbContext> options) : SagaDbCont
         modelBuilder.AddOutboxStateEntity();
     }
 
-    protected override IEnumerable<ISagaClassMap> Configurations { get; }
+    protected override IEnumerable<ISagaClassMap> Configurations => null!;
 }

@@ -21,5 +21,5 @@ public class EventDbContext(DbContextOptions<EventDbContext> options) : SagaDbCo
         modelBuilder.AddOutboxStateEntity();
     }
 
-    protected override IEnumerable<ISagaClassMap> Configurations { get; }
+    protected override IEnumerable<ISagaClassMap> Configurations => null!;
 }

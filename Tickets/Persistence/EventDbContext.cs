@@ -16,5 +16,5 @@ public class EventDbContext(DbContextOptions<EventDbContext> options) : SagaDbCo
         modelBuilder.Entity<Event>().ToTable("Events","Event", e => e.ExcludeFromMigrations());
     }
 
-    protected override IEnumerable<ISagaClassMap> Configurations { get; }
+    protected override IEnumerable<ISagaClassMap> Configurations => null!;
 }
