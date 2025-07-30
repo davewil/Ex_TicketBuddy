@@ -1,4 +1,6 @@
-﻿using OpenTelemetry;
+﻿using MassTransit.Logging;
+using MassTransit.Monitoring;
+using OpenTelemetry;
 using OpenTelemetry.Exporter;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
@@ -17,17 +19,19 @@ internal static class Telemetry
         otel.WithMetrics(metrics =>
             {
                 metrics.SetResourceBuilder(resourceBuilder);
-                metrics.AddAspNetCoreInstrumentation();
-                metrics.AddMeter("Microsoft.AspNetCore.Hosting");
-                metrics.AddMeter("Microsoft.AspNetCore.Server.Kestrel");
-                metrics.AddConsoleExporter();
+                metrics.AddAspNetCoreInstrumentation()
+                    .AddMeter("Microsoft.AspNetCore.Hosting")
+                    .AddMeter("Microsoft.AspNetCore.Server.Kestrel")
+                    .AddMeter(InstrumentationOptions.MeterName)
+                    .AddConsoleExporter();
             })
             .WithTracing(tracing =>
             {
                 tracing.SetResourceBuilder(resourceBuilder);
-                tracing.AddAspNetCoreInstrumentation();
-                tracing.AddHttpClientInstrumentation();
-                tracing.AddConsoleExporter();
+                tracing.AddAspNetCoreInstrumentation()
+                    .AddHttpClientInstrumentation()
+                    .AddConsoleExporter()
+                    .AddSource(DiagnosticHeaders.DefaultListenerName);
             });
 
         otel.UseOtlpExporter(OtlpExportProtocol.Grpc, new Uri(settings.Telemetry.ConnectionString));
