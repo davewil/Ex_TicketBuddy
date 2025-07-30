@@ -1,4 +1,4 @@
-namespace Events.Integration.Messaging.Outbound.Messages;
+namespace Users.Integration.Messaging.Outbound.Messages;
 
 public record UserUpserted
 {

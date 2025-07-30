@@ -30,6 +30,7 @@ internal static class Messaging
                 {
                     e.Bind<Events.Integration.Messaging.Outbound.Messages.EventUpserted>();
                     e.Bind<Events.Integration.Messaging.Outbound.Messages.EventDeleted>();
+                    e.Bind<Users.Integration.Messaging.Outbound.Messages.UserUpserted>();
                 });
 
                 cfg.ConfigureEndpoints(context);

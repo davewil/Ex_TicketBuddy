@@ -18,5 +18,15 @@ internal static class Database
                     errorNumbersToAdd: null);
             });
         });
+        services.AddDbContext<UserDbContext>(options =>
+        {
+            options.UseSqlServer(settings.Database.Connection, sqlOptions =>
+            {
+                sqlOptions.EnableRetryOnFailure(
+                    maxRetryCount: 5,
+                    maxRetryDelay: TimeSpan.FromSeconds(30),
+                    errorNumbersToAdd: null);
+            });
+        });
     }
 }

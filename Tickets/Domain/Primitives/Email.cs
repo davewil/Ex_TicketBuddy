@@ -2,7 +2,7 @@
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 
-namespace Users.Domain.Primitives;
+namespace Domain.Primitives;
 
 public readonly record struct Email
 {
@@ -34,14 +34,14 @@ public readonly record struct Email
     public static implicit operator Email(string email) => new(email);
 }
 
-public class EmailConverter : JsonConverter<Email>
+public class EmailConverter : JsonConverter<Name>
 {
-    public override void Write(Utf8JsonWriter writer, Email value, JsonSerializerOptions options)
+    public override void Write(Utf8JsonWriter writer, Name value, JsonSerializerOptions options)
     {
         writer.WriteStringValue(value.ToString());
     }
 
-    public override Email Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    public override Name Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         return reader.GetString()!;
     }

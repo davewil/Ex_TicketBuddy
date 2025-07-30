@@ -32,7 +32,7 @@ public class UserController(UserService UserService) : ControllerBase
     }    
     
     [HttpPut("{id:guid}")]
-    public async Task<ActionResult> UpdateEvent(Guid id, [FromBody] UserPayload payload)
+    public async Task<ActionResult> UpdateUser(Guid id, [FromBody] UserPayload payload)
     {
         await UserService.Update(id, payload.FullName, payload.Email);
         return NoContent();

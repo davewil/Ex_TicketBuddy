@@ -1,14 +1,15 @@
 ﻿using System.Net;
 using System.Text;
 using Api.Hosting;
+using Api.Requests;
 using BDD;
-using Events.Integration.Messaging.Outbound.Messages;
 using MassTransit.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Migrations;
 using Shouldly;
 using Testcontainers.MsSql;
 using Users.Domain.Entities;
+using Users.Integration.Messaging.Outbound.Messages;
 
 namespace Integration.Api;
 
@@ -25,7 +26,7 @@ public partial class UserControllerSpecs : TruncateDbSpecification
     private const string name = "wibble";
     private const string email = "wibble@wobble.com";
     private const string new_name = "wobble";
-    private const string new_email = "wobble.com";
+    private const string new_email = "wobble@wibble.com";
     private static MsSqlContainer database = null!;
     private ITestHarness testHarness = null!;
 
@@ -64,23 +65,26 @@ public partial class UserControllerSpecs : TruncateDbSpecification
 
     private void a_request_to_create_an_user()
     {
-        create_content(name);
+        create_content(name, email);
     }
 
-    private void create_content(string the_name)
+    private void create_content(string the_name, string the_email)
     {
-        content = new StringContent($"{{\"name\":\"{the_name}\"}},{{\"email\":\"{email}\"}}" , Encoding.UTF8, application_json);
+        content = new StringContent(
+            JsonSerialization.Serialize(new UserPayload(the_name, the_email)), 
+            Encoding.UTF8, 
+            application_json);
     }
 
     private void a_request_to_create_another_user()
     {
-        create_content(new_name);
+        create_content(new_name, new_email);
 
     }
     
     private void a_request_to_update_the_user()
     {
-        create_content(new_name);
+        create_content(new_name, new_email);
     }
 
     private void creating_the_user()
@@ -153,10 +157,11 @@ public partial class UserControllerSpecs : TruncateDbSpecification
     
     private void the_user_is_updated()
     {
-        var theuser = JsonSerialization.Deserialize<User>(content.ReadAsStringAsync().GetAwaiter().GetResult());
+        var theUser = JsonSerialization.Deserialize<User>(content.ReadAsStringAsync().GetAwaiter().GetResult());
         response_code.ShouldBe(HttpStatusCode.OK);
-        theuser.Id.ShouldBe(returned_id);
-        theuser.FullName.ToString().ShouldBe(new_name);
+        theUser.Id.ShouldBe(returned_id);
+        theUser.FullName.ToString().ShouldBe(new_name);
+        theUser.Email.ToString().ShouldBe(new_email);
         testHarness.Published.Select<Users.Domain.Messaging.Messages.UserUpserted>()
             .Any(e => e.Context.Message.Id == returned_id && e.Context.Message is { FullName: name, Email: email }).ShouldBeTrue("user was not published to the bus");
         testHarness.Published.Select<UserUpserted>()
@@ -169,10 +174,10 @@ public partial class UserControllerSpecs : TruncateDbSpecification
     
     private void the_users_are_listed()
     {
-        var theuser = JsonSerialization.Deserialize<IReadOnlyList<User>>(content.ReadAsStringAsync().GetAwaiter().GetResult());
+        var theUser = JsonSerialization.Deserialize<IReadOnlyList<User>>(content.ReadAsStringAsync().GetAwaiter().GetResult());
         response_code.ShouldBe(HttpStatusCode.OK);
-        theuser.Count.ShouldBe(2);
-        theuser.Single(e => e.Id == returned_id).FullName.ToString().ShouldBe(name);
-        theuser.Single(e => e.Id == another_id).FullName.ToString().ShouldBe(new_name);
+        theUser.Count.ShouldBe(2);
+        theUser.Single(e => e.Id == returned_id).FullName.ToString().ShouldBe(name);
+        theUser.Single(e => e.Id == another_id).FullName.ToString().ShouldBe(new_name);
     }
 }
