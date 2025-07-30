@@ -95,6 +95,36 @@ services:
     restart: on-failure
     networks:
       - ticketbuddy-network
+  tickets-migrations:
+    container_name: tickets-migrations
+    build:
+      context: .
+      dockerfile: Tickets/Host.Migrations/Dockerfile
+    depends_on:
+      sqlserver:
+        condition: service_started
+    environment:
+      - ENVIRONMENT=Development
+    networks:
+      - ticketbuddy-network
+    restart: "no"
+  tickets-messaging-inbox:
+    container_name: tickets-messaging-inbox
+    build:
+      context: .
+      dockerfile: Tickets/Host.Messaging.Inbox/Dockerfile
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      sqlserver:
+        condition: service_started
+      tickets-migrations:
+        condition: service_completed_successfully
+    environment:
+      - ENVIRONMENT=Development
+    restart: on-failure
+    networks:
+      - ticketbuddy-network
 
 volumes:
   ticket_buddy_sql_server:
