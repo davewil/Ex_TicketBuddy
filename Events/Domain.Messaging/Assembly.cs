@@ -2,7 +2,7 @@
 
 namespace Events.Domain.Messaging;
 
-public static class DomainMessaging
+public static class EventsDomainMessaging
 {
-    public static Assembly Assembly => typeof(DomainMessaging).Assembly;
+    public static Assembly Assembly => typeof(EventsDomainMessaging).Assembly;
 }

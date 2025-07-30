@@ -20,6 +20,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\Events\Integration.Messaging.Outbound\Integration.Messaging.Outbound.csproj" />
+      <ProjectReference Include="..\Integration.Messaging.Inbound\Integration.Messaging.Inbound.csproj" />
       <ProjectReference Include="..\Persistence\Persistence.csproj" />
     </ItemGroup>
 

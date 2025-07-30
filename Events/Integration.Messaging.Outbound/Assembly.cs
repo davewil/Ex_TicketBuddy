@@ -1,8 +1,8 @@
 ﻿using System.Reflection;
 
-namespace Events.Integration.Messaging;
+namespace Events.Integration.Messaging.Outbound;
 
-public static class EventsMessaging
+public static class EventsIntegrationMessagingOutbound
 {
-    public static Assembly Assembly => typeof(EventsMessaging).Assembly;
+    public static Assembly Assembly => typeof(EventsIntegrationMessagingOutbound).Assembly;
 }

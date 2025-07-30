@@ -1,4 +1,6 @@
-﻿using Events.Integration.Messaging;
+﻿using Events.Domain.Messaging;
+using Events.Integration.Messaging;
+using Events.Integration.Messaging.Outbound;
 using MassTransit;
 using Microsoft.Extensions.DependencyInjection;
 using Persistence;
@@ -23,11 +25,11 @@ internal static class Messaging
 
             x.SetKebabCaseEndpointNameFormatter();
             x.SetInMemorySagaRepositoryProvider();
-            var applicationAssembly = EventsMessaging.Assembly;
-            x.AddConsumers(applicationAssembly);
-            x.AddSagaStateMachines(applicationAssembly);
-            x.AddSagas(applicationAssembly);
-            x.AddActivities(applicationAssembly);
+            var eventsDomainAssembly = EventsDomainMessaging.Assembly;
+            x.AddConsumers(eventsDomainAssembly);
+            x.AddSagaStateMachines(eventsDomainAssembly);
+            x.AddSagas(eventsDomainAssembly);
+            x.AddActivities(eventsDomainAssembly);
 
             x.UsingRabbitMq((context, cfg) =>
             {                        

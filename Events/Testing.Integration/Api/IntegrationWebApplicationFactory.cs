@@ -31,7 +31,7 @@ public class IntegrationWebApplicationFactory<TProgram>(string connectionString)
             services.AddScoped<EventService>();
             services.AddMassTransitTestHarness(x =>
             {
-                var applicationAssembly = DomainMessaging.Assembly;
+                var applicationAssembly = EventsDomainMessaging.Assembly;
                 x.AddConsumers(applicationAssembly);
             });
         });

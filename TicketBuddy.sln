@@ -52,7 +52,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistence", "Tickets\Pers
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Testing", "Testing", "{689C592D-E300-4B58-856E-07A4952C31BD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Integration.Messaging.Inbound", "Integration.Messaging.Inbound\Integration.Messaging.Inbound.csproj", "{5DC2314D-1BA1-4586-96E8-5C83C40EC21B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Integration.Messaging.Inbound", "Tickets\Integration.Messaging.Inbound\Integration.Messaging.Inbound.csproj", "{1AEF4ED4-24B5-4E69-8C18-715AD504259A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -128,10 +128,10 @@ Global
 		{946F91FC-9E0A-4B89-9CEF-D9F4BBF7E7F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{946F91FC-9E0A-4B89-9CEF-D9F4BBF7E7F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{946F91FC-9E0A-4B89-9CEF-D9F4BBF7E7F3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5DC2314D-1BA1-4586-96E8-5C83C40EC21B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5DC2314D-1BA1-4586-96E8-5C83C40EC21B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5DC2314D-1BA1-4586-96E8-5C83C40EC21B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5DC2314D-1BA1-4586-96E8-5C83C40EC21B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1AEF4ED4-24B5-4E69-8C18-715AD504259A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1AEF4ED4-24B5-4E69-8C18-715AD504259A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1AEF4ED4-24B5-4E69-8C18-715AD504259A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1AEF4ED4-24B5-4E69-8C18-715AD504259A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -155,6 +155,6 @@ Global
 		{6F1EB5BC-B5AA-45FE-9883-2F2E0AA7D2BB} = {60DAAFA4-26E7-431D-BBAA-5951E0EF67FE}
 		{946F91FC-9E0A-4B89-9CEF-D9F4BBF7E7F3} = {60DAAFA4-26E7-431D-BBAA-5951E0EF67FE}
 		{689C592D-E300-4B58-856E-07A4952C31BD} = {60DAAFA4-26E7-431D-BBAA-5951E0EF67FE}
-		{5DC2314D-1BA1-4586-96E8-5C83C40EC21B} = {60DAAFA4-26E7-431D-BBAA-5951E0EF67FE}
+		{1AEF4ED4-24B5-4E69-8C18-715AD504259A} = {60DAAFA4-26E7-431D-BBAA-5951E0EF67FE}
 	EndGlobalSection
 EndGlobal

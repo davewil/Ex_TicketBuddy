@@ -1,6 +1,6 @@
-﻿using Events.Integration.Messaging;
-using MassTransit;
+﻿using MassTransit;
 using Microsoft.Extensions.DependencyInjection;
+using Tickets.Integration.Messaging.Inbound;
 
 namespace Host.Messaging.Outbox.Hosting;
 
@@ -12,11 +12,11 @@ internal static class Messaging
         {
             x.SetKebabCaseEndpointNameFormatter();
             x.SetInMemorySagaRepositoryProvider();
-            var applicationAssembly = EventsMessaging.Assembly;
-            x.AddConsumers(applicationAssembly);
-            x.AddSagaStateMachines(applicationAssembly);
-            x.AddSagas(applicationAssembly);
-            x.AddActivities(applicationAssembly);
+            var ticketsIntegrationInboundAssembly = TicketsIntegrationMessagingInbound.Assembly;
+            x.AddConsumers(ticketsIntegrationInboundAssembly);
+            x.AddSagaStateMachines(ticketsIntegrationInboundAssembly);
+            x.AddSagas(ticketsIntegrationInboundAssembly);
+            x.AddActivities(ticketsIntegrationInboundAssembly);
 
             x.UsingRabbitMq((context, cfg) =>
             {                        
@@ -24,6 +24,12 @@ internal static class Messaging
                 {
                     h.Username(settings.RabbitMq.Username);
                     h.Password(settings.RabbitMq.Password);
+                });
+                
+                cfg.ReceiveEndpoint("tickets-inbox", e =>
+                {
+                    e.Bind<Events.Integration.Messaging.Outbound.Messages.EventUpserted>();
+                    e.Bind<Events.Integration.Messaging.Outbound.Messages.EventDeleted>();
                 });
 
                 cfg.ConfigureEndpoints(context);
