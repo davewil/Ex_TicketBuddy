@@ -1,4 +1,4 @@
-using Integration.Messaging.Messages;
+using Events.Integration.Messaging.Outbound.Messages;
 using MassTransit;
 using Persistence;
 

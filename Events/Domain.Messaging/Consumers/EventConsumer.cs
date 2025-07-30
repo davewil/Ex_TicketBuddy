@@ -7,7 +7,7 @@ namespace Domain.Messaging.Consumers
     {
         public async Task Consume(ConsumeContext<EventUpserted> context)
         {
-           await context.Publish(new Integration.Messaging.Messages.EventUpserted{ Id = context.Message.Id, Name = context.Message.Name });
+           await context.Publish(new Events.Integration.Messaging.Outbound.Messages.EventUpserted{ Id = context.Message.Id, Name = context.Message.Name });
         }
     }
 }

@@ -7,7 +7,7 @@ namespace Domain.Messaging.Consumers
     {
         public async Task Consume(ConsumeContext<EventDeleted> context)
         {
-            await context.Publish(new Integration.Messaging.Messages.EventDeleted{ Id = context.Message.Id});
+            await context.Publish(new Events.Integration.Messaging.Outbound.Messages.EventDeleted{ Id = context.Message.Id});
         }
     }
 }
