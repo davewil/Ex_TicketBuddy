@@ -1,7 +1,7 @@
 using MassTransit;
-using EventDeleted = Domain.Messaging.Messages.EventDeleted;
+using EventDeleted = Events.Domain.Messaging.Messages.EventDeleted;
 
-namespace Domain.Messaging.Consumers
+namespace Events.Domain.Messaging.Consumers
 {
     public class EventDeletedConsumer : IConsumer<EventDeleted>
     {

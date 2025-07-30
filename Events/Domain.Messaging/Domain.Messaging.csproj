@@ -4,7 +4,7 @@
         <TargetFramework>net9.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <RootNamespace>Domain.Messaging</RootNamespace>
+        <RootNamespace>Events.Domain.Messaging</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>

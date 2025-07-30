@@ -1,4 +1,4 @@
-namespace Domain.Messaging.Messages;
+namespace Events.Domain.Messaging.Messages;
 
 public record EventUpserted
 {

@@ -162,7 +162,7 @@ public partial class EventControllerSpecs : TruncateDbSpecification
         response_code.ShouldBe(HttpStatusCode.OK);
         theEvent.Id.ShouldBe(returned_id);
         theEvent.Name.ToString().ShouldBe(name);
-        testHarness.Published.Select<Domain.Messaging.Messages.EventUpserted>()
+        testHarness.Published.Select<Events.Domain.Messaging.Messages.EventUpserted>()
             .Any(e => e.Context.Message.Id == returned_id && e.Context.Message.Name == name).ShouldBeTrue("Event was not published to the bus");
         testHarness.Published.Select<EventUpserted>()
             .Any(e => e.Context.Message.Id == returned_id && e.Context.Message.Name == name).ShouldBeTrue("Event was not published to the bus");
@@ -174,11 +174,11 @@ public partial class EventControllerSpecs : TruncateDbSpecification
         response_code.ShouldBe(HttpStatusCode.OK);
         theEvent.Id.ShouldBe(returned_id);
         theEvent.Name.ToString().ShouldBe(new_name);
-        testHarness.Published.Select<Domain.Messaging.Messages.EventUpserted>()
+        testHarness.Published.Select<Events.Domain.Messaging.Messages.EventUpserted>()
             .Any(e => e.Context.Message.Id == returned_id && e.Context.Message.Name == name).ShouldBeTrue("Event was not published to the bus");
         testHarness.Published.Select<EventUpserted>()
             .Any(e => e.Context.Message.Id == returned_id && e.Context.Message.Name == new_name).ShouldBeTrue("Event was not published to the bus");
-        testHarness.Published.Select<Domain.Messaging.Messages.EventUpserted>()
+        testHarness.Published.Select<Events.Domain.Messaging.Messages.EventUpserted>()
             .Any(e => e.Context.Message.Id == returned_id && e.Context.Message.Name == name).ShouldBeTrue("Event was not published to the bus");
         testHarness.Published.Select<EventUpserted>()
             .Any(e => e.Context.Message.Id == returned_id && e.Context.Message.Name == new_name).ShouldBeTrue("Event was not published to the bus");
@@ -196,7 +196,7 @@ public partial class EventControllerSpecs : TruncateDbSpecification
     private void the_event_is_not_found()
     {
         response_code.ShouldBe(HttpStatusCode.NotFound);
-        testHarness.Published.Select<Domain.Messaging.Messages.EventDeleted>()
+        testHarness.Published.Select<Events.Domain.Messaging.Messages.EventDeleted>()
             .Single(e => e.Context.Message.Id == returned_id).ShouldNotBeNull();
         testHarness.Published.Select<EventDeleted>()
             .Single(e => e.Context.Message.Id == returned_id).ShouldNotBeNull();

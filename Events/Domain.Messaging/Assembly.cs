@@ -1,8 +1,8 @@
 ﻿using System.Reflection;
 
-namespace Domain.Messaging;
+namespace Events.Domain.Messaging;
 
-public static class DomainMessagingAssembly
+public static class DomainMessaging
 {
-    public static Assembly Assembly => typeof(DomainMessagingAssembly).Assembly;
+    public static Assembly Assembly => typeof(DomainMessaging).Assembly;
 }

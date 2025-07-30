@@ -1,4 +1,4 @@
-﻿using Domain.Messaging.Messages;
+﻿using Events.Domain.Messaging.Messages;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 

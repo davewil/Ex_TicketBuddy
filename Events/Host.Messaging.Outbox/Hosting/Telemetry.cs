@@ -12,8 +12,8 @@ internal static class Telemetry
     internal static void ConfigureTelemetry(this IServiceCollection services, Settings settings, string applicationName)
     {
         var resourceBuilder = ResourceBuilder.CreateDefault()
-            .AddService(serviceName: applicationName)
             .AddTelemetrySdk()
+            .AddService(serviceName: applicationName)
             .AddEnvironmentVariableDetector();
         
         var otel = services.AddOpenTelemetry()
