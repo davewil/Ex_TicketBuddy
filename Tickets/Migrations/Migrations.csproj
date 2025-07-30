@@ -4,15 +4,14 @@
         <TargetFramework>net9.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <RootNamespace>Domain.Messaging</RootNamespace>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="MassTransit" Version="8.5.1" />
+      <PackageReference Include="dbup-sqlserver" Version="6.0.0" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Integration.Messaging.Outbound\Integration.Messaging.Outbound.csproj" />
+        <EmbeddedResource Include="Scripts/**/*.sql" />
     </ItemGroup>
-
 </Project>

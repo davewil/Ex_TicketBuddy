@@ -12,16 +12,6 @@ internal static class Messaging
     {
         services.AddMassTransit(x =>
         {
-            x.AddEntityFrameworkOutbox<EventDbContext>(o =>
-            {
-                o.UseSqlServer();
-                o.DuplicateDetectionWindow = TimeSpan.FromSeconds(30);
-            });
-            x.AddConfigureEndpointsCallback((context, _, cfg) =>
-            {
-                cfg.UseEntityFrameworkOutbox<EventDbContext>(context);
-            });
-
             x.SetKebabCaseEndpointNameFormatter();
             x.SetInMemorySagaRepositoryProvider();
             var applicationAssembly = EventsMessaging.Assembly;
