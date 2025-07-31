@@ -11,6 +11,7 @@ using Shouldly;
 using Testcontainers.MsSql;
 using Users.Domain.Entities;
 using Users.Integration.Messaging.Outbound.Messages;
+using WebHost;
 
 namespace Integration.Api;
 
@@ -88,6 +89,16 @@ public partial class UserControllerSpecs : TruncateDbSpecification
         create_content(new_name, new_email);
     }
 
+    private void a_request_to_create_a_user_with_same_email()
+    {
+        create_content(name, email);
+    }
+    
+    private void a_request_to_update_user_with_duplicate_email()
+    {
+        create_content(name, email);
+    }
+
     private void creating_the_user()
     {
         var response = client.PostAsync(Routes.User, content).GetAwaiter().GetResult();
@@ -101,7 +112,15 @@ public partial class UserControllerSpecs : TruncateDbSpecification
         var response = client.PostAsync(Routes.User, content).GetAwaiter().GetResult();
         response_code = response.StatusCode;
         another_id = JsonSerialization.Deserialize<Guid>(response.Content.ReadAsStringAsync().GetAwaiter().GetResult());
-    }      
+    }
+    
+    private void creating_the_user_which_fails()
+    {
+        var response = client.PostAsync(Routes.User, content).GetAwaiter().GetResult();
+        response_code = response.StatusCode;
+        response_code.ShouldBe(HttpStatusCode.BadRequest);
+        content = response.Content;
+    }
     
     private void updating_the_user()
     {
@@ -110,7 +129,15 @@ public partial class UserControllerSpecs : TruncateDbSpecification
         response_code.ShouldBe(HttpStatusCode.NoContent);
     }
     
-    private void an_user_exists()
+    private void updating_another_user_which_fails()
+    {
+        var response = client.PutAsync(Routes.User + $"/{another_id}", content).GetAwaiter().GetResult();
+        response_code = response.StatusCode;
+        response_code.ShouldBe(HttpStatusCode.BadRequest);
+        content = response.Content;
+    }
+    
+    private void a_user_exists()
     {
         a_request_to_create_an_user();
         creating_the_user();
@@ -180,5 +207,11 @@ public partial class UserControllerSpecs : TruncateDbSpecification
         theUser.Count.ShouldBe(2);
         theUser.Single(e => e.Id == returned_id).FullName.ToString().ShouldBe(name);
         theUser.Single(e => e.Id == another_id).FullName.ToString().ShouldBe(new_name);
+    }
+
+    private void email_already_exists()
+    {
+        response_code.ShouldBe(HttpStatusCode.BadRequest);
+        JsonSerialization.Deserialize<ApiError>(content.ReadAsStringAsync().GetAwaiter().GetResult()).Errors.ShouldContain("Email already exists");
     }
 }
