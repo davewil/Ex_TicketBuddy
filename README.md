@@ -11,6 +11,7 @@ Key technologies/choices:
 - Transactional Outbox Pattern
 
 The aim is to demonstrate a fully observable and decoupled system.
+Admittedly, the transactional outbox pattern is overkill.
 
 ## Observability
 
