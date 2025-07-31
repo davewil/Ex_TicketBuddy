@@ -19,7 +19,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Persistence\Persistence.csproj" />
-      <ProjectReference Include="..\Integration.Messaging.Outbound\Integration.Messaging.Outbound.csproj" />
+      <ProjectReference Include="..\Events.Integration.Messaging.Outbound\Events.Integration.Messaging.Outbound.csproj" />
     </ItemGroup>
 
     <ItemGroup>

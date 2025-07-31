@@ -35,7 +35,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistence", "Events\Persi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Host.Messaging.Outbox", "Events\Host.Messaging.Outbox\Host.Messaging.Outbox.csproj", "{55ABD74D-21F8-4BDE-BDD6-829A2D0A5F49}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Integration.Messaging.Outbound", "Events\Integration.Messaging.Outbound\Integration.Messaging.Outbound.csproj", "{F4C7CD02-3FBE-49F9-BD01-69B426B00982}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Events.Integration.Messaging.Outbound", "Events\Events.Integration.Messaging.Outbound\Events.Integration.Messaging.Outbound.csproj", "{F4C7CD02-3FBE-49F9-BD01-69B426B00982}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.Messaging", "Events\Domain.Messaging\Domain.Messaging.csproj", "{E44C8CDD-B9CA-4379-97CF-FA2CE929D48E}"
 EndProject
@@ -53,7 +53,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistence", "Tickets\Pers
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Testing", "Testing", "{689C592D-E300-4B58-856E-07A4952C31BD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Integration.Messaging.Inbound", "Tickets\Integration.Messaging.Inbound\Integration.Messaging.Inbound.csproj", "{1AEF4ED4-24B5-4E69-8C18-715AD504259A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tickets.Integration.Messaging.Inbound", "Tickets\Tickets.Integration.Messaging.Inbound\Tickets.Integration.Messaging.Inbound.csproj", "{1AEF4ED4-24B5-4E69-8C18-715AD504259A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Users", "Users", "{BCFB3725-EC78-4F2C-A5DE-198CE72A6CF6}"
 EndProject
@@ -61,7 +61,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistence", "Users\Persis
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Migrations", "Users\Migrations\Migrations.csproj", "{CBE041AC-C767-4E84-976A-869A2EE669E4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Integration.Messaging.Outbound", "Users\Integration.Messaging.Outbound\Integration.Messaging.Outbound.csproj", "{4AEFF0A2-826E-47D3-9638-0A1251196643}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Users.Integration.Messaging.Outbound", "Users\Users.Integration.Messaging.Outbound\Users.Integration.Messaging.Outbound.csproj", "{4AEFF0A2-826E-47D3-9638-0A1251196643}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Host.Migrations", "Users\Host.Migrations\Host.Migrations.csproj", "{9F961E22-D15D-44AE-A1F6-D05960D6E692}"
 EndProject

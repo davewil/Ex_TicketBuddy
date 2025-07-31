@@ -12,7 +12,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Integration.Messaging.Outbound\Integration.Messaging.Outbound.csproj" />
+      <ProjectReference Include="..\Users.Integration.Messaging.Outbound\Users.Integration.Messaging.Outbound.csproj" />
     </ItemGroup>
 
 </Project>

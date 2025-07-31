@@ -8,7 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\Events\Integration.Messaging.Outbound\Integration.Messaging.Outbound.csproj" />
+      <ProjectReference Include="..\..\Events\Events.Integration.Messaging.Outbound\Events.Integration.Messaging.Outbound.csproj" />
       <ProjectReference Include="..\Persistence\Persistence.csproj" />
     </ItemGroup>
 
