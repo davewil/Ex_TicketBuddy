@@ -1,6 +1,6 @@
 ﻿using Domain.Entities;
 
-namespace Persistence;
+namespace Persistence.Users;
 
 public class UserRepository(UserDbContext userDbContext)
 {
@@ -18,7 +18,7 @@ public class UserRepository(UserDbContext userDbContext)
         }
     }
 
-    public async Task<User?> Get(Guid id)
+    private async Task<User?> Get(Guid id)
     {
         return await userDbContext.Users.FindAsync(id);
     }

@@ -1,4 +1,4 @@
-namespace Persistence;
+namespace Persistence.Events;
 
 public class EventRepository(EventDbContext eventDbContext)
 {
@@ -25,7 +25,7 @@ public class EventRepository(EventDbContext eventDbContext)
         await eventDbContext.SaveChangesAsync();
     }
 
-    public async Task<Domain.Entities.Event?> Get(Guid id)
+    private async Task<Domain.Entities.Event?> Get(Guid id)
     {
         return await eventDbContext.Events.FindAsync(id);
     }

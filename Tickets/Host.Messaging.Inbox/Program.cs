@@ -3,6 +3,8 @@ using Host.Messaging.Outbox.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Persistence;
+using Persistence.Events;
+using Persistence.Users;
 
 var settings = new Settings(Configuration.Build());
 var host = Microsoft.Extensions.Hosting.Host.CreateDefaultBuilder()

@@ -1,9 +1,8 @@
 ﻿using Domain.Primitives;
-using MassTransit.EntityFrameworkCoreIntegration;
 using Microsoft.EntityFrameworkCore;
 using Event = Domain.Entities.Event;
 
-namespace Persistence;
+namespace Persistence.Events;
 
 public class EventDbContext(DbContextOptions<EventDbContext> options) : DbContext(options)
 {

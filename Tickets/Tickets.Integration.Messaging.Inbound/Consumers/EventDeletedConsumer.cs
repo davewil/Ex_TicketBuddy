@@ -1,6 +1,7 @@
 using Events.Integration.Messaging.Outbound.Messages;
 using MassTransit;
 using Persistence;
+using Persistence.Events;
 
 namespace Tickets.Integration.Messaging.Inbound.Consumers
 {

@@ -1,10 +1,9 @@
 ﻿using Domain.Entities;
 using Domain.Primitives;
 using MassTransit;
-using MassTransit.EntityFrameworkCoreIntegration;
 using Microsoft.EntityFrameworkCore;
 
-namespace Persistence;
+namespace Persistence.Users;
 
 public class UserDbContext(DbContextOptions<UserDbContext> options) : DbContext(options)
 {
