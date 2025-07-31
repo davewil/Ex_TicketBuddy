@@ -11,12 +11,8 @@ internal static class Messaging
         services.AddMassTransit(x =>
         {
             x.SetKebabCaseEndpointNameFormatter();
-            x.SetInMemorySagaRepositoryProvider();
             var ticketsIntegrationInboundAssembly = TicketsIntegrationMessagingInbound.Assembly;
             x.AddConsumers(ticketsIntegrationInboundAssembly);
-            x.AddSagaStateMachines(ticketsIntegrationInboundAssembly);
-            x.AddSagas(ticketsIntegrationInboundAssembly);
-            x.AddActivities(ticketsIntegrationInboundAssembly);
 
             x.UsingRabbitMq((context, cfg) =>
             {                        

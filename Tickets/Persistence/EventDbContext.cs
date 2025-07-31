@@ -5,7 +5,7 @@ using Event = Domain.Entities.Event;
 
 namespace Persistence;
 
-public class EventDbContext(DbContextOptions<EventDbContext> options) : SagaDbContext(options)
+public class EventDbContext(DbContextOptions<EventDbContext> options) : DbContext(options)
 {
     public DbSet<Event> Events => Set<Event>();
 
@@ -15,6 +15,4 @@ public class EventDbContext(DbContextOptions<EventDbContext> options) : SagaDbCo
         modelBuilder.Entity<Event>().Property(e => e.Name).HasConversion(name => name.ToString(), name => new Name(name));
         modelBuilder.Entity<Event>().ToTable("Events","Event", e => e.ExcludeFromMigrations());
     }
-
-    protected override IEnumerable<ISagaClassMap> Configurations => null!;
 }

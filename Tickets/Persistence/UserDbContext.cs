@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Persistence;
 
-public class UserDbContext(DbContextOptions<UserDbContext> options) : SagaDbContext(options)
+public class UserDbContext(DbContextOptions<UserDbContext> options) : DbContext(options)
 {
     public DbSet<User> Users => Set<User>();
 
@@ -20,6 +20,4 @@ public class UserDbContext(DbContextOptions<UserDbContext> options) : SagaDbCont
         modelBuilder.AddOutboxMessageEntity();
         modelBuilder.AddOutboxStateEntity();
     }
-
-    protected override IEnumerable<ISagaClassMap> Configurations => null!;
 }

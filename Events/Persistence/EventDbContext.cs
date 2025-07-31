@@ -7,7 +7,7 @@ using Event = Domain.Entities.Event;
 
 namespace Persistence;
 
-public class EventDbContext(DbContextOptions<EventDbContext> options) : SagaDbContext(options)
+public class EventDbContext(DbContextOptions<EventDbContext> options) : DbContext(options)
 {
     public DbSet<Event> Events => Set<Event>();
 
@@ -20,6 +20,4 @@ public class EventDbContext(DbContextOptions<EventDbContext> options) : SagaDbCo
         modelBuilder.AddOutboxMessageEntity();
         modelBuilder.AddOutboxStateEntity();
     }
-
-    protected override IEnumerable<ISagaClassMap> Configurations => null!;
 }
