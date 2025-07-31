@@ -4,6 +4,7 @@ using System.Text.RegularExpressions;
 
 namespace Users.Domain.Primitives;
 
+[JsonConverter(typeof(EmailConverter))]
 public readonly record struct Email
 {
     private string value { get; }

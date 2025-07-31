@@ -13,7 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution", "Solution", "{85
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Testing", "Testing", "{A9E5EBD2-F136-4009-8BA3-183C3FACC9EE}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Events", "Events", "{744C08F5-E265-4E24-BDCA-96533945BC1C}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EventsService", "EventsService", "{744C08F5-E265-4E24-BDCA-96533945BC1C}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{81DDED9D-158B-E303-5F62-77A2896D2A5A}"
 EndProject
@@ -39,7 +39,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Events.Integration.Messagin
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.Messaging", "Events\Domain.Messaging\Domain.Messaging.csproj", "{E44C8CDD-B9CA-4379-97CF-FA2CE929D48E}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tickets", "Tickets", "{60DAAFA4-26E7-431D-BBAA-5951E0EF67FE}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TicketsService", "TicketsService", "{60DAAFA4-26E7-431D-BBAA-5951E0EF67FE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Tickets\Domain\Domain.csproj", "{19197738-2D70-4676-AF48-0CD67D8EAD28}"
 EndProject
@@ -55,7 +55,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Testing", "Testing", "{689C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tickets.Integration.Messaging.Inbound", "Tickets\Tickets.Integration.Messaging.Inbound\Tickets.Integration.Messaging.Inbound.csproj", "{1AEF4ED4-24B5-4E69-8C18-715AD504259A}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Users", "Users", "{BCFB3725-EC78-4F2C-A5DE-198CE72A6CF6}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UsersService", "UsersService", "{BCFB3725-EC78-4F2C-A5DE-198CE72A6CF6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistence", "Users\Persistence\Persistence.csproj", "{55E224C3-4383-4592-A863-E6B3EB605D76}"
 EndProject
@@ -80,6 +80,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Testing.Integration", "Users\Testing.Integration\Testing.Integration.csproj", "{42A8C2F4-F422-4AD1-8751-E0F6D6F6B9B3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Testing.Unit", "Users\Testing.Unit\Testing.Unit.csproj", "{D35013FB-7FD5-4B21-8E87-43C5C3B152C3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{3CF01B5C-35AA-4926-BA0E-DC62410FF6F4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared.Testing", "Shared\Shared.Testing\Shared.Testing.csproj", "{B50543B8-FD2C-454F-8060-78A5EDAE7BAB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -203,6 +207,10 @@ Global
 		{D35013FB-7FD5-4B21-8E87-43C5C3B152C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D35013FB-7FD5-4B21-8E87-43C5C3B152C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D35013FB-7FD5-4B21-8E87-43C5C3B152C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B50543B8-FD2C-454F-8060-78A5EDAE7BAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B50543B8-FD2C-454F-8060-78A5EDAE7BAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B50543B8-FD2C-454F-8060-78A5EDAE7BAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B50543B8-FD2C-454F-8060-78A5EDAE7BAB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -239,5 +247,6 @@ Global
 		{ECA7875C-B1AB-4D8C-B043-9AC547928156} = {BCFB3725-EC78-4F2C-A5DE-198CE72A6CF6}
 		{42A8C2F4-F422-4AD1-8751-E0F6D6F6B9B3} = {ECA7875C-B1AB-4D8C-B043-9AC547928156}
 		{D35013FB-7FD5-4B21-8E87-43C5C3B152C3} = {ECA7875C-B1AB-4D8C-B043-9AC547928156}
+		{B50543B8-FD2C-454F-8060-78A5EDAE7BAB} = {3CF01B5C-35AA-4926-BA0E-DC62410FF6F4}
 	EndGlobalSection
 EndGlobal
