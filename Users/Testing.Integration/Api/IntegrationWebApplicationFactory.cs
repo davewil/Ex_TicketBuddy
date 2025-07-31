@@ -1,5 +1,4 @@
 ﻿using Application;
-using Events.Domain.Messaging;
 using MassTransit;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
