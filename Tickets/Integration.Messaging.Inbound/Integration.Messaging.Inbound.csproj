@@ -9,7 +9,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\Events\Integration.Messaging.Outbound\Integration.Messaging.Outbound.csproj" />
-      <ProjectReference Include="..\..\Events\Persistence\Persistence.csproj" />
+      <ProjectReference Include="..\Persistence\Persistence.csproj" />
     </ItemGroup>
 
     <ItemGroup>

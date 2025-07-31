@@ -1,8 +1,6 @@
 using MassTransit;
-using Tickets.Integration.Messaging.Inbound.Consumers;
-using EventDeletedConsumer = Events.Domain.Messaging.Consumers.EventDeletedConsumer;
 
-namespace Domain.Messaging.Consumers
+namespace Tickets.Integration.Messaging.Inbound.Consumers
 {
     public class InternalEventDeletedConsumerDefinition : ConsumerDefinition<EventDeletedConsumer>
     {

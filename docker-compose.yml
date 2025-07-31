@@ -153,8 +153,8 @@ services:
     environment:
       - ENVIRONMENT=Development
     ports:
-      - "8082:8082"
-      - "8083:8083"
+      - "8082:8080"
+      - "8083:8081"
     restart: on-failure
     networks:
       - ticketbuddy-network
