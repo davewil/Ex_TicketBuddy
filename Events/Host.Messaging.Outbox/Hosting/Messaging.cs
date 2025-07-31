@@ -1,6 +1,4 @@
 ﻿using Events.Domain.Messaging;
-using Events.Integration.Messaging;
-using Events.Integration.Messaging.Outbound;
 using MassTransit;
 using Microsoft.Extensions.DependencyInjection;
 using Persistence;

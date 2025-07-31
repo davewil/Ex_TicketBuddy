@@ -14,7 +14,7 @@ internal static class Messaging
                 o.UseSqlServer();
                 o.UseBusOutbox();
             });
-            x.UsingRabbitMq((context, cfg) =>
+            x.UsingRabbitMq((_, cfg) =>
             {                        
                 cfg.Host(settings.RabbitMq.Host, settings.RabbitMq.VirtualHost, h =>
                 {

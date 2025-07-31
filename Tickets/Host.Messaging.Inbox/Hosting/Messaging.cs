@@ -22,10 +22,14 @@ internal static class Messaging
                     h.Password(settings.RabbitMq.Password);
                 });
                 
-                cfg.ReceiveEndpoint("tickets-inbox", e =>
+                cfg.ReceiveEndpoint("tickets-inbox-events", e =>
                 {
                     e.Bind<Events.Integration.Messaging.Outbound.Messages.EventUpserted>();
                     e.Bind<Events.Integration.Messaging.Outbound.Messages.EventDeleted>();
+                });
+
+                cfg.ReceiveEndpoint("tickets-inbox-users", e =>
+                {
                     e.Bind<Users.Integration.Messaging.Outbound.Messages.UserUpserted>();
                 });
 

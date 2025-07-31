@@ -22,8 +22,8 @@ internal static class Messaging
             });
 
             x.SetKebabCaseEndpointNameFormatter();
-            var eventsDomainAssembly = UsersDomainMessaging.Assembly;
-            x.AddConsumers(eventsDomainAssembly);
+            var usersDomainAssembly = UsersDomainMessaging.Assembly;
+            x.AddConsumers(usersDomainAssembly);
 
             x.UsingRabbitMq((context, cfg) =>
             {                        
