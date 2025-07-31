@@ -1,7 +1,6 @@
 using MassTransit;
-using Users.Domain.Messaging.Consumers;
 
-namespace Events.Domain.Messaging.Consumers
+namespace Users.Domain.Messaging.Consumers
 {
     public class UserConsumerDefinition : ConsumerDefinition<UserConsumer>
     {
