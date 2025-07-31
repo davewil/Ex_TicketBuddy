@@ -1,4 +1,4 @@
-﻿using Domain;
+﻿using Shared.Domain;
 using Users.Domain.Primitives;
 
 namespace Users.Domain.Entities
