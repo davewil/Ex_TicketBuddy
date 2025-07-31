@@ -1,7 +1,7 @@
 ﻿using BDD;
 using Microsoft.Data.SqlClient;
 
-namespace Integration;
+namespace Shared.Testing;
 
 public class TruncateDbSpecification : Specification
 {

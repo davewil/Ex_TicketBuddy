@@ -6,6 +6,7 @@ using BDD;
 using MassTransit.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Migrations;
+using Shared.Testing;
 using Shouldly;
 using Testcontainers.MsSql;
 using Users.Domain.Entities;
