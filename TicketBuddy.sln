@@ -21,11 +21,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Events\Appli
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Events\Domain\Domain.csproj", "{4DDA0F49-2464-417C-B9B3-BDDDA5DCFD6C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Host.Api", "Events\Host.Api\Host.Api.csproj", "{FF3F2BFC-F1F1-4158-B150-460CB7F6D810}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Events.Host.Api", "Events\Events.Host.Api\Events.Host.Api.csproj", "{FF3F2BFC-F1F1-4158-B150-460CB7F6D810}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Migrations", "Events\Migrations\Migrations.csproj", "{EAB5D62F-909E-45C9-A60F-3F767F706D60}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Host.Migrations", "Events\Host.Migrations\Host.Migrations.csproj", "{211111F6-2EA8-428B-98B5-F9F2F7FC0DE0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Events.Host.Migrations", "Events\Events.Host.Migrations\Events.Host.Migrations.csproj", "{211111F6-2EA8-428B-98B5-F9F2F7FC0DE0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Testing.Integration", "Events\Testing.Integration\Testing.Integration.csproj", "{0DC8E6AA-B5DD-4E42-98F3-118D8FE509B4}"
 EndProject
@@ -33,7 +33,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Testing.Unit", "Events\Test
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistence", "Events\Persistence\Persistence.csproj", "{10A1E55D-ABB1-47FD-BF45-94D60FA30984}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Host.Messaging.Outbox", "Events\Host.Messaging.Outbox\Host.Messaging.Outbox.csproj", "{55ABD74D-21F8-4BDE-BDD6-829A2D0A5F49}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Events.Host.Messaging.Outbox", "Events\Events.Host.Messaging.Outbox\Events.Host.Messaging.Outbox.csproj", "{55ABD74D-21F8-4BDE-BDD6-829A2D0A5F49}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Events.Integration.Messaging.Outbound", "Events\Events.Integration.Messaging.Outbound\Events.Integration.Messaging.Outbound.csproj", "{F4C7CD02-3FBE-49F9-BD01-69B426B00982}"
 EndProject
@@ -43,9 +43,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TicketsService", "TicketsSe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Tickets\Domain\Domain.csproj", "{19197738-2D70-4676-AF48-0CD67D8EAD28}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Host.Messaging.Inbox", "Tickets\Host.Messaging.Inbox\Host.Messaging.Inbox.csproj", "{31BE2FEB-0648-4B5C-B765-C298F7429FFC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tickets.Host.Messaging.Inbox", "Tickets\Tickets.Host.Messaging.Inbox\Tickets.Host.Messaging.Inbox.csproj", "{31BE2FEB-0648-4B5C-B765-C298F7429FFC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Host.Migrations", "Tickets\Host.Migrations\Host.Migrations.csproj", "{FBF22FCC-EC20-4993-941C-A109C0D8A609}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tickets.Host.Migrations", "Tickets\Tickets.Host.Migrations\Tickets.Host.Migrations.csproj", "{FBF22FCC-EC20-4993-941C-A109C0D8A609}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Migrations", "Tickets\Migrations\Migrations.csproj", "{6F1EB5BC-B5AA-45FE-9883-2F2E0AA7D2BB}"
 EndProject
@@ -63,11 +63,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Migrations", "Users\Migrati
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Users.Integration.Messaging.Outbound", "Users\Users.Integration.Messaging.Outbound\Users.Integration.Messaging.Outbound.csproj", "{4AEFF0A2-826E-47D3-9638-0A1251196643}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Host.Migrations", "Users\Host.Migrations\Host.Migrations.csproj", "{9F961E22-D15D-44AE-A1F6-D05960D6E692}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Users.Host.Migrations", "Users\Users.Host.Migrations\Users.Host.Migrations.csproj", "{9F961E22-D15D-44AE-A1F6-D05960D6E692}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Host.Messaging.Outbox", "Users\Host.Messaging.Outbox\Host.Messaging.Outbox.csproj", "{5BA05496-AB88-4AC6-9A41-6BDBF263AE47}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Users.Host.Messaging.Outbox", "Users\Users.Host.Messaging.Outbox\Users.Host.Messaging.Outbox.csproj", "{5BA05496-AB88-4AC6-9A41-6BDBF263AE47}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Host.Api", "Users\Host.Api\Host.Api.csproj", "{30E488C0-FCEF-41D9-AD84-3938801D2F1D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Users.Host.Api", "Users\Users.Host.Api\Users.Host.Api.csproj", "{30E488C0-FCEF-41D9-AD84-3938801D2F1D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.Messaging", "Users\Domain.Messaging\Domain.Messaging.csproj", "{2A227EE5-C5FB-4767-A902-26B2CDBE171B}"
 EndProject
@@ -88,6 +88,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared.Domain", "Shared\Shared.Domain\Shared.Domain.csproj", "{A12366B5-C385-434C-A92F-66CF49078737}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Testing.Integration", "Tickets\Testing.Integration\Testing.Integration.csproj", "{F9A3C3A6-CA02-485D-9DED-609D986D4DF2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicketBuddy.AppHost", "TicketBuddy.AppHost\TicketBuddy.AppHost.csproj", "{8C866276-D219-4913-9C42-FFF5B2271053}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -223,6 +225,10 @@ Global
 		{F9A3C3A6-CA02-485D-9DED-609D986D4DF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F9A3C3A6-CA02-485D-9DED-609D986D4DF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F9A3C3A6-CA02-485D-9DED-609D986D4DF2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C866276-D219-4913-9C42-FFF5B2271053}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C866276-D219-4913-9C42-FFF5B2271053}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C866276-D219-4913-9C42-FFF5B2271053}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C866276-D219-4913-9C42-FFF5B2271053}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
