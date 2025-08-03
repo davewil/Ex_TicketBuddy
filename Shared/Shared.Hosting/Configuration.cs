@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using Common.Environment;
+﻿using Common.Environment;
 using Microsoft.Extensions.Configuration;
 
 namespace Shared.Hosting;
@@ -15,12 +14,6 @@ public static class Configuration
             var configurationBuilder = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.local.json", optional: false, reloadOnChange: false)
                 .AddEnvironmentVariables();
-            // log the environment variables to console
-            var environmentVariables = Environment.GetEnvironmentVariables();
-            foreach (DictionaryEntry entry in environmentVariables)
-            {
-                Console.WriteLine($"{entry.Key}: {entry.Value}");
-            }
             return configurationBuilder.Build();  
         }
         
