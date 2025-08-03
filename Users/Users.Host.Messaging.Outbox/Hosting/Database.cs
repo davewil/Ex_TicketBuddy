@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Persistence;
 
-namespace Host.Messaging.Outbox.Hosting;
+namespace Users.Host.Messaging.Outbox.Hosting;
 
 internal static class Database
 {

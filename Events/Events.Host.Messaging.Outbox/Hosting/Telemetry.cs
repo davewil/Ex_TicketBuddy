@@ -1,4 +1,5 @@
-﻿using MassTransit.Logging;
+﻿using Events.Host.Messaging.Outbox;
+using MassTransit.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using OpenTelemetry;
 using OpenTelemetry.Exporter;

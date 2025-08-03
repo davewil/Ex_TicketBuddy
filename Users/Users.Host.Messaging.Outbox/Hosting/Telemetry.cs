@@ -5,7 +5,7 @@ using OpenTelemetry.Exporter;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 
-namespace Host.Messaging.Outbox.Hosting;
+namespace Users.Host.Messaging.Outbox.Hosting;
 
 internal static class Telemetry
 {

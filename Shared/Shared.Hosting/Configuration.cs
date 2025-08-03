@@ -1,11 +1,12 @@
-﻿using Common.Environment;
+﻿using System.Collections;
+using Common.Environment;
 using Microsoft.Extensions.Configuration;
 
-namespace Host.Messaging.Outbox.Hosting;
+namespace Shared.Hosting;
 
-internal static class Configuration
+public static class Configuration
 {
-    internal static IConfigurationRoot Build()
+    public static IConfigurationRoot Build()
     {
         var environment = CommonEnvironmentExtensions.GetEnvironment();
         
@@ -14,6 +15,12 @@ internal static class Configuration
             var configurationBuilder = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.local.json", optional: false, reloadOnChange: false)
                 .AddEnvironmentVariables();
+            // log the environment variables to console
+            var environmentVariables = Environment.GetEnvironmentVariables();
+            foreach (DictionaryEntry entry in environmentVariables)
+            {
+                Console.WriteLine($"{entry.Key}: {entry.Value}");
+            }
             return configurationBuilder.Build();  
         }
         

@@ -18,6 +18,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\Shared\Shared.Hosting\Shared.Hosting.csproj" />
       <ProjectReference Include="..\Persistence\Persistence.csproj" />
       <ProjectReference Include="..\Users.Integration.Messaging.Outbound\Users.Integration.Messaging.Outbound.csproj" />
     </ItemGroup>

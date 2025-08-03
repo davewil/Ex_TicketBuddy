@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Shared.Hosting;
 
 namespace Migrations.Host;
 
@@ -8,6 +9,6 @@ public static class Settings
 
     public static class Database
     {
-        public static string Connection => configuration["ConnectionString"]!;
+        public static string Connection => configuration["ConnectionStrings:TicketBuddyEvents"]!;
     }
 }

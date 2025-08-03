@@ -5,6 +5,7 @@ using Microsoft.Extensions.Hosting;
 using Persistence;
 using Persistence.Events;
 using Persistence.Users;
+using Shared.Hosting;
 
 var settings = new Settings(Configuration.Build());
 var host = Microsoft.Extensions.Hosting.Host.CreateDefaultBuilder()

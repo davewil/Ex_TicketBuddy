@@ -15,12 +15,8 @@ internal static class Messaging
                 o.UseBusOutbox();
             });
             x.UsingRabbitMq((_, cfg) =>
-            {                        
-                cfg.Host(settings.RabbitMq.Host, settings.RabbitMq.VirtualHost, h =>
-                {
-                    h.Username(settings.RabbitMq.Username);
-                    h.Password(settings.RabbitMq.Password);
-                });
+            {
+                cfg.Host(settings.RabbitMq.ConnectionString);
             });
         });
     }

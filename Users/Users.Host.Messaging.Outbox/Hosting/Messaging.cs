@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Persistence;
 using Users.Domain.Messaging;
 
-namespace Host.Messaging.Outbox.Hosting;
+namespace Users.Host.Messaging.Outbox.Hosting;
 
 internal static class Messaging
 {
@@ -26,12 +26,8 @@ internal static class Messaging
             x.AddConsumers(usersDomainAssembly);
 
             x.UsingRabbitMq((context, cfg) =>
-            {                        
-                cfg.Host(settings.RabbitMq.Host, settings.RabbitMq.VirtualHost, h =>
-                {
-                    h.Username(settings.RabbitMq.Username);
-                    h.Password(settings.RabbitMq.Password);
-                });
+            {
+                cfg.Host(settings.RabbitMq.ConnectionString);
 
                 cfg.ConfigureEndpoints(context);
             });

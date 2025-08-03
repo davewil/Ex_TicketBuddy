@@ -1,9 +1,10 @@
-﻿using Host.Messaging.Outbox;
-using Host.Messaging.Outbox.Hosting;
-using Microsoft.Extensions.Hosting;
+﻿using Microsoft.Extensions.Hosting;
+using Shared.Hosting;
+using Users.Host.Messaging.Outbox;
+using Users.Host.Messaging.Outbox.Hosting;
 
 var settings = new Settings(Configuration.Build());
-var host = Microsoft.Extensions.Hosting.Host.CreateDefaultBuilder()
+var host = Host.CreateDefaultBuilder()
     .ConfigureServices((_, services) =>
     {
         services.ConfigureDatabase(settings);

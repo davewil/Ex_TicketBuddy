@@ -47,7 +47,7 @@ services:
     container_name: events-migrations
     build:
       context: .
-      dockerfile: Events/Host.Migrations/Dockerfile
+      dockerfile: Events/Events.Host.Migrations/Dockerfile
     depends_on:
       sqlserver:
         condition: service_started
@@ -60,7 +60,7 @@ services:
     container_name: events-api
     build:
       context: .
-      dockerfile: Events/Host.Api/Dockerfile
+      dockerfile: Events/Events.Host.Api/Dockerfile
     depends_on:
       events-migrations:
         condition: service_completed_successfully
@@ -80,7 +80,7 @@ services:
     container_name: events-messaging-outbox
     build:
       context: .
-      dockerfile: Events/Host.Messaging.Outbox/Dockerfile
+      dockerfile: Events/Events.Host.Messaging.Outbox/Dockerfile
     depends_on:
       rabbitmq:
         condition: service_healthy
@@ -95,41 +95,11 @@ services:
     restart: on-failure
     networks:
       - ticketbuddy-network
-  tickets-migrations:
-    container_name: tickets-migrations
-    build:
-      context: .
-      dockerfile: Tickets/Host.Migrations/Dockerfile
-    depends_on:
-      sqlserver:
-        condition: service_started
-    environment:
-      - ENVIRONMENT=Development
-    networks:
-      - ticketbuddy-network
-    restart: "no"
-  tickets-messaging-inbox:
-    container_name: tickets-messaging-inbox
-    build:
-      context: .
-      dockerfile: Tickets/Host.Messaging.Inbox/Dockerfile
-    depends_on:
-      rabbitmq:
-        condition: service_healthy
-      sqlserver:
-        condition: service_started
-      tickets-migrations:
-        condition: service_completed_successfully
-    environment:
-      - ENVIRONMENT=Development
-    restart: on-failure
-    networks:
-      - ticketbuddy-network
   users-migrations:
     container_name: users-migrations
     build:
       context: .
-      dockerfile: Users/Host.Migrations/Dockerfile
+      dockerfile: Users/Users.Host.Migrations/Dockerfile
     depends_on:
       sqlserver:
         condition: service_started
@@ -142,7 +112,7 @@ services:
     container_name: users-api
     build:
       context: .
-      dockerfile: Users/Host.Api/Dockerfile
+      dockerfile: Users/Users.Host.Api/Dockerfile
     depends_on:
       users-migrations:
         condition: service_completed_successfully
@@ -162,7 +132,7 @@ services:
     container_name: users-messaging-outbox
     build:
       context: .
-      dockerfile: Users/Host.Messaging.Outbox/Dockerfile
+      dockerfile: Users/Users.Host.Messaging.Outbox/Dockerfile
     depends_on:
       rabbitmq:
         condition: service_healthy
@@ -171,6 +141,40 @@ services:
       aspire-dashboard:
         condition: service_started
       users-api:
+        condition: service_started
+    environment:
+      - ENVIRONMENT=Development
+    restart: on-failure
+    networks:
+      - ticketbuddy-network
+  tickets-migrations:
+    container_name: tickets-migrations
+    build:
+      context: .
+      dockerfile: Tickets/Tickets.Host.Migrations/Dockerfile
+    depends_on:
+      sqlserver:
+        condition: service_started
+    environment:
+      - ENVIRONMENT=Development
+    networks:
+      - ticketbuddy-network
+    restart: "no"
+  tickets-messaging-inbox:
+    container_name: tickets-messaging-inbox
+    build:
+      context: .
+      dockerfile: Tickets/Tickets.Host.Messaging.Inbox/Dockerfile
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      sqlserver:
+        condition: service_started
+      tickets-migrations:
+        condition: service_completed_successfully
+      events-messaging-outbox:
+        condition: service_started
+      users-messaging-outbox:
         condition: service_started
     environment:
       - ENVIRONMENT=Development

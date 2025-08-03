@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 
-namespace Host.Messaging.Outbox;
+namespace Events.Host.Messaging.Outbox;
 
 internal class Settings
 {
@@ -16,19 +16,16 @@ internal class Settings
     
     internal class RabbitMqSettings
     {
-        internal string Host => Configuration["RabbitMq:HostName"]!;
-        internal string Username => Configuration["RabbitMq:Username"]!;
-        internal string Password => Configuration["RabbitMq:Password"]!;
-        internal string VirtualHost => Configuration["RabbitMq:VirtualHost"]!;
+        internal Uri ConnectionString => new(Configuration["ConnectionStrings:Messaging"]!);
     }
    
     internal class TelemetrySettings
     {
-        internal string ConnectionString => Configuration["Telemetry:ConnectionString"]!;
+        internal string ConnectionString => Configuration["ConnectionStrings:Telemetry"]!;
     }
 
     internal class DatabaseSettings
     {
-        public string Connection => Configuration["ConnectionString"]!;
+        public string Connection => Configuration["ConnectionStrings:TicketBuddyEvents"]!;
     }
 }

@@ -9,13 +9,8 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\Shared\Shared.Hosting\Shared.Hosting.csproj" />
       <ProjectReference Include="..\Migrations\Migrations.csproj" />
-    </ItemGroup>
-    
-    <ItemGroup>
-        <PackageReference Include="Common.Environment" Version="1.0.10" />
-        <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.7" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.7" />
     </ItemGroup>
 
     <ItemGroup>

@@ -15,12 +15,8 @@ internal static class Messaging
             x.AddConsumers(ticketsIntegrationInboundAssembly);
 
             x.UsingRabbitMq((context, cfg) =>
-            {                        
-                cfg.Host(settings.RabbitMq.Host, settings.RabbitMq.VirtualHost, h =>
-                {
-                    h.Username(settings.RabbitMq.Username);
-                    h.Password(settings.RabbitMq.Password);
-                });
+            {
+                cfg.Host(settings.RabbitMq.ConnectionString);
                 
                 cfg.ReceiveEndpoint("tickets-inbox-events", e =>
                 {

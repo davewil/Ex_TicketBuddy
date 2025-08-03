@@ -25,7 +25,7 @@ internal sealed class EventApi(WebApplicationBuilder webApplicationBuilder, ICon
         services.AddScoped<EventRepository>();
         services.AddScoped<EventService>();
     }
-    
+
     protected override OpenTelemetryBuilder ConfigureTelemetry(WebApplicationBuilder builder)
     {
         var otel = base.ConfigureTelemetry(builder);

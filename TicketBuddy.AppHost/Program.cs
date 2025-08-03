@@ -4,79 +4,80 @@ var sqlServer = builder
     .AddSqlServer("sqlserver")
     .WithPassword(builder.AddParameter("Password", "YourStrong@Passw0rd"))
     .WithDataVolume("TicketBuddy.SqlServer")
-    .WithHostPort(1450);
+    .WithHostPort(1450)
+    .WithLifetime(ContainerLifetime.Persistent);
 
-var sqlHostAddress = sqlServer.Resource.PrimaryEndpoint.Property(EndpointProperty.Host);
-var sqlHostPort = sqlServer.Resource.PrimaryEndpoint.Property(EndpointProperty.Port);
+var eventDb = sqlServer.AddDatabase("TicketBuddyEvents");
+var ticketDb = sqlServer.AddDatabase("TicketBuddyTickets");
+var userDb = sqlServer.AddDatabase("TicketBuddyUsers");
 
 var rabbitmq = builder
-    .AddRabbitMQ("rabbitmq")
+    .AddRabbitMQ("Messaging")
     .WithImage("masstransit/rabbitmq")
     .WithDataVolume("TicketBuddy.RabbitMQ");
 
-var rabbitHostAddress = rabbitmq.Resource.PrimaryEndpoint.Property(EndpointProperty.Host);
-var rabbitHostPort = rabbitmq.Resource.PrimaryEndpoint.Property(EndpointProperty.Port);
-
 var eventsMigrations = builder.AddProject<Projects.Events_Host_Migrations>("events-migrations")
-    .WithReference(sqlServer)
-    .WaitFor(sqlServer)
-    .WithEnvironment("ENVIRONMENT", "Development");
+    .WithReference(eventDb)
+    .WaitFor(eventDb)
+    .WithEnvironment("ENVIRONMENT", "LocalDevelopment");
 
 var eventsApi = builder.AddProject<Projects.Events_Host_Api>("events-api")
-    .WithReference(sqlServer)
-    .WaitFor(sqlServer)
+    .WithReference(eventDb)
+    .WaitFor(eventDb)
     .WithReference(rabbitmq)
     .WaitFor(rabbitmq)
     .WithReference(eventsMigrations)
     .WaitFor(eventsMigrations)
-    .WithEnvironment("ENVIRONMENT", "Development");
+    .WithEnvironment("ENVIRONMENT", "LocalDevelopment");
 
-builder.AddProject<Projects.Events_Host_Messaging_Outbox>("events-messaging-outbox")
-    .WithReference(sqlServer)
-    .WaitFor(sqlServer)
+var eventsMessagingOutbox = builder.AddProject<Projects.Events_Host_Messaging_Outbox>("events-messaging-outbox")
+    .WithReference(eventDb)
+    .WaitFor(eventDb)
     .WithReference(rabbitmq)
     .WaitFor(rabbitmq)
     .WithReference(eventsApi)
     .WaitFor(eventsApi)
-    .WithEnvironment("ENVIRONMENT", "Development");
-
-var ticketsMigrations = builder.AddProject<Projects.Tickets_Host_Migrations>("tickets-migrations")
-    .WithReference(sqlServer)
-    .WaitFor(sqlServer)
-    .WithEnvironment("ENVIRONMENT", "Development");
-
-builder.AddProject<Projects.Tickets_Host_Messaging_Inbox>("tickets-messaging-inbox")
-    .WithReference(sqlServer)
-    .WaitFor(sqlServer)
-    .WithReference(rabbitmq)
-    .WaitFor(rabbitmq)
-    .WithReference(ticketsMigrations)
-    .WaitFor(ticketsMigrations)
-    .WithEnvironment("ENVIRONMENT", "Development");
+    .WithEnvironment("ENVIRONMENT", "LocalDevelopment");
 
 var usersMigrations = builder.AddProject<Projects.Users_Host_Migrations>("users-migrations")
-    .WithReference(sqlServer)
-    .WaitFor(sqlServer)
-    .WithEnvironment("ENVIRONMENT", "Development");
+    .WithReference(userDb)
+    .WaitFor(userDb)
+    .WithEnvironment("ENVIRONMENT", "LocalDevelopment");
 
 var usersApi = builder.AddProject<Projects.Users_Host_Api>("users-api")
-    .WithReference(sqlServer)
-    .WaitFor(sqlServer)
+    .WithReference(userDb)
+    .WaitFor(userDb)
     .WithReference(rabbitmq)
     .WaitFor(rabbitmq)
     .WithReference(usersMigrations)
     .WaitFor(usersMigrations)
     .WithHttpEndpoint(port: 8082, targetPort: 8080)
-    .WithEnvironment("ENVIRONMENT", "Development");
+    .WithEnvironment("ENVIRONMENT", "LocalDevelopment");
 
-builder.AddProject<Projects.Users_Host_Messaging_Outbox>("users-messaging-outbox")
-    .WithReference(sqlServer)
-    .WaitFor(sqlServer)
+var usersMessagingOutbox = builder.AddProject<Projects.Users_Host_Messaging_Outbox>("users-messaging-outbox")
+    .WithReference(userDb)
+    .WaitFor(userDb)
     .WithReference(rabbitmq)
     .WaitFor(rabbitmq)
     .WithReference(usersApi)
     .WaitFor(usersApi)
-    .WithEnvironment("ENVIRONMENT", "Development");
+    .WithEnvironment("ENVIRONMENT", "LocalDevelopment");
+
+var ticketsMigrations = builder.AddProject<Projects.Tickets_Host_Migrations>("tickets-migrations")
+    .WithReference(ticketDb)
+    .WaitFor(ticketDb)
+    .WithEnvironment("ENVIRONMENT", "LocalDevelopment");
+
+builder.AddProject<Projects.Tickets_Host_Messaging_Inbox>("tickets-messaging-inbox")
+    .WithReference(ticketDb)
+    .WaitFor(ticketDb)
+    .WithReference(rabbitmq)
+    .WaitFor(rabbitmq)
+    .WithReference(ticketsMigrations)
+    .WaitFor(ticketsMigrations)
+    .WaitFor(eventsMessagingOutbox)
+    .WaitFor(usersMessagingOutbox)
+    .WithEnvironment("ENVIRONMENT", "LocalDevelopment");
 
 var app = builder.Build();
 await app.RunAsync();

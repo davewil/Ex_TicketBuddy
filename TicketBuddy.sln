@@ -91,6 +91,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Testing.Integration", "Tick
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicketBuddy.AppHost", "TicketBuddy.AppHost\TicketBuddy.AppHost.csproj", "{8C866276-D219-4913-9C42-FFF5B2271053}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared.Hosting", "Shared\Shared.Hosting\Shared.Hosting.csproj", "{E5B7B7BB-BF5E-439E-B11B-150BB0B4CAC5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -229,6 +231,10 @@ Global
 		{8C866276-D219-4913-9C42-FFF5B2271053}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8C866276-D219-4913-9C42-FFF5B2271053}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8C866276-D219-4913-9C42-FFF5B2271053}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E5B7B7BB-BF5E-439E-B11B-150BB0B4CAC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E5B7B7BB-BF5E-439E-B11B-150BB0B4CAC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E5B7B7BB-BF5E-439E-B11B-150BB0B4CAC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E5B7B7BB-BF5E-439E-B11B-150BB0B4CAC5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -268,5 +274,6 @@ Global
 		{B50543B8-FD2C-454F-8060-78A5EDAE7BAB} = {3CF01B5C-35AA-4926-BA0E-DC62410FF6F4}
 		{A12366B5-C385-434C-A92F-66CF49078737} = {3CF01B5C-35AA-4926-BA0E-DC62410FF6F4}
 		{F9A3C3A6-CA02-485D-9DED-609D986D4DF2} = {689C592D-E300-4B58-856E-07A4952C31BD}
+		{E5B7B7BB-BF5E-439E-B11B-150BB0B4CAC5} = {3CF01B5C-35AA-4926-BA0E-DC62410FF6F4}
 	EndGlobalSection
 EndGlobal

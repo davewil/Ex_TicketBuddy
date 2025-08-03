@@ -9,6 +9,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\Shared\Shared.Hosting\Shared.Hosting.csproj" />
       <ProjectReference Include="..\Migrations\Migrations.csproj" />
     </ItemGroup>
     
