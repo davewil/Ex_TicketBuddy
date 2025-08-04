@@ -14,7 +14,9 @@ var userDb = sqlServer.AddDatabase("TicketBuddyUsers");
 var rabbitmq = builder
     .AddRabbitMQ("Messaging")
     .WithImage("masstransit/rabbitmq")
-    .WithDataVolume("TicketBuddy.RabbitMQ");
+    .WithDataVolume("TicketBuddy.RabbitMQ")
+    .WithHttpEndpoint(port: 5672, targetPort: 5672)
+    .WithHttpsEndpoint(port: 15672, targetPort: 15672);
 
 var eventsMigrations = builder.AddProject<Projects.Events_Host_Migrations>("events-migrations")
     .WithReference(eventDb)
@@ -51,7 +53,6 @@ var usersApi = builder.AddProject<Projects.Users_Host_Api>("users-api")
     .WaitFor(rabbitmq)
     .WithReference(usersMigrations)
     .WaitFor(usersMigrations)
-    .WithHttpEndpoint(port: 8082, targetPort: 8080)
     .WithEnvironment("ENVIRONMENT", "LocalDevelopment");
 
 var usersMessagingOutbox = builder.AddProject<Projects.Users_Host_Messaging_Outbox>("users-messaging-outbox")
