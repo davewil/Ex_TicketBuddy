@@ -23,6 +23,8 @@ internal sealed class Api(WebApplicationBuilder webApplicationBuilder, IConfigur
         services.ConfigureDatabase(_settings);
         services.AddScoped<EventRepository>();
         services.AddScoped<EventService>();
+        services.AddScoped<UserRepository>();
+        services.AddScoped<UserService>();
     }
 
     protected override OpenTelemetryBuilder ConfigureTelemetry(WebApplicationBuilder builder)

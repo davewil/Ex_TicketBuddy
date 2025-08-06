@@ -20,10 +20,10 @@ public class EventRepository(EventDbContext eventDbContext)
 
     public async Task Remove(Guid id)
     {
-        var user = await Get(id);
-        if (user is null) return;
+        var @event = await Get(id);
+        if (@event is null) return;
 
-        eventDbContext.Remove(user);
+        eventDbContext.Remove(@event);
         await eventDbContext.SaveChangesAsync();
     }
 
