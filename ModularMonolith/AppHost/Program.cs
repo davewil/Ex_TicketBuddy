@@ -9,12 +9,12 @@ var sqlServer = builder
 
 var database = sqlServer.AddDatabase("TicketBuddy");
 
-var migrations = builder.AddProject<Projects.Host_Api>("migrations")
+var migrations = builder.AddProject<Projects.Host_Migrations>("migrations")
     .WithReference(database)
     .WaitFor(database)
     .WithEnvironment("ENVIRONMENT", "LocalDevelopment");
 
-builder.AddProject<Projects.Host_Migrations>("api")
+builder.AddProject<Projects.Host_Api>("api")
     .WithReference(database)
     .WaitFor(database)
     .WithReference(migrations)
