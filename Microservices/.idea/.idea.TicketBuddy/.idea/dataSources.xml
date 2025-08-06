@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+    <data-source source="LOCAL" name="TicketBuddyUsers" uuid="8d96c2dd-539f-482d-aced-f21ab23c1b72">
+      <driver-ref>sqlserver.jb</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.jetbrains.jdbc.sqlserver.SqlServerDriver</jdbc-driver>
+      <jdbc-url>Server=127.0.0.1,1450;User ID=sa;Password=YourStrong@Passw0rd;TrustServerCertificate=true;Initial Catalog=TicketBuddyUsers</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+    <data-source source="LOCAL" name="TicketBuddyTickets" uuid="9277b447-28fe-4470-8a47-45c12a4b44ef">
+      <driver-ref>sqlserver.jb</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.jetbrains.jdbc.sqlserver.SqlServerDriver</jdbc-driver>
+      <jdbc-url>Server=127.0.0.1,1450;User ID=sa;Password=YourStrong@Passw0rd;TrustServerCertificate=true;Initial Catalog=TicketBuddyTickets</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+    <data-source source="LOCAL" name="TicketBuddyEvents" uuid="598a3e42-2e67-414a-8bd6-a6944661790a">
+      <driver-ref>sqlserver.jb</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.jetbrains.jdbc.sqlserver.SqlServerDriver</jdbc-driver>
+      <jdbc-url>Server=127.0.0.1,1450;User ID=sa;Password=YourStrong@Passw0rd;TrustServerCertificate=true;Initial Catalog=TicketBuddyEvents</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+    <data-source source="LOCAL" name="TicketBuddyEvents" uuid="35c23d16-40e9-4ee5-8360-3dc42079b30b">
+      <driver-ref>sqlserver.jb</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.jetbrains.jdbc.sqlserver.SqlServerDriver</jdbc-driver>
+      <jdbc-url>Server=127.0.0.1,1433;User ID=sa;Password=YourStrong@Passw0rd;TrustServerCertificate=true;Initial Catalog=TicketBuddyEvents</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+  </component>
+</project>

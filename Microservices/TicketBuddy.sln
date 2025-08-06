@@ -5,10 +5,10 @@ VisualStudioVersion = 17.14.36221.1 d17.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution", "Solution", "{8578EFB1-3D7D-46B6-A63B-A2B147064E21}"
 	ProjectSection(SolutionItems) = preProject
-		.gitignore = .gitignore
-		.github\workflows\Build.yaml = .github\workflows\Build.yaml
-		README.md = README.md
-		Observability.png = Observability.png
+		..\.gitignore = ..\.gitignore
+		..\Observability.png = ..\Observability.png
+		..\README.md = ..\README.md
+		..\.github\workflows\BuildMicroservice.yaml = ..\.github\workflows\BuildMicroservice.yaml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Testing", "Testing", "{A9E5EBD2-F136-4009-8BA3-183C3FACC9EE}"

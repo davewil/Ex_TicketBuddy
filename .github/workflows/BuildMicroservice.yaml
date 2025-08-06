@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'Microservices/**'
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -38,12 +40,12 @@ jobs:
           NUGET_AUTH_TOKEN: ${{ github.token }}
 
       - name: Restore dependencies
-        run: dotnet restore TicketBuddy.sln --no-cache --force-evaluate
+        run: dotnet restore Microservices/TicketBuddy.sln --no-cache --force-evaluate
 
       - name: Build solution
-        run: dotnet build TicketBuddy.sln --configuration Release --no-restore
+        run: dotnet build Microservices/TicketBuddy.sln --configuration Release --no-restore
 
       - name: Run tests
         env:
           DOCKER_HOST: tcp://localhost:2375
-        run: dotnet test TicketBuddy.sln --configuration Release --no-build --no-restore
+        run: dotnet test Microservices/TicketBuddy.sln --configuration Release --no-build --no-restore
