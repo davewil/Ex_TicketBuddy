@@ -1,0 +1,65 @@
+services:
+  sqlserver:
+    container_name: monolith-sql-server
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=YourStrong@Passw0rd
+    ports:
+      - "1450:1433"
+    restart: always
+    volumes:
+      - ticket_buddy_monolith_sql_server:/var/opt/mssql
+    networks:
+      - ticketbuddy-monolith-network
+  aspire-dashboard:
+    container_name: monolith-aspire-dashboard
+    image: mcr.microsoft.com/dotnet/aspire-dashboard:latest
+    environment:
+      - ASPIRE_DASHBOARD_UNSECURED_ALLOW_ANONYMOUS:true
+    ports:
+      - "18888:18888"
+      - "4317:18889"
+    depends_on:
+      - sqlserver
+    networks:
+      - ticketbuddy-monolith-network
+  migrations:
+    container_name: monolith-migrations
+    build:
+      context: .
+      dockerfile: Host.Migrations/Dockerfile
+    depends_on:
+      sqlserver:
+        condition: service_started
+    environment:
+      - ENVIRONMENT=Development
+    networks:
+      - ticketbuddy-monolith-network
+    restart: "no"
+  api:
+    container_name: monolith-api
+    build:
+      context: .
+      dockerfile: Host.Api/Dockerfile
+    depends_on:
+      migrations:
+        condition: service_completed_successfully
+      aspire-dashboard:
+        condition: service_started
+    environment:
+      - ENVIRONMENT=Development
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    restart: on-failure
+    networks:
+      - ticketbuddy-monolith-network
+
+volumes:
+  ticket_buddy_monolith_sql_server:
+  
+networks:
+  ticketbuddy-monolith-network:
+    name: ticketbuddy-monolith-network
+    driver: bridge
