@@ -22,16 +22,6 @@ public class EventRepository(EventDbContext eventDbContext, IPublishEndpoint pub
         }
     }
 
-    public async Task Remove(Guid id)
-    {
-        var user = await Get(id);
-        if (user is null) return;
-
-        eventDbContext.Remove(user);
-        await publishEndpoint.Publish(new EventDeleted { Id = id });
-        await eventDbContext.SaveChangesAsync();
-    }
-
     public async Task<Domain.Entities.Event?> Get(Guid id)
     {
         return await eventDbContext.Events.FindAsync(id);

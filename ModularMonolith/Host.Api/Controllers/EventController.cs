@@ -36,12 +36,5 @@ public class EventController(EventService EventService) : ControllerBase
     {
         await EventService.Update(id, payload.Name);
         return NoContent();
-    }    
-    
-    [HttpDelete("{id:guid}")]
-    public async Task<ActionResult> DeleteEvent(Guid id)
-    {
-        await EventService.Remove(id);
-        return NoContent();
     }
 }

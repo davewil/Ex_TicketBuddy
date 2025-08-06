@@ -21,7 +21,6 @@ internal static class Messaging
                 cfg.ReceiveEndpoint("tickets-inbox-events", e =>
                 {
                     e.Bind<Events.Integration.Messaging.Outbound.Messages.EventUpserted>();
-                    e.Bind<Events.Integration.Messaging.Outbound.Messages.EventDeleted>();
                 });
 
                 cfg.ReceiveEndpoint("tickets-inbox-users", e =>

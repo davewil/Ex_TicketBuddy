@@ -21,16 +21,6 @@ public partial class EventControllerSpecs
         When(updating_the_event);
         And(requesting_the_updated_event);
         Then(the_event_is_updated);
-    }    
-    
-    [Test]
-    public void can_delete_event()
-    {
-        Given(an_event_exists);
-        And(a_request_to_delete_the_event);
-        When(deleting_the_event);
-        And(requesting_the_deleted_event);
-        Then(the_event_is_not_found);
     }
     
     [Test]

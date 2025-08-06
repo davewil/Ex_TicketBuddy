@@ -31,9 +31,4 @@ public class EventService(EventRepository repository)
         user.UpdateName(name);
         await repository.Save(user);
     }
-
-    public async Task Remove(Guid id)
-    {
-        await repository.Remove(id);
-    }
 }

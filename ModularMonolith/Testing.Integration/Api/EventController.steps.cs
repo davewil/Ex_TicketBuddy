@@ -74,12 +74,6 @@ public partial class EventControllerSpecs : TruncateDbSpecification
         create_content(new_name);
     }
 
-    private void a_request_to_delete_the_event()
-    {
-        var response = client.DeleteAsync(Routes.Event).GetAwaiter().GetResult();
-        response_code = response.StatusCode;
-    }
-
     private void creating_the_event()
     {
         var response = client.PostAsync(Routes.Event, content).GetAwaiter().GetResult();
@@ -100,14 +94,7 @@ public partial class EventControllerSpecs : TruncateDbSpecification
         var response = client.PutAsync(Routes.Event + $"/{returned_id}", content).GetAwaiter().GetResult();
         response_code = response.StatusCode;
         response_code.ShouldBe(HttpStatusCode.NoContent);
-    }     
-    
-    private void deleting_the_event()
-    {
-        var response = client.DeleteAsync(Routes.Event + $"/{returned_id}").GetAwaiter().GetResult();
-        response_code  = response.StatusCode;
-        response_code.ShouldBe(HttpStatusCode.NoContent);
-    }    
+    }
     
     private void an_event_exists()
     {
@@ -126,14 +113,7 @@ public partial class EventControllerSpecs : TruncateDbSpecification
         var response = client.GetAsync(Routes.Event + $"/{returned_id}").GetAwaiter().GetResult();
         response_code = response.StatusCode;
         content = response.Content;
-    }    
-    
-    private void requesting_the_deleted_event()
-    {
-        var response = client.GetAsync(Routes.Event + $"/{returned_id}").GetAwaiter().GetResult();
-        response_code = response.StatusCode;
-        content = response.Content;
-    }    
+    }
     
     private void requesting_the_updated_event()
     {
@@ -172,10 +152,5 @@ public partial class EventControllerSpecs : TruncateDbSpecification
         theEvent.Count.ShouldBe(2);
         theEvent.Single(e => e.Id == returned_id).EventName.ToString().ShouldBe(name);
         theEvent.Single(e => e.Id == another_id).EventName.ToString().ShouldBe(new_name);
-    }    
-    
-    private void the_event_is_not_found()
-    {
-        response_code.ShouldBe(HttpStatusCode.NotFound);
     }
 }

@@ -18,15 +18,6 @@ public class EventRepository(EventDbContext eventDbContext)
         }
     }
 
-    public async Task Remove(Guid id)
-    {
-        var @event = await Get(id);
-        if (@event is null) return;
-
-        eventDbContext.Remove(@event);
-        await eventDbContext.SaveChangesAsync();
-    }
-
     public async Task<Domain.Entities.Event?> Get(Guid id)
     {
         return await eventDbContext.Events.FindAsync(id);
