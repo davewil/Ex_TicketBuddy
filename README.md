@@ -5,11 +5,14 @@ Built as both a modular monolith and as microservices to compare and contrast.
 
 ## Modular Monolith
 
-Bu
+Built to be hosted as a single application. Services communicate through in-process calls.
 
-built with a distributed architecture designed to run locally.
+## Microservices
+Built with a distributed architecture designed to run locally.
+The aim is to demonstrate a fully observable and decoupled system.
+Admittedly, the transactional outbox pattern is overkill.
 
-Key technologies/choices:
+## Key technologies/choices:
 - ASP.NET Core
 - Docker
 - RabbitMQ
@@ -17,9 +20,6 @@ Key technologies/choices:
 - OpenTelemetry
 - .NET Aspire
 - Transactional Outbox Pattern
-
-The aim is to demonstrate a fully observable and decoupled system.
-Admittedly, the transactional outbox pattern is overkill.
 
 ## Observability
 
