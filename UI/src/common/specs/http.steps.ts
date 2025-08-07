@@ -3,8 +3,6 @@ import {get, post, put, deleteCall} from '../http';
 import {MockServer} from '../../testing/mock-server';
 import {waitUntil} from '../../testing/utilities';
 
-const base = import.meta.env.VITE_BASE_TENANT_URL
-
 const mockServer = MockServer.New();
 let wait_for_get: () => boolean;
 let wait_for_post: () => boolean;
@@ -13,10 +11,10 @@ let wait_for_delete: () => boolean;
 
 beforeEach(() => {
     mockServer.reset();
-    wait_for_get = mockServer.get(`${base}/wibble`, { id: 'wobble' });
-    wait_for_post = mockServer.post(`${base}/wibble`, { id: 'wobble'});
-    wait_for_put = mockServer.put(`${base}/wibble`, { id: 'wobble' });
-    wait_for_delete = mockServer.delete(`${base}/wibble`);
+    wait_for_get = mockServer.get(`/wibble`, { id: 'wobble' });
+    wait_for_post = mockServer.post(`/wibble`, { id: 'wobble'});
+    wait_for_put = mockServer.put(`/wibble`, { id: 'wobble' });
+    wait_for_delete = mockServer.delete(`/wibble`);
     mockServer.start();
 });
 
