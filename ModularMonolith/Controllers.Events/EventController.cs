@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations;
 using Application.Events;
 using Controllers.Events.Requests;
 using Domain.Events.Entities;
@@ -26,7 +25,6 @@ public class EventController(EventService EventService) : ControllerBase
     [HttpPost(Routes.Event)]
     public async Task<ActionResult<Guid>> CreateEvent([FromBody] EventPayload payload)
     {
-        ValidateDate(payload);
         var id = await EventService.Add(payload.Name, payload.Date);
         return Created($"/{Routes.Event}/{id}", id);
     }
@@ -34,13 +32,7 @@ public class EventController(EventService EventService) : ControllerBase
     [HttpPut(Routes.TheEvent)]
     public async Task<ActionResult> UpdateEvent(Guid id, [FromBody] EventPayload payload)
     {
-        ValidateDate(payload);
-        await EventService.Update(id, payload.Name);
+        await EventService.Update(id, payload.Name, payload.Date);
         return NoContent();
-    }
-    
-    private static void ValidateDate(EventPayload payload)
-    {
-        if (payload.Date < DateTimeOffset.Now) throw new ValidationException("Event date cannot be in the past.");
     }
 }

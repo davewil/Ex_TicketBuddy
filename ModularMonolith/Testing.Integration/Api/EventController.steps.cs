@@ -24,6 +24,7 @@ public partial class EventControllerSpecs : TruncateDbSpecification
     private const string name = "wibble";
     private const string new_name = "wobble";
     private readonly DateTimeOffset event_date = DateTimeOffset.Now.AddDays(1);
+    private readonly DateTimeOffset new_event_date = DateTimeOffset.Now.AddDays(2);
     private readonly DateTimeOffset past_event_date = DateTimeOffset.Now.AddDays(-1);
     private static MsSqlContainer database = null!;
 
@@ -88,7 +89,7 @@ public partial class EventControllerSpecs : TruncateDbSpecification
     
     private void a_request_to_update_the_event()
     {
-        create_content(new_name, event_date);
+        create_content(new_name, new_event_date);
     }
 
     private void creating_the_event()
@@ -176,14 +177,14 @@ public partial class EventControllerSpecs : TruncateDbSpecification
     {
         response_code.ShouldBe(HttpStatusCode.BadRequest);
         var apiError = JsonSerialization.Deserialize<ApiError>(content.ReadAsStringAsync().Await());
-        apiError.Errors.ShouldContain("Event date cannot be in the past.");
+        apiError.Errors[0].ShouldContain("Event date cannot be in the past");
     }
     
     private void the_event_is_not_updated()
     {
         response_code.ShouldBe(HttpStatusCode.BadRequest);
         var apiError = JsonSerialization.Deserialize<ApiError>(content.ReadAsStringAsync().Await());
-        apiError.Errors.ShouldContain("Event date cannot be in the past.");
+        apiError.Errors[0].ShouldContain("Event date cannot be in the past");
     }
     
     private void the_event_is_updated()
@@ -192,6 +193,7 @@ public partial class EventControllerSpecs : TruncateDbSpecification
         response_code.ShouldBe(HttpStatusCode.OK);
         theEvent.Id.ShouldBe(returned_id);
         theEvent.EventName.ToString().ShouldBe(new_name);
+        theEvent.Date.ShouldBe(new_event_date);
     }    
     
     private void the_events_are_listed()
