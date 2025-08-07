@@ -19,11 +19,11 @@ These microservices are in one repo and one dotnet solution, but they can be spl
 ## Key technologies/choices:
 - ASP.NET Core
 - Docker
-- RabbitMQ
-- MassTransit
+- RabbitMQ (Microservices)
+- MassTransit (Microservices)
 - OpenTelemetry
 - .NET Aspire
-- Transactional Outbox Pattern
+- Transactional Outbox Pattern (Microservices)
 
 ## Observability
 
