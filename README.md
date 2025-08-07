@@ -4,12 +4,15 @@ A simple ticket booking platform for events.
 Built as both a modular monolith and as microservices to compare and contrast.
 
 ## Modular Monolith
-Built to be hosted as a single application. Services communicate through in-process calls.
+Built in well-defined modules to be hosted as a single application. Services communicate through in-process calls.
+A modular monolith is where a team should start when building a new application.
 
 ## Microservices
 Built with a distributed architecture designed to run locally. Services communicate through asynchronous messages using MassTransit with RabbitMQ.
 The aim is to demonstrate a fully observable and decoupled system.
 Admittedly, the transactional outbox pattern is overkill.
+
+Microservices are a good choice when the application is expected to grow significantly, or when different teams will work on different parts of the application.
 
 ## Key technologies/choices:
 - ASP.NET Core

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Users.Persistence;
 
-namespace Integration.Api;
+namespace Integration;
 
 public class IntegrationWebApplicationFactory<TProgram>(string connectionString)
     : WebApplicationFactory<TProgram> where TProgram : class
