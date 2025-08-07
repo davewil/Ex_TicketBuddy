@@ -9,7 +9,7 @@ namespace Controllers.Events;
 [ApiController]
 public class EventController(EventService EventService) : ControllerBase
 {
-    [HttpGet(Routes.Event)]
+    [HttpGet(Routes.Events)]
     public async Task<IList<Event>> GetEvents()
     {
         return await EventService.GetAll();
@@ -23,12 +23,12 @@ public class EventController(EventService EventService) : ControllerBase
         return user;
     }    
     
-    [HttpPost(Routes.Event)]
+    [HttpPost(Routes.Events)]
     public async Task<ActionResult<Guid>> CreateEvent([FromBody] EventPayload payload)
     {
         ValidateDate(payload);
         var id = await EventService.Add(payload.Name, payload.Date);
-        return Created($"/{Routes.Event}/{id}", id);
+        return Created($"/{Routes.Events}/{id}", id);
     }
 
     [HttpPut(Routes.TheEvent)]

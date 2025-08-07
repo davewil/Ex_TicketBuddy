@@ -2,6 +2,6 @@
 
 public static class Routes
 {
-    public const string Event = "event";
-    public const string TheEvent = $"{Event}/{{id:guid}}";
+    public const string Events = "events";
+    public const string TheEvent = $"{Events}/{{id:guid}}";
 }

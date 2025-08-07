@@ -94,7 +94,7 @@ public partial class UserControllerSpecs : TruncateDbSpecification
 
     private void creating_the_user()
     {
-        var response = client.PostAsync(Routes.User, content).GetAwaiter().GetResult();
+        var response = client.PostAsync(Routes.Users, content).GetAwaiter().GetResult();
         response_code = response.StatusCode;
         response_code.ShouldBe(HttpStatusCode.Created);
         returned_id = JsonSerialization.Deserialize<Guid>(response.Content.ReadAsStringAsync().GetAwaiter().GetResult());
@@ -102,14 +102,14 @@ public partial class UserControllerSpecs : TruncateDbSpecification
     
     private void creating_another_user()
     {
-        var response = client.PostAsync(Routes.User, content).GetAwaiter().GetResult();
+        var response = client.PostAsync(Routes.Users, content).GetAwaiter().GetResult();
         response_code = response.StatusCode;
         another_id = JsonSerialization.Deserialize<Guid>(response.Content.ReadAsStringAsync().GetAwaiter().GetResult());
     }
     
     private void creating_the_user_which_fails()
     {
-        var response = client.PostAsync(Routes.User, content).GetAwaiter().GetResult();
+        var response = client.PostAsync(Routes.Users, content).GetAwaiter().GetResult();
         response_code = response.StatusCode;
         response_code.ShouldBe(HttpStatusCode.BadRequest);
         content = response.Content;
@@ -117,14 +117,14 @@ public partial class UserControllerSpecs : TruncateDbSpecification
     
     private void updating_the_user()
     {
-        var response = client.PutAsync(Routes.User + $"/{returned_id}", content).GetAwaiter().GetResult();
+        var response = client.PutAsync(Routes.Users + $"/{returned_id}", content).GetAwaiter().GetResult();
         response_code = response.StatusCode;
         response_code.ShouldBe(HttpStatusCode.NoContent);
     }
     
     private void updating_another_user_which_fails()
     {
-        var response = client.PutAsync(Routes.User + $"/{another_id}", content).GetAwaiter().GetResult();
+        var response = client.PutAsync(Routes.Users + $"/{another_id}", content).GetAwaiter().GetResult();
         response_code = response.StatusCode;
         response_code.ShouldBe(HttpStatusCode.BadRequest);
         content = response.Content;
@@ -144,21 +144,21 @@ public partial class UserControllerSpecs : TruncateDbSpecification
 
     private void requesting_the_user()
     {
-        var response = client.GetAsync(Routes.User + $"/{returned_id}").GetAwaiter().GetResult();
+        var response = client.GetAsync(Routes.Users + $"/{returned_id}").GetAwaiter().GetResult();
         response_code = response.StatusCode;
         content = response.Content;
     }
     
     private void requesting_the_updated_user()
     {
-        var response = client.GetAsync(Routes.User + $"/{returned_id}").GetAwaiter().GetResult();
+        var response = client.GetAsync(Routes.Users + $"/{returned_id}").GetAwaiter().GetResult();
         response_code = response.StatusCode;
         content = response.Content;
     }
     
     private void listing_the_users()
     {
-        var response = client.GetAsync(Routes.User).GetAwaiter().GetResult();
+        var response = client.GetAsync(Routes.Users).GetAwaiter().GetResult();
         response_code = response.StatusCode;
         content = response.Content;
     }

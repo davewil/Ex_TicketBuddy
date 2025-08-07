@@ -99,7 +99,7 @@ public partial class EventControllerSpecs : TruncateDbSpecification
 
     private void creating_the_event()
     {
-        var response = client.PostAsync(Routes.Event, content).GetAwaiter().GetResult();
+        var response = client.PostAsync(Routes.Events, content).GetAwaiter().GetResult();
         response_code = response.StatusCode;
         content = response.Content;
         response_code.ShouldBe(HttpStatusCode.Created);
@@ -108,28 +108,28 @@ public partial class EventControllerSpecs : TruncateDbSpecification
     
     private void creating_the_event_that_will_fail()
     {
-        var response = client.PostAsync(Routes.Event, content).GetAwaiter().GetResult();
+        var response = client.PostAsync(Routes.Events, content).GetAwaiter().GetResult();
         response_code = response.StatusCode;
         content = response.Content;
     }
     
     private void creating_another_event()
     {
-        var response = client.PostAsync(Routes.Event, content).GetAwaiter().GetResult();
+        var response = client.PostAsync(Routes.Events, content).GetAwaiter().GetResult();
         response_code = response.StatusCode;
         another_id = JsonSerialization.Deserialize<Guid>(response.Content.ReadAsStringAsync().GetAwaiter().GetResult());
     }      
     
     private void updating_the_event()
     {
-        var response = client.PutAsync(Routes.Event + $"/{returned_id}", content).GetAwaiter().GetResult();
+        var response = client.PutAsync(Routes.Events + $"/{returned_id}", content).GetAwaiter().GetResult();
         response_code = response.StatusCode;
         response_code.ShouldBe(HttpStatusCode.NoContent);
     }
     
     private void updating_the_event_that_will_fail()
     {
-        var response = client.PutAsync(Routes.Event + $"/{returned_id}", content).GetAwaiter().GetResult();
+        var response = client.PutAsync(Routes.Events + $"/{returned_id}", content).GetAwaiter().GetResult();
         response_code = response.StatusCode;
         content = response.Content;
     }
@@ -160,21 +160,21 @@ public partial class EventControllerSpecs : TruncateDbSpecification
 
     private void requesting_the_event()
     {
-        var response = client.GetAsync(Routes.Event + $"/{returned_id}").GetAwaiter().GetResult();
+        var response = client.GetAsync(Routes.Events + $"/{returned_id}").GetAwaiter().GetResult();
         response_code = response.StatusCode;
         content = response.Content;
     }
     
     private void requesting_the_updated_event()
     {
-        var response = client.GetAsync(Routes.Event + $"/{returned_id}").GetAwaiter().GetResult();
+        var response = client.GetAsync(Routes.Events + $"/{returned_id}").GetAwaiter().GetResult();
         response_code = response.StatusCode;
         content = response.Content;
     }
     
     private void listing_the_events()
     {
-        var response = client.GetAsync(Routes.Event).GetAwaiter().GetResult();
+        var response = client.GetAsync(Routes.Events).GetAwaiter().GetResult();
         response_code = response.StatusCode;
         content = response.Content;
     }

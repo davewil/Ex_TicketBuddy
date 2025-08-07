@@ -6,16 +6,15 @@ using Microsoft.AspNetCore.Mvc;
 namespace Controllers.Users;
 
 [ApiController]
-[Route(Routes.User)]
 public class UserController(UserService UserService) : ControllerBase
 {
-    [HttpGet]
+    [HttpGet(Routes.Users)]
     public async Task<IList<User>> GetUsers()
     {
         return await UserService.GetAll();
     }    
     
-    [HttpGet("{id:guid}")]
+    [HttpGet(Routes.TheUser)]
     public async Task<ActionResult<User>> GetUser(Guid id)
     {
         var user = await UserService.Get(id);
@@ -23,14 +22,14 @@ public class UserController(UserService UserService) : ControllerBase
         return user;
     }    
     
-    [HttpPost]
+    [HttpPost(Routes.Users)]
     public async Task<ActionResult<Guid>> CreateUser([FromBody] UserPayload payload)
     {
         var id = await UserService.Add(payload.FullName, payload.Email);
-        return Created($"/{Routes.User}/{id}", id);
+        return Created($"/{Routes.Users}/{id}", id);
     }    
     
-    [HttpPut("{id:guid}")]
+    [HttpPut(Routes.TheUser)]
     public async Task<ActionResult> UpdateUser(Guid id, [FromBody] UserPayload payload)
     {
         await UserService.Update(id, payload.FullName, payload.Email);
