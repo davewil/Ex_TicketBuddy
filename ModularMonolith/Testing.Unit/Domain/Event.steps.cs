@@ -39,11 +39,6 @@ public partial class EventSpecs : Specification
         name = string.Empty;
     }
     
-    private void a_past_date()
-    {
-        date = DateTimeOffset.Now.AddDays(-1);
-    }
-    
     private void an_event_with_non_alphabetical_characters()
     {
         name = invalid_name;

@@ -31,19 +31,6 @@ public partial class EventSpecs
             Then(Informs("Name can only have alphabetical characters"));
         }); 
     }
-    
-    [Test]
-    public void an_event_must_have_a_date_in_the_future()
-    {
-        Scenario(() =>
-        {
-            Given(valid_inputs);
-            And(a_past_date);
-            When(Validating(creating_an_event));
-            Then(Informs("Event date cannot be in the past"));
-        });
-    }
-    
    
     [Test]
     public void can_create_valid_event()

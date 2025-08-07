@@ -48,4 +48,14 @@ public partial class EventControllerSpecs
         When(listing_the_events);
         Then(the_events_are_listed);
     }
+    
+    [Test]
+    public void does_not_list_events_in_the_past()
+    {
+        Given(an_imminent_event_exists);
+        And(an_event_exists);
+        And(a_short_wait);
+        When(listing_the_events);
+        Then(the_events_are_listed_without_the_past_event);
+    }
 }

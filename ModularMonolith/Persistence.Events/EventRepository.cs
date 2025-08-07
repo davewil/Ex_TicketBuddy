@@ -26,6 +26,6 @@ public class EventRepository(EventDbContext eventDbContext)
 
     public async Task<IList<Event>> GetAll()
     {
-        return await eventDbContext.Events.ToListAsync();
+        return await eventDbContext.Events.Where(e => e.Date > DateTimeOffset.Now).ToListAsync();
     }
 }

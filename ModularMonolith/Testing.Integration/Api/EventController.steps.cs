@@ -62,6 +62,11 @@ public partial class EventControllerSpecs : TruncateDbSpecification
     {
         create_content(name, event_date);
     }
+
+    private void a_request_to_create_an_event_imminently()
+    {
+        create_content(name, DateTimeOffset.Now.AddSeconds(1));
+    }
     
     private void a_request_to_create_an_event_with_a_date_in_the_past()
     {
@@ -134,7 +139,18 @@ public partial class EventControllerSpecs : TruncateDbSpecification
         a_request_to_create_an_event();
         creating_the_event();
         returned_id = JsonSerialization.Deserialize<Guid>(content.ReadAsStringAsync().GetAwaiter().GetResult());
-    }    
+    }
+
+    private static void a_short_wait()
+    {
+        Thread.Sleep(2000);
+    }
+    
+    private void an_imminent_event_exists()
+    {
+        a_request_to_create_an_event_imminently();
+        creating_the_event_that_will_fail();
+    }
     
     private void another_event_exists()
     {
@@ -203,5 +219,14 @@ public partial class EventControllerSpecs : TruncateDbSpecification
         theEvent.Count.ShouldBe(2);
         theEvent.Single(e => e.Id == returned_id).EventName.ToString().ShouldBe(name);
         theEvent.Single(e => e.Id == another_id).EventName.ToString().ShouldBe(new_name);
+    }
+
+    private void the_events_are_listed_without_the_past_event()
+    {
+        var theEvent = JsonSerialization.Deserialize<IReadOnlyList<Event>>(content.ReadAsStringAsync().GetAwaiter().GetResult());
+        response_code.ShouldBe(HttpStatusCode.OK);
+        theEvent.Count.ShouldBe(1);
+        theEvent.Single().Id.ShouldBe(returned_id);
+        theEvent.Single().EventName.ToString().ShouldBe(name);
     }
 }
