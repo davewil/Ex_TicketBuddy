@@ -1,5 +1,6 @@
 ﻿using BDD;
 using Domain.Users.Entities;
+using Domain.Users.Primitives;
 using Shouldly;
 
 namespace Unit.Domain;
@@ -63,7 +64,7 @@ public partial class UserSpecs : Specification
 
     private void creating_a_user()
     {
-        user = new User(id, name, email);
+        user = new User(id, name, email, UserType.Customer);
     }    
     
     private void the_user_is_created()
@@ -71,5 +72,6 @@ public partial class UserSpecs : Specification
         user.Id.ShouldBe(id);
         user.FullName.ToString().ShouldBe(valid_name);
         user.Email.ToString().ShouldBe(valid_email);
+        user.UserType.ShouldBe(UserType.Customer);
     }
 }

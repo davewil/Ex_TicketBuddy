@@ -25,12 +25,12 @@ public class UserController(UserService UserService) : ControllerBase
     [HttpPost(Routes.Users)]
     public async Task<ActionResult<Guid>> CreateUser([FromBody] UserPayload payload)
     {
-        var id = await UserService.Add(payload.FullName, payload.Email);
+        var id = await UserService.Add(payload.FullName, payload.Email, payload.UserType);
         return Created($"/{Routes.Users}/{id}", id);
     }    
     
     [HttpPut(Routes.TheUser)]
-    public async Task<ActionResult> UpdateUser(Guid id, [FromBody] UserPayload payload)
+    public async Task<ActionResult> UpdateUser(Guid id, [FromBody] UpdateUserPayload payload)
     {
         await UserService.Update(id, payload.FullName, payload.Email);
         return NoContent();

@@ -1,5 +1,7 @@
-﻿using Domain.Users.Primitives;
+﻿using Domain.Events.Primitives;
+using Domain.Users.Primitives;
 
 namespace Controllers.Users.Requests;
 
-public record UserPayload(FullName FullName, Email Email);
+public record UserPayload(FullName FullName, Email Email, UserType UserType);
+public record UpdateUserPayload(FullName FullName, Email Email);

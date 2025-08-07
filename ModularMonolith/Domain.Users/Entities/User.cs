@@ -2,10 +2,11 @@
 
 namespace Domain.Users.Entities
 {
-    public class User(Guid id, FullName fullName, Email email) : Aggregate(id)
+    public class User(Guid id, FullName fullName, Email email, UserType userType) : Aggregate(id)
     {
         public FullName FullName { get; private set; } = fullName;
         public Email Email { get; private set; } = email;
+        public UserType UserType { get; private set; } = userType;
         
         public void UpdateName(FullName newFullName)
         {

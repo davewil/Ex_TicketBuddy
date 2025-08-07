@@ -1,10 +1,10 @@
 ﻿using System.Net;
 using System.Text;
-using Api.Hosting;
 using BDD;
 using Controllers.Users;
 using Controllers.Users.Requests;
 using Domain.Users.Entities;
+using Domain.Users.Primitives;
 using Migrations;
 using Shouldly;
 using Testcontainers.MsSql;
@@ -66,7 +66,15 @@ public partial class UserControllerSpecs : TruncateDbSpecification
     private void create_content(string the_name, string the_email)
     {
         content = new StringContent(
-            JsonSerialization.Serialize(new UserPayload(the_name, the_email)), 
+            JsonSerialization.Serialize(new UserPayload(the_name, the_email, UserType.Administrator)), 
+            Encoding.UTF8, 
+            application_json);
+    }    
+    
+    private void create_update_content(string the_name, string the_email)
+    {
+        content = new StringContent(
+            JsonSerialization.Serialize(new UpdateUserPayload(the_name, the_email)), 
             Encoding.UTF8, 
             application_json);
     }
@@ -79,7 +87,7 @@ public partial class UserControllerSpecs : TruncateDbSpecification
     
     private void a_request_to_update_the_user()
     {
-        create_content(new_name, new_email);
+        create_update_content(new_name, new_email);
     }
 
     private void a_request_to_create_a_user_with_same_email()
@@ -89,7 +97,7 @@ public partial class UserControllerSpecs : TruncateDbSpecification
     
     private void a_request_to_update_user_with_duplicate_email()
     {
-        create_content(name, email);
+        create_update_content(name, email);
     }
 
     private void creating_the_user()
@@ -165,11 +173,12 @@ public partial class UserControllerSpecs : TruncateDbSpecification
 
     private void the_user_is_created()
     {
-        var theuser = JsonSerialization.Deserialize<User>(content.ReadAsStringAsync().GetAwaiter().GetResult());
+        var theUser = JsonSerialization.Deserialize<User>(content.ReadAsStringAsync().GetAwaiter().GetResult());
         response_code.ShouldBe(HttpStatusCode.OK);
-        theuser.Id.ShouldBe(returned_id);
-        theuser.FullName.ToString().ShouldBe(name);
-        theuser.Email.ToString().ShouldBe(email);
+        theUser.Id.ShouldBe(returned_id);
+        theUser.FullName.ToString().ShouldBe(name);
+        theUser.Email.ToString().ShouldBe(email);
+        theUser.UserType.ShouldBe(UserType.Administrator);
     }
     
     private void the_user_is_updated()
