@@ -7,7 +7,7 @@ public static class UsersConverters
 {
     public static List<JsonConverter> GetConverters =>
     [
-        new NameConverter(),
+        new FullNameConverter(),
         new EmailConverter(),
     ];
 }

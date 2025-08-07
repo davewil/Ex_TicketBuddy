@@ -11,8 +11,8 @@ public partial class EventSpecs : Specification
     private DateTimeOffset date = DateTimeOffset.Now.AddDays(1);
     private Event user = null!;
 
-    private const string invalid_name = "Jackie Chan 123";
-    private const string valid_name = "Jackie Chan";
+    private const string invalid_name = "Jackie Chan 123!";
+    private const string valid_name = "Jackie Chan 123";
 
     protected override void before_each()
     {
@@ -39,7 +39,7 @@ public partial class EventSpecs : Specification
         name = string.Empty;
     }
     
-    private void an_event_with_non_alphabetical_characters()
+    private void an_event_with_non_alphanumerical_characters()
     {
         name = invalid_name;
     }    

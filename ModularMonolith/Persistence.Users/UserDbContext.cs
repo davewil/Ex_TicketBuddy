@@ -11,7 +11,7 @@ public class UserDbContext(DbContextOptions<UserDbContext> options) : DbContext(
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<User>().HasKey(e => e.Id);
-        modelBuilder.Entity<User>().Property(e => e.FullName).HasConversion(name => name.ToString(), name => new Name(name));
+        modelBuilder.Entity<User>().Property(e => e.FullName).HasConversion(name => name.ToString(), name => new FullName(name));
         modelBuilder.Entity<User>().Property(e => e.Email).HasConversion(email => email.ToString(), email => new Email(email));
         modelBuilder.Entity<User>().ToTable("Users","User", e => e.ExcludeFromMigrations());
     }

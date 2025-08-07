@@ -26,9 +26,9 @@ public partial class EventSpecs
         Scenario(() =>
         {
             Given(valid_inputs);
-            And(an_event_with_non_alphabetical_characters);
+            And(an_event_with_non_alphanumerical_characters);
             When(Validating(creating_an_event));
-            Then(Informs("Name can only have alphabetical characters"));
+            Then(Informs("Name can only have alphanumerical characters"));
         }); 
     }
    

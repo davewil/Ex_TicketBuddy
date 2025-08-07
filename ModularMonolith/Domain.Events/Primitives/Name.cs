@@ -2,7 +2,7 @@
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 
-namespace Domain.Users.Primitives;
+namespace Domain.Events.Primitives;
 
 [JsonConverter(typeof(NameConverter))]
 public readonly record struct Name
@@ -17,9 +17,9 @@ public readonly record struct Name
             {
                 errors.Add("Name cannot be empty");
             }
-            else if (Regex.IsMatch(name,@"[^a-zA-Z\s]", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(250)))
+            else if (Regex.IsMatch(name,@"[^a-zA-Z0-9\s]", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(250)))
             {
-                errors.Add("Name can only have alphabetical characters");
+                errors.Add("Name can only have alphanumerical characters");
             }
         });
         value = name;

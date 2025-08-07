@@ -2,4 +2,4 @@
 
 namespace Controllers.Users.Requests;
 
-public record UserPayload(Name FullName, Email Email);
+public record UserPayload(FullName FullName, Email Email);

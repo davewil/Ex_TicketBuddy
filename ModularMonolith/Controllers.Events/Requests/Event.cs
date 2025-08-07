@@ -2,4 +2,4 @@
 
 namespace Controllers.Events.Requests;
 
-public record EventPayload(EventName Name, DateTimeOffset Date);
+public record EventPayload(Name Name, DateTimeOffset Date);

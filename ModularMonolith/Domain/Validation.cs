@@ -8,9 +8,6 @@ public static class Validation
     {
         List<string> source = [];
         validator(source);
-        if (source.Count != 0)
-        {
-            throw new ValidationException(string.Join<string>(", ", source));
-        }
+        if (source.Count != 0) throw new ValidationException(string.Join<string>(", ", source));
     }
 }

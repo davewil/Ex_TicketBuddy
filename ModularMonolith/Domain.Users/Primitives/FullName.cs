@@ -2,14 +2,14 @@
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 
-namespace Domain.Events.Primitives;
+namespace Domain.Users.Primitives;
 
-[JsonConverter(typeof(EventNameConverter))]
-public readonly record struct EventName
+[JsonConverter(typeof(FullNameConverter))]
+public readonly record struct FullName
 {
     private string value { get; }
 
-    public EventName(string name)
+    public FullName(string name)
     {
         Validation.BasedOn(errors =>
         {
@@ -30,19 +30,19 @@ public readonly record struct EventName
         return value;
     }
 
-    public static implicit operator string(EventName eventName) => eventName.value;
+    public static implicit operator string(FullName fullName) => fullName.value;
     
-    public static implicit operator EventName(string name) => new(name);
+    public static implicit operator FullName(string name) => new(name);
 }
 
-public class EventNameConverter : JsonConverter<EventName>
+public class FullNameConverter : JsonConverter<FullName>
 {
-    public override void Write(Utf8JsonWriter writer, EventName value, JsonSerializerOptions options)
+    public override void Write(Utf8JsonWriter writer, FullName value, JsonSerializerOptions options)
     {
         writer.WriteStringValue(value.ToString());
     }
 
-    public override EventName Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    public override FullName Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         return reader.GetString()!;
     }
