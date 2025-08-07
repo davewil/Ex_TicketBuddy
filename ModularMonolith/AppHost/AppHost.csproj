@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Host.Api\Host.Api.csproj" />
+    <ProjectReference Include="..\Host.Dataseeder\Host.Dataseeder.csproj" />
     <ProjectReference Include="..\Host.Migrations\Host.Migrations.csproj" />
   </ItemGroup>
 

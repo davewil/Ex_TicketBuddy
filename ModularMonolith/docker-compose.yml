@@ -55,6 +55,19 @@ services:
     restart: on-failure
     networks:
       - ticketbuddy-monolith-network
+  dataseeder:
+    container_name: monolith-dataseeder
+    build:
+      context: .
+      dockerfile: Host.DataSeeder/Dockerfile
+    depends_on:
+      api:
+        condition: service_started
+    environment:
+      - ENVIRONMENT=Development
+    networks:
+      - ticketbuddy-monolith-network
+    restart: "no"
 
 volumes:
   ticket_buddy_monolith_sql_server:

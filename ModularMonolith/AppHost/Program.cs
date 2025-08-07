@@ -14,11 +14,16 @@ var migrations = builder.AddProject<Projects.Host_Migrations>("Migrations")
     .WaitFor(database)
     .WithEnvironment("ENVIRONMENT", "LocalDevelopment");
 
-builder.AddProject<Projects.Host_Api>("Api")
+var api = builder.AddProject<Projects.Host_Api>("Api")
     .WithReference(database)
     .WaitFor(database)
     .WithReference(migrations)
     .WaitFor(migrations)
+    .WithEnvironment("ENVIRONMENT", "LocalDevelopment");
+
+builder.AddProject<Projects.Host_Dataseeder>("Dataseeder")
+    .WithReference(api)
+    .WaitFor(api)
     .WithEnvironment("ENVIRONMENT", "LocalDevelopment");
 
 var app = builder.Build();
