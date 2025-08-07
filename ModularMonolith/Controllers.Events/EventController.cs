@@ -1,4 +1,4 @@
-using Application;
+using System.ComponentModel.DataAnnotations;
 using Application.Events;
 using Controllers.Events.Requests;
 using Domain.Events.Entities;
@@ -7,16 +7,15 @@ using Microsoft.AspNetCore.Mvc;
 namespace Controllers.Events;
 
 [ApiController]
-[Route(Routes.Event)]
 public class EventController(EventService EventService) : ControllerBase
 {
-    [HttpGet]
+    [HttpGet(Routes.Event)]
     public async Task<IList<Event>> GetEvents()
     {
         return await EventService.GetAll();
     }    
     
-    [HttpGet("{id:guid}")]
+    [HttpGet(Routes.TheEvent)]
     public async Task<ActionResult<Event>> GetEvent(Guid id)
     {
         var user = await EventService.Get(id);
@@ -24,17 +23,24 @@ public class EventController(EventService EventService) : ControllerBase
         return user;
     }    
     
-    [HttpPost]
+    [HttpPost(Routes.Event)]
     public async Task<ActionResult<Guid>> CreateEvent([FromBody] EventPayload payload)
     {
+        ValidateDate(payload);
         var id = await EventService.Add(payload.Name, payload.Date);
         return Created($"/{Routes.Event}/{id}", id);
-    }    
-    
-    [HttpPut("{id:guid}")]
+    }
+
+    [HttpPut(Routes.TheEvent)]
     public async Task<ActionResult> UpdateEvent(Guid id, [FromBody] EventPayload payload)
     {
+        ValidateDate(payload);
         await EventService.Update(id, payload.Name);
         return NoContent();
+    }
+    
+    private static void ValidateDate(EventPayload payload)
+    {
+        if (payload.Date < DateTimeOffset.Now) throw new ValidationException("Event date cannot be in the past.");
     }
 }

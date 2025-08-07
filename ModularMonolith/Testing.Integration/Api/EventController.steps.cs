@@ -7,6 +7,7 @@ using Domain.Events.Entities;
 using Migrations;
 using Shouldly;
 using Testcontainers.MsSql;
+using WebHost;
 
 namespace Integration.Api;
 
@@ -23,6 +24,7 @@ public partial class EventControllerSpecs : TruncateDbSpecification
     private const string name = "wibble";
     private const string new_name = "wobble";
     private readonly DateTimeOffset event_date = DateTimeOffset.Now.AddDays(1);
+    private readonly DateTimeOffset past_event_date = DateTimeOffset.Now.AddDays(-1);
     private static MsSqlContainer database = null!;
 
     protected override void before_all()
@@ -57,34 +59,52 @@ public partial class EventControllerSpecs : TruncateDbSpecification
 
     private void a_request_to_create_an_event()
     {
-        create_content(name);
+        create_content(name, event_date);
+    }
+    
+    private void a_request_to_create_an_event_with_a_date_in_the_past()
+    {
+        create_content(name, past_event_date);
+    }
+    
+    private void a_request_to_update_the_event_with_a_date_in_the_past()
+    {
+        create_content(new_name, past_event_date);
     }
 
-    private void create_content(string the_name)
+    private void create_content(string the_name, DateTimeOffset the_event_date)
     {
         content = new StringContent(
-            JsonSerialization.Serialize(new EventPayload(the_name, event_date)),
+            JsonSerialization.Serialize(new EventPayload(the_name, the_event_date)),
             Encoding.UTF8,
             application_json);
     }
 
     private void a_request_to_create_another_event()
     {
-        create_content(new_name);
+        create_content(new_name, event_date);
 
     }
     
     private void a_request_to_update_the_event()
     {
-        create_content(new_name);
+        create_content(new_name, event_date);
     }
 
     private void creating_the_event()
     {
         var response = client.PostAsync(Routes.Event, content).GetAwaiter().GetResult();
         response_code = response.StatusCode;
+        content = response.Content;
         response_code.ShouldBe(HttpStatusCode.Created);
-        returned_id = JsonSerialization.Deserialize<Guid>(response.Content.ReadAsStringAsync().GetAwaiter().GetResult());
+        returned_id = JsonSerialization.Deserialize<Guid>(content.ReadAsStringAsync().Await());
+    }    
+    
+    private void creating_the_event_that_will_fail()
+    {
+        var response = client.PostAsync(Routes.Event, content).GetAwaiter().GetResult();
+        response_code = response.StatusCode;
+        content = response.Content;
     }
     
     private void creating_another_event()
@@ -101,10 +121,18 @@ public partial class EventControllerSpecs : TruncateDbSpecification
         response_code.ShouldBe(HttpStatusCode.NoContent);
     }
     
+    private void updating_the_event_that_will_fail()
+    {
+        var response = client.PutAsync(Routes.Event + $"/{returned_id}", content).GetAwaiter().GetResult();
+        response_code = response.StatusCode;
+        content = response.Content;
+    }
+    
     private void an_event_exists()
     {
         a_request_to_create_an_event();
         creating_the_event();
+        returned_id = JsonSerialization.Deserialize<Guid>(content.ReadAsStringAsync().GetAwaiter().GetResult());
     }    
     
     private void another_event_exists()
@@ -136,16 +164,31 @@ public partial class EventControllerSpecs : TruncateDbSpecification
 
     private void the_event_is_created()
     {
-        var theEvent = JsonSerialization.Deserialize<Event>(content.ReadAsStringAsync().GetAwaiter().GetResult());
+
+        var theEvent = JsonSerialization.Deserialize<Event>(content.ReadAsStringAsync().Await());
         response_code.ShouldBe(HttpStatusCode.OK);
         theEvent.Id.ShouldBe(returned_id);
         theEvent.EventName.ToString().ShouldBe(name);
         theEvent.Date.ShouldBe(event_date);
     }
     
+    private void the_event_is_not_created()
+    {
+        response_code.ShouldBe(HttpStatusCode.BadRequest);
+        var apiError = JsonSerialization.Deserialize<ApiError>(content.ReadAsStringAsync().Await());
+        apiError.Errors.ShouldContain("Event date cannot be in the past.");
+    }
+    
+    private void the_event_is_not_updated()
+    {
+        response_code.ShouldBe(HttpStatusCode.BadRequest);
+        var apiError = JsonSerialization.Deserialize<ApiError>(content.ReadAsStringAsync().Await());
+        apiError.Errors.ShouldContain("Event date cannot be in the past.");
+    }
+    
     private void the_event_is_updated()
     {
-        var theEvent = JsonSerialization.Deserialize<Event>(content.ReadAsStringAsync().GetAwaiter().GetResult());
+        var theEvent = JsonSerialization.Deserialize<Event>(content.ReadAsStringAsync().Await());
         response_code.ShouldBe(HttpStatusCode.OK);
         theEvent.Id.ShouldBe(returned_id);
         theEvent.EventName.ToString().ShouldBe(new_name);
