@@ -27,7 +27,7 @@ public class EventController(EventService EventService) : ControllerBase
     public async Task<ActionResult<Guid>> CreateEvent([FromBody] EventPayload payload)
     {
         ValidateDate(payload);
-        var id = await EventService.Add(payload.Name, payload.Date);
+        var id = await EventService.Add(payload.Name, payload.Date, payload.Venue);
         return Created($"/{Routes.Events}/{id}", id);
     }
 
@@ -35,7 +35,7 @@ public class EventController(EventService EventService) : ControllerBase
     public async Task<ActionResult> UpdateEvent(Guid id, [FromBody] EventPayload payload)
     {
         ValidateDate(payload);
-        await EventService.Update(id, payload.Name, payload.Date);
+        await EventService.Update(id, payload.Name, payload.Date, payload.Venue);
         return NoContent();
     }
     

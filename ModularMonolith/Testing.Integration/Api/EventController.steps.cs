@@ -4,6 +4,7 @@ using BDD;
 using Controllers.Events;
 using Controllers.Events.Requests;
 using Domain.Events.Entities;
+using Domain.Events.Primitives;
 using Migrations;
 using Shouldly;
 using Testcontainers.MsSql;
@@ -78,10 +79,10 @@ public partial class EventControllerSpecs : TruncateDbSpecification
         create_content(new_name, past_event_date);
     }
 
-    private void create_content(string the_name, DateTimeOffset the_event_date)
+    private void create_content(string the_name, DateTimeOffset the_event_date, Venue venue = Venue.FirstDirectArenaLeeds)
     {
         content = new StringContent(
-            JsonSerialization.Serialize(new EventPayload(the_name, the_event_date)),
+            JsonSerialization.Serialize(new EventPayload(the_name, the_event_date, venue)),
             Encoding.UTF8,
             application_json);
     }
@@ -94,7 +95,7 @@ public partial class EventControllerSpecs : TruncateDbSpecification
     
     private void a_request_to_update_the_event()
     {
-        create_content(new_name, new_event_date);
+        create_content(new_name, new_event_date, Venue.EmiratesOldTraffordManchester);
     }
 
     private void creating_the_event()
@@ -187,6 +188,7 @@ public partial class EventControllerSpecs : TruncateDbSpecification
         theEvent.Id.ShouldBe(returned_id);
         theEvent.EventName.ToString().ShouldBe(name);
         theEvent.Date.ShouldBe(event_date);
+        theEvent.Venue.ShouldBe(Venue.FirstDirectArenaLeeds);
     }
     
     private void the_event_is_not_created()
@@ -210,6 +212,7 @@ public partial class EventControllerSpecs : TruncateDbSpecification
         theEvent.Id.ShouldBe(returned_id);
         theEvent.EventName.ToString().ShouldBe(new_name);
         theEvent.Date.ShouldBe(new_event_date);
+        theEvent.Venue.ShouldBe(Venue.EmiratesOldTraffordManchester);
     }    
     
     private void the_events_are_listed()

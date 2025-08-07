@@ -1,5 +1,6 @@
 ﻿using BDD;
 using Domain.Events.Entities;
+using Domain.Events.Primitives;
 using FluentAssertions;
 
 namespace Unit.Domain;
@@ -46,7 +47,7 @@ public partial class EventSpecs : Specification
     
     private void creating_an_event()
     {
-        user = new Event(id, name, date);
+        user = new Event(id, name, date, Venue.FirstDirectArenaLeeds);
     }    
     
     private void the_event_is_created()

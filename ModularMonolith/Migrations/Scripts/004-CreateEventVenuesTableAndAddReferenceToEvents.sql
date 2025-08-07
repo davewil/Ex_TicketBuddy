@@ -10,7 +10,7 @@
 GO
 
 ALTER TABLE [Event].[Events]
-    ADD [VenueId] [uniqueidentifier] NULL
+    ADD [Venue] [int] NOT NULL
 GO
 
 INSERT INTO [Event].[EventVenues] ([Id], [Name], [Capacity])
