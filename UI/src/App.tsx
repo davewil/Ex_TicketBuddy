@@ -6,10 +6,10 @@ import {ToastContainer} from "react-toastify";
 function App() {
 
   return (
-      <body>
+      <div>
         <AppRoutes />
         <ToastContainer />
-      </body>
+      </div>
   )
 }
 
