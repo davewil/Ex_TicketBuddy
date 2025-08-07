@@ -1,4 +1,4 @@
-﻿namespace Shared.Domain;
+﻿namespace Domain;
 
 public abstract class Aggregate(Guid Id)
 {

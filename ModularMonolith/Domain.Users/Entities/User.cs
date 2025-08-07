@@ -1,7 +1,6 @@
-﻿using Shared.Domain;
-using Users.Domain.Primitives;
+﻿using Domain.Users.Primitives;
 
-namespace Domain.Entities
+namespace Domain.Users.Entities
 {
     public class User(Guid id, Name fullName, Email email) : Aggregate(id)
     {

@@ -1,5 +1,5 @@
-﻿using Domain.Entities;
-using Persistence;
+﻿using Domain.Users.Entities;
+using Users.Persistence;
 
 namespace Application;
 

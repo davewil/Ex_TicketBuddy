@@ -1,11 +1,11 @@
 ﻿using System.Text.Json.Serialization;
 using Application;
-using Domain;
+using Application.Events;
+using Domain.Events;
+using Domain.Users;
+using Events.Persistence;
 using OpenTelemetry;
-using OpenTelemetry.Exporter;
-using OpenTelemetry.Metrics;
-using OpenTelemetry.Trace;
-using Persistence;
+using Users.Persistence;
 using WebHost;
 
 namespace Api.Hosting;
@@ -15,7 +15,9 @@ internal sealed class Api(WebApplicationBuilder webApplicationBuilder, IConfigur
     private readonly Settings _settings = new(configuration);
     protected override string ApplicationName => nameof(Api);
     protected override string TelemetryConnectionString => _settings.Telemetry.ConnectionString;
-    protected override List<JsonConverter> JsonConverters => Converters.GetConverters;
+
+    protected override List<JsonConverter> JsonConverters =>
+        EventsConverters.GetConverters.Concat(UsersConverters.GetConverters).ToList();
 
     protected override void ConfigureServices(IServiceCollection services)
     {

@@ -1,7 +1,6 @@
-﻿using Domain.Primitives;
-using Shared.Domain;
+﻿using Domain.Events.Primitives;
 
-namespace Domain.Entities;
+namespace Domain.Events.Entitites;
 
 public class Event(Guid id, EventName eventName) : Aggregate(id)
 {

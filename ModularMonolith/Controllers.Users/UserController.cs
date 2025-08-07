@@ -1,10 +1,9 @@
-using Api.Hosting;
-using Api.Requests;
 using Application;
-using Domain.Entities;
+using Controllers.Users.Requests;
+using Domain.Users.Entities;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Api.Controllers;
+namespace Controllers.Users;
 
 [ApiController]
 [Route(Routes.User)]

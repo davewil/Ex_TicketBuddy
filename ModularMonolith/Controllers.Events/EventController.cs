@@ -1,10 +1,10 @@
-using Api.Hosting;
-using Api.Requests;
 using Application;
-using Domain.Entities;
+using Application.Events;
+using Controllers.Events.Requests;
+using Domain.Events.Entitites;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Api.Controllers;
+namespace Controllers.Events;
 
 [ApiController]
 [Route(Routes.Event)]

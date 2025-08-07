@@ -5,11 +5,13 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <LangVersion>default</LangVersion>
+        <RootNamespace>Application</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\Domain\Domain.csproj" />
-      <ProjectReference Include="..\Persistence\Persistence.csproj" />
+      <ProjectReference Include="..\Persistence.Events\Persistence.Events.csproj" />
+      <ProjectReference Include="..\Persistence.Users\Persistence.Users.csproj" />
     </ItemGroup>
 
 </Project>

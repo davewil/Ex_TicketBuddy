@@ -1,9 +1,8 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
-using Shared.Domain;
 
-namespace Users.Domain.Primitives;
+namespace Domain.Users.Primitives;
 
 [JsonConverter(typeof(EmailConverter))]
 public readonly record struct Email

@@ -1,7 +1,7 @@
-﻿using Domain.Entities;
-using Persistence;
+﻿using Domain.Events.Entitites;
+using Events.Persistence;
 
-namespace Application;
+namespace Application.Events;
 
 public class EventService(EventRepository repository)
 {

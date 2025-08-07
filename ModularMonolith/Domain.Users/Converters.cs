@@ -1,14 +1,12 @@
 ﻿using System.Text.Json.Serialization;
-using Domain.Primitives;
-using Users.Domain.Primitives;
+using Domain.Users.Primitives;
 
-namespace Domain;
+namespace Domain.Users;
 
-public static class Converters
+public static class UsersConverters
 {
     public static List<JsonConverter> GetConverters =>
     [
-        new EventNameConverter(),
         new NameConverter(),
         new EmailConverter(),
     ];

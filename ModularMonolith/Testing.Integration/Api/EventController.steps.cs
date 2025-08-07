@@ -2,7 +2,8 @@
 using System.Text;
 using Api.Hosting;
 using BDD;
-using Domain.Entities;
+using Controllers.Events;
+using Domain.Events.Entitites;
 using Migrations;
 using Shouldly;
 using Testcontainers.MsSql;

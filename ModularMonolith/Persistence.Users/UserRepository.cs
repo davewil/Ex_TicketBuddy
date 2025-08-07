@@ -1,8 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
-using Domain.Entities;
+﻿using System.ComponentModel.DataAnnotations;
+using Domain.Users.Entities;
+using Microsoft.EntityFrameworkCore;
 
-namespace Persistence;
+namespace Users.Persistence;
 
 public class UserRepository(UserDbContext userDbContext)
 {

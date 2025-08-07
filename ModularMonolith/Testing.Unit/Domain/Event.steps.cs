@@ -1,5 +1,5 @@
 ﻿using BDD;
-using Domain.Entities;
+using Domain.Events.Entitites;
 using FluentAssertions;
 
 namespace Unit.Domain;

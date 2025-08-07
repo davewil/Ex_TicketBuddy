@@ -8,11 +8,15 @@ FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["Host.Api/Host.Api.csproj", "Host.Api/"]
-COPY ["Application/Application.csproj", "Application/"]
+COPY ["Application.Events/Application.Events.csproj", "Application.Events/"]
+COPY ["Application.Users/Application.Users.csproj", "Application.Users/"]
+COPY ["Domain.Events/Domain.Events.csproj", "Domain.Events/"]
 COPY ["Domain/Domain.csproj", "Domain/"]
-COPY ["Domain.Messaging/Domain.Messaging.csproj", "Domain.Messaging/"]
-COPY ["Integration.Messaging/Integration.Messaging.csproj", "Integration.Messaging/"]
-COPY ["Persistence/Persistence.csproj", "Persistence/"]
+COPY ["Domain.Users/Domain.Users.csproj", "Domain.Users/"]
+COPY ["Persistence.Events/Persistence.Events.csproj", "Persistence.Events/"]
+COPY ["Persistence.Users/Persistence.Users.csproj", "Persistence.Users/"]
+COPY ["Controllers.Events/Controllers.Events.csproj", "Controllers.Events/"]
+COPY ["Controllers.Users/Controllers.Users.csproj", "Controllers.Users/"]
 RUN dotnet restore "Host.Api/Host.Api.csproj"
 COPY . .
 WORKDIR "/src/Host.Api"

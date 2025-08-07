@@ -1,5 +1,5 @@
 ﻿using BDD;
-using Domain.Entities;
+using Domain.Users.Entities;
 using Shouldly;
 
 namespace Unit.Domain;

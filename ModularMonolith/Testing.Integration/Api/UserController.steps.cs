@@ -1,9 +1,10 @@
 ﻿using System.Net;
 using System.Text;
 using Api.Hosting;
-using Api.Requests;
 using BDD;
-using Domain.Entities;
+using Controllers.Users;
+using Controllers.Users.Requests;
+using Domain.Users.Entities;
 using Migrations;
 using Shouldly;
 using Testcontainers.MsSql;

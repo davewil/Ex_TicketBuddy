@@ -1,10 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Domain.Events.Entitites;
+using Microsoft.EntityFrameworkCore;
 
-namespace Persistence;
+namespace Events.Persistence;
 
 public class EventRepository(EventDbContext eventDbContext)
 {
-    public async Task Save(Domain.Entities.Event theEvent)
+    public async Task Save(Event theEvent)
     {
         if (await Get(theEvent.Id) != null)
         {
@@ -18,12 +19,12 @@ public class EventRepository(EventDbContext eventDbContext)
         }
     }
 
-    public async Task<Domain.Entities.Event?> Get(Guid id)
+    public async Task<Event?> Get(Guid id)
     {
         return await eventDbContext.Events.FindAsync(id);
     }
 
-    public async Task<IList<Domain.Entities.Event>> GetAll()
+    public async Task<IList<Event>> GetAll()
     {
         return await eventDbContext.Events.ToListAsync();
     }

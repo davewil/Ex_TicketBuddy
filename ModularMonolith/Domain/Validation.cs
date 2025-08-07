@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Shared.Domain;
+namespace Domain;
 
 public static class Validation
 {
