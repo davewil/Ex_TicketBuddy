@@ -1,8 +1,8 @@
 ﻿using System.Net;
 using System.Text;
-using Api.Hosting;
 using BDD;
 using Controllers.Events;
+using Controllers.Events.Requests;
 using Domain.Events.Entitites;
 using Migrations;
 using Shouldly;
@@ -61,7 +61,10 @@ public partial class EventControllerSpecs : TruncateDbSpecification
 
     private void create_content(string the_name)
     {
-        content = new StringContent($"{{\"name\":\"{the_name}\"}}", Encoding.UTF8, application_json);
+        content = new StringContent(
+            JsonSerialization.Serialize(new EventPayload(the_name)),
+            Encoding.UTF8,
+            application_json);
     }
 
     private void a_request_to_create_another_event()

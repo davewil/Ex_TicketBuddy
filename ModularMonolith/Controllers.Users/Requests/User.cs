@@ -1,3 +1,5 @@
-﻿namespace Controllers.Users.Requests;
+﻿using Domain.Users.Primitives;
 
-public record UserPayload(string FullName, string Email);
+namespace Controllers.Users.Requests;
+
+public record UserPayload(Name FullName, Email Email);

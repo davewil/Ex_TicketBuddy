@@ -1,3 +1,5 @@
-﻿namespace Controllers.Events.Requests;
+﻿using Domain.Events.Primitives;
 
-public record EventPayload(string Name);
+namespace Controllers.Events.Requests;
+
+public record EventPayload(EventName Name);
