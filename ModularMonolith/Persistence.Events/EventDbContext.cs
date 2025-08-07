@@ -1,6 +1,6 @@
 ﻿using Domain.Events.Primitives;
 using Microsoft.EntityFrameworkCore;
-using Event = Domain.Events.Entitites.Event;
+using Event = Domain.Events.Entities.Event;
 
 namespace Events.Persistence;
 

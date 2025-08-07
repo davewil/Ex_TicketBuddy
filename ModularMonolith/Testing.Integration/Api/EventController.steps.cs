@@ -3,7 +3,7 @@ using System.Text;
 using BDD;
 using Controllers.Events;
 using Controllers.Events.Requests;
-using Domain.Events.Entitites;
+using Domain.Events.Entities;
 using Migrations;
 using Shouldly;
 using Testcontainers.MsSql;
@@ -22,6 +22,7 @@ public partial class EventControllerSpecs : TruncateDbSpecification
     private const string application_json = "application/json";
     private const string name = "wibble";
     private const string new_name = "wobble";
+    private readonly DateTimeOffset event_date = DateTimeOffset.Now.AddDays(1);
     private static MsSqlContainer database = null!;
 
     protected override void before_all()
@@ -62,7 +63,7 @@ public partial class EventControllerSpecs : TruncateDbSpecification
     private void create_content(string the_name)
     {
         content = new StringContent(
-            JsonSerialization.Serialize(new EventPayload(the_name)),
+            JsonSerialization.Serialize(new EventPayload(the_name, event_date)),
             Encoding.UTF8,
             application_json);
     }
@@ -139,6 +140,7 @@ public partial class EventControllerSpecs : TruncateDbSpecification
         response_code.ShouldBe(HttpStatusCode.OK);
         theEvent.Id.ShouldBe(returned_id);
         theEvent.EventName.ToString().ShouldBe(name);
+        theEvent.Date.ShouldBe(event_date);
     }
     
     private void the_event_is_updated()

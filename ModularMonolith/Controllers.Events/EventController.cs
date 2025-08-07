@@ -1,7 +1,7 @@
 using Application;
 using Application.Events;
 using Controllers.Events.Requests;
-using Domain.Events.Entitites;
+using Domain.Events.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Controllers.Events;
@@ -27,7 +27,7 @@ public class EventController(EventService EventService) : ControllerBase
     [HttpPost]
     public async Task<ActionResult<Guid>> CreateEvent([FromBody] EventPayload payload)
     {
-        var id = await EventService.Add(payload.Name);
+        var id = await EventService.Add(payload.Name, payload.Date);
         return Created($"/{Routes.Event}/{id}", id);
     }    
     

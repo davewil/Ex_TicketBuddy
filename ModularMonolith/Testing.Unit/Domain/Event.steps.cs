@@ -1,5 +1,5 @@
 ﻿using BDD;
-using Domain.Events.Entitites;
+using Domain.Events.Entities;
 using FluentAssertions;
 
 namespace Unit.Domain;
@@ -43,7 +43,7 @@ public partial class EventSpecs : Specification
     
     private void creating_an_event()
     {
-        user = new Event(id, name);
+        user = new Event(id, name, DateTimeOffset.Now);
     }    
     
     private void the_event_is_created()

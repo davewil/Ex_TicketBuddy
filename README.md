@@ -14,6 +14,8 @@ Admittedly, the transactional outbox pattern is overkill.
 
 Microservices are a good choice when the application is expected to grow significantly, or when different teams will work on different parts of the application.
 
+These microservices are in one repo and one dotnet solution, but they can be split into multiple repositories and solutions if needed and referenced as NuGet packages.
+
 ## Key technologies/choices:
 - ASP.NET Core
 - Docker

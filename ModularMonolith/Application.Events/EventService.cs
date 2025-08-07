@@ -1,4 +1,5 @@
-﻿using Domain.Events.Entitites;
+﻿using Domain.Events.Entities;
+using Domain.Events.Primitives;
 using Events.Persistence;
 
 namespace Application.Events;
@@ -15,15 +16,15 @@ public class EventService(EventRepository repository)
         return await repository.GetAll();
     }
 
-    public async Task<Guid> Add(string name)
+    public async Task<Guid> Add(EventName name, DateTimeOffset date)
     {
         var id = Guid.NewGuid();
-        var user = new Event(id, name);
+        var user = new Event(id, name, date);
         await repository.Save(user);
         return id;
     }
 
-    public async Task Update(Guid id, string name)
+    public async Task Update(Guid id, EventName name)
     {
         var user = await repository.Get(id);
         if (user is null) return;

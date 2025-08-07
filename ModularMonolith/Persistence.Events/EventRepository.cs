@@ -1,4 +1,4 @@
-﻿using Domain.Events.Entitites;
+﻿using Domain.Events.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Events.Persistence;
