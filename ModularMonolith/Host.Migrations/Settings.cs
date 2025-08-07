@@ -1,5 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
-using Shared.Hosting;
+﻿using Api.Hosting;
+using Microsoft.Extensions.Configuration;
 
 namespace Migrations.Host;
 

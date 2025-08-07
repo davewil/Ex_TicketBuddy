@@ -1,7 +1,6 @@
 ﻿using Common.Environment;
-using Microsoft.Extensions.Configuration;
 
-namespace Shared.Hosting;
+namespace Api.Hosting;
 
 public static class Configuration
 {
