@@ -1,5 +1,7 @@
-﻿export async function get<T>(url: string): Promise<T> {
-    return fetch(url, {})
+﻿const api = import.meta.env.VITE_API_URL || '';
+
+export async function get<T>(url: string): Promise<T> {
+    return fetch(api + url, {})
         .then(async response => {
             if (!response.ok) {
                 throw {
@@ -12,7 +14,7 @@
 }
 
 export async function post(url: string, body: any): Promise<any> {
-    return fetch(url, {
+    return fetch(api + url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body)
@@ -20,7 +22,7 @@ export async function post(url: string, body: any): Promise<any> {
 }
 
 export async function put(url: string, body: any): Promise<any> {
-    return fetch(url, {
+    return fetch(api + url, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body)
@@ -28,7 +30,7 @@ export async function put(url: string, body: any): Promise<any> {
 }
 
 export async function deleteCall(url: string): Promise<any> {
-    return fetch(url, {
+    return fetch(api + url, {
         method: "DELETE",
     })
         .then(handleResponse())
