@@ -16,7 +16,7 @@ export const Home = () => {
             <h1>Events</h1>
             <ul>
                 {events.map((event, index) => (
-                    <li key={index}>{event.Name}</li>
+                    <li key={index}>{event.EventName}</li>
                 ))}
             </ul>
         </div>

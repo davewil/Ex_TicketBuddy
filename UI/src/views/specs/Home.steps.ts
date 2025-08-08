@@ -22,6 +22,6 @@ export async function should_load_events_on_render() {
     renderHome();
     await waitUntil(wait_for_get);
     for (const event of Events) {
-        expect(eventExists(event.Name)).toBeTruthy();
+        expect(eventExists(event.EventName)).toBeTruthy();
     }
 }
