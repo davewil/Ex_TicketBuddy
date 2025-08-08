@@ -26,11 +26,18 @@ internal sealed class Api(WebApplicationBuilder webApplicationBuilder, IConfigur
         services.AddScoped<EventService>();
         services.AddScoped<UserRepository>();
         services.AddScoped<UserService>();
+        services.AddCorsAllowAll();
     }
 
     protected override OpenTelemetryBuilder ConfigureTelemetry(WebApplicationBuilder builder)
     {
         var otel = base.ConfigureTelemetry(builder);
         return otel.WithTelemetry(_settings, ApplicationName);
+    }
+
+    protected override void ConfigureApplication(WebApplication theApp)
+    {
+        base.ConfigureApplication(theApp);
+        theApp.UseCorsAllowAll();
     }
 }
