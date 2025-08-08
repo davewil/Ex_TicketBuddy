@@ -24,6 +24,7 @@ These microservices are in one repo and one dotnet solution, but they can be spl
 - OpenTelemetry
 - .NET Aspire
 - Transactional Outbox Pattern (Microservices)
+- React + vite + vitest
 
 ## Observability
 
