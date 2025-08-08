@@ -1,8 +1,24 @@
-﻿export const Home = () => {
+﻿import {useEffect, useState} from "react";
+import {getEvents} from "../api/events.api";
+import {type Event} from "../domain/event";
+
+export const Home = () => {
+    const [events, setEvents] = useState<Event[]>([]);
+
+    useEffect(() => {
+        getEvents().then(data => {
+            setEvents(data);
+        });
+    },[]);
+
     return (
         <div>
-            <h1>Welcome to the Home Page</h1>
-            <p>This is the home page of our application.</p>
+            <h1>Events</h1>
+            <ul>
+                {events.map((event, index) => (
+                    <li key={index}>{event.Name}</li>
+                ))}
+            </ul>
         </div>
     );
 }
