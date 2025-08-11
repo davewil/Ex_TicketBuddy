@@ -17,7 +17,14 @@ export const Home = () => {
             <h1>Events</h1>
             <EventList>
                 {events.map((event, index) => (
-                    <EventItem key={index}>{event.EventName}</EventItem>
+                    <EventItem key={index}>
+                        <div>
+                            <h2>{event.EventName}</h2>
+                            <p>{new Date(event.Date).toLocaleDateString()}</p>
+                            <button>Find tickets</button>
+                        </div>
+
+                    </EventItem>
                 ))}
             </EventList>
         </div>
