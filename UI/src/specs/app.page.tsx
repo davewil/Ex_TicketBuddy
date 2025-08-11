@@ -35,7 +35,12 @@ export function usersDropdownIsRendered() {
     return elements.usersDropdown() !== null;
 }
 
+export function userIconIsRendered() {
+    return elements.userIcon() !== null;
+}
+
 const elements = {
     home: () => renderedComponent.queryByText("I am the mocked Home component"),
     usersDropdown: () => renderedComponent.queryByTestId("users-dropdown"),
+    userIcon: () => renderedComponent.queryByTestId("user-icon")
 }

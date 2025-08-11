@@ -1,5 +1,7 @@
 ﻿import styled from "styled-components";
 import TicketStub from "../assets/ticket-stub.svg";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faUser } from '@fortawesome/free-solid-svg-icons';
 
 export const HeaderBar = styled.div`
     display: flex;
@@ -19,8 +21,19 @@ export const HeaderBar = styled.div`
 
 export const TicketStubImage = () => <img src={TicketStub} alt="Ticket Stub" width={150} height={100} />;
 
-export const UsersDropdown = styled.select`
+const UserIconBase = styled(FontAwesomeIcon)`
     margin-left: auto;
+    font-size: 1.5em;
+    cursor: pointer;
+    &:hover {
+        color: #21a1f1;
+    }
+`;
+
+export const UserIcon = () => <UserIconBase icon={faUser} data-testid="user-icon" />;
+
+export const UsersDropdown = styled.select`
+    margin-left: 10px;
     padding: 5px;
     font-size: 1em;
     border-radius: 5px;
