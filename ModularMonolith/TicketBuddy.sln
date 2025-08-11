@@ -15,7 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Testing", "Testing", "{A9E5
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{81DDED9D-158B-E303-5F62-77A2896D2A5A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppHost", "AppHost\AppHost.csproj", "{8C866276-D219-4913-9C42-FFF5B2271053}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicketBuddy", "TicketBuddy\TicketBuddy.csproj", "{8C866276-D219-4913-9C42-FFF5B2271053}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Users", "Application.Users\Application.Users.csproj", "{69881FD9-5EA8-41DA-A3CE-3636206BEDB8}"
 EndProject
