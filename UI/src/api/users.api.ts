@@ -2,5 +2,9 @@
 import {get} from "../common/http.ts";
 
 export const getUsers = () => {
-    return get<User[]>('/users');
+    return get<User[]>(userRoutes.users);
+}
+
+export const userRoutes = {
+    users: "/users",
 }

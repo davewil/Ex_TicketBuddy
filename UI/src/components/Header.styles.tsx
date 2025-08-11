@@ -21,7 +21,7 @@ export const HeaderBar = styled.div`
 
 export const TicketStubImage = () => <img src={TicketStub} alt="Ticket Stub" width={150} height={100} />;
 
-const UserIconBase = styled(FontAwesomeIcon)`
+export const UserIconContainer = styled.div`
     margin-left: auto;
     font-size: 1.5em;
     cursor: pointer;
@@ -30,7 +30,7 @@ const UserIconBase = styled(FontAwesomeIcon)`
     }
 `;
 
-export const UserIcon = () => <UserIconBase icon={faUser} data-testid="user-icon" />;
+export const UserIcon = () => <FontAwesomeIcon icon={faUser} />;
 
 export const UsersDropdown = styled.select`
     margin-left: 10px;
@@ -61,3 +61,25 @@ export const UsersDropdown = styled.select`
         color: #ccc;
     }
 `
+
+export const UserDetails = styled.div`
+    position: absolute;
+    top: 50px;
+    right: 250px;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    h2 {
+        margin: 0;
+        font-size: 1.2em;
+        color: #333;
+    }
+    p {
+        margin: 5px 0;
+        font-size: 1em;
+        color: #666;
+    }
+`;

@@ -1,15 +1,23 @@
-﻿import {homePageIsRendered, renderApp, unmountApp, userIconIsRendered, usersDropdownIsRendered} from "./app.page.tsx";
+﻿import {
+    clickUserIcon,
+    homePageIsRendered,
+    renderApp,
+    unmountApp, userEmailIsRendered,
+    userIconIsRendered,
+    usersDropdownIsRendered
+} from "./app.page.tsx";
 import {afterEach, beforeEach, expect} from "vitest";
 import {MockServer} from "../testing/mock-server.ts";
 import {Users} from "../testing/data.ts";
 import {waitUntil} from "../testing/utilities.ts";
+import {userRoutes} from "../api/users.api.ts";
 
 const mockServer = MockServer.New();
 let wait_for_get: () => boolean;
 
 beforeEach(() => {
     mockServer.reset();
-    wait_for_get = mockServer.get("users", Users)
+    wait_for_get = mockServer.get(userRoutes.users, Users)
     mockServer.start();
 });
 
@@ -32,4 +40,11 @@ export async function should_show_user_icon_when_selected() {
     renderApp();
     await waitUntil(wait_for_get);
     expect(userIconIsRendered()).toBeTruthy();
+}
+
+export async function should_show_user_details_when_user_icon_is_clicked() {
+    renderApp();
+    await waitUntil(wait_for_get);
+    await clickUserIcon();
+    expect(await userEmailIsRendered(Users[0].Email)).toBeTruthy();
 }
