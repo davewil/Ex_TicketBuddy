@@ -8,7 +8,6 @@ export const HeaderBar = styled.div`
     background-color: #282c34;
     color: white;
     font-size: 1.5em;
-    width: 100%;
     
     h1 {
         margin: 0;
