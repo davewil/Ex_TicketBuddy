@@ -15,7 +15,7 @@ vi.mock("../views/Home", () => {
     }
 })
 
-export function renderHome() {
+export function renderApp() {
     renderedComponent = render(
             <MemoryRouter>
                 <App/>
@@ -23,10 +23,19 @@ export function renderHome() {
     return renderedComponent;
 }
 
+export function unmountApp() {
+    renderedComponent.unmount();
+}
+
 export function homePageIsRendered() {
     return elements.home() !== null;
 }
 
+export function usersDropdownIsRendered() {
+    return elements.usersDropdown() !== null;
+}
+
 const elements = {
-    home: () => renderedComponent.queryByText("I am the mocked Home component")
+    home: () => renderedComponent.queryByText("I am the mocked Home component"),
+    usersDropdown: () => renderedComponent.queryByTestId("users-dropdown"),
 }

@@ -18,3 +18,33 @@ export const HeaderBar = styled.div`
 `
 
 export const TicketStubImage = () => <img src={TicketStub} alt="Ticket Stub" width={150} height={100} />;
+
+export const UsersDropdown = styled.select`
+    margin-left: auto;
+    padding: 5px;
+    font-size: 1em;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    color: #333;
+    cursor: pointer;
+    &:focus {
+        outline: none;
+        border-color: #61dafb;
+    }
+    option {
+        padding: 5px;
+        background-color: #fff;
+        color: #333;
+    }
+    option:hover {
+        background-color: #f0f0f0;
+    }
+    option:checked {
+        background-color: #61dafb;
+        color: white;
+    }
+    option:disabled {
+        color: #ccc;
+    }
+`
