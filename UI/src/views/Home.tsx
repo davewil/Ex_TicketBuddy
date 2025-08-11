@@ -1,6 +1,7 @@
 ﻿import {useEffect, useState} from "react";
 import {getEvents} from "../api/events.api";
 import {type Event} from "../domain/event";
+import {EventItem, EventList} from "./Home.styles.tsx";
 
 export const Home = () => {
     const [events, setEvents] = useState<Event[]>([]);
@@ -14,11 +15,11 @@ export const Home = () => {
     return (
         <div>
             <h1>Events</h1>
-            <ul>
+            <EventList>
                 {events.map((event, index) => (
-                    <li key={index}>{event.EventName}</li>
+                    <EventItem key={index}>{event.EventName}</EventItem>
                 ))}
-            </ul>
+            </EventList>
         </div>
     );
 }
