@@ -14,9 +14,11 @@
   <ItemGroup>
     <PackageReference Include="Aspire.Hosting" Version="9.4.0" />
     <PackageReference Include="Aspire.Hosting.AppHost" Version="9.4.0" />
+    <PackageReference Include="Aspire.Hosting.NodeJs" Version="9.4.0" />
     <PackageReference Include="Aspire.Hosting.RabbitMQ" Version="9.4.0" />
     <PackageReference Include="Aspire.Hosting.SqlServer" Version="9.4.0" />
     <PackageReference Include="Aspire.Microsoft.Data.SqlClient" Version="9.4.0" />
+    <PackageReference Include="CommunityToolkit.Aspire.Hosting.NodeJS.Extensions" Version="9.7.1-beta.344" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.7" />
   </ItemGroup>
 
@@ -30,6 +32,10 @@
     <None Update="properties\launchSettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include=".aspire\settings.json" />
   </ItemGroup>
 
 </Project>

@@ -21,10 +21,17 @@ var api = builder.AddProject<Projects.Host_Api>("Api")
     .WaitFor(migrations)
     .WithEnvironment("ENVIRONMENT", "LocalDevelopment");
 
-builder.AddProject<Projects.Host_Dataseeder>("Dataseeder")
+var dataseeder = builder.AddProject<Projects.Host_Dataseeder>("Dataseeder")
     .WithReference(api)
     .WaitFor(api)
     .WithEnvironment("ENVIRONMENT", "LocalDevelopment");
+
+builder.AddViteApp(name: "User-Interface", workingDirectory: "../../UI")
+    .WithReference(api)
+    .WaitFor(api)
+    .WithReference(dataseeder)
+    .WaitFor(dataseeder)
+    .WithNpmPackageInstallation();
 
 var app = builder.Build();
 await app.RunAsync();
