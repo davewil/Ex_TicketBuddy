@@ -1,4 +1,7 @@
-﻿var builder = DistributedApplication.CreateBuilder(args);
+﻿using Common.Environment;
+
+const string Environment = "Environment";
+var builder = DistributedApplication.CreateBuilder(args);
 
 var sqlServer = builder
     .AddSqlServer("SqlServerMonolith")
@@ -12,19 +15,19 @@ var database = sqlServer.AddDatabase("TicketBuddy");
 var migrations = builder.AddProject<Projects.Host_Migrations>("Migrations")
     .WithReference(database)
     .WaitFor(database)
-    .WithEnvironment("ENVIRONMENT", "LocalDevelopment");
+    .WithEnvironment(Environment, CommonEnvironment.LocalDevelopment.ToString);
 
 var api = builder.AddProject<Projects.Host_Api>("Api")
     .WithReference(database)
     .WaitFor(database)
     .WithReference(migrations)
     .WaitFor(migrations)
-    .WithEnvironment("ENVIRONMENT", "LocalDevelopment");
+    .WithEnvironment(Environment, CommonEnvironment.LocalDevelopment.ToString);
 
 var dataseeder = builder.AddProject<Projects.Host_Dataseeder>("Dataseeder")
     .WithReference(api)
     .WaitFor(api)
-    .WithEnvironment("ENVIRONMENT", "LocalDevelopment");
+    .WithEnvironment(Environment, CommonEnvironment.LocalDevelopment.ToString);
 
 builder.AddViteApp(name: "User-Interface", workingDirectory: "../../UI")
     .WithReference(api)

@@ -1,7 +1,10 @@
-﻿var builder = DistributedApplication.CreateBuilder(args);
+﻿using Common.Environment;
+
+const string Environment = "Environment";
+var builder = DistributedApplication.CreateBuilder(args);
 
 var sqlServer = builder
-    .AddSqlServer("sqlserver")
+    .AddSqlServer("SqlServerMicroservices")
     .WithPassword(builder.AddParameter("Password", "YourStrong@Passw0rd"))
     .WithDataVolume("TicketBuddy.SqlServer")
     .WithHostPort(1450)
@@ -21,7 +24,7 @@ var rabbitmq = builder
 var eventsMigrations = builder.AddProject<Projects.Events_Host_Migrations>("events-migrations")
     .WithReference(eventDb)
     .WaitFor(eventDb)
-    .WithEnvironment("ENVIRONMENT", "LocalDevelopment");
+    .WithEnvironment(Environment, CommonEnvironment.LocalDevelopment.ToString);
 
 var eventsApi = builder.AddProject<Projects.Events_Host_Api>("events-api")
     .WithReference(eventDb)
@@ -30,7 +33,7 @@ var eventsApi = builder.AddProject<Projects.Events_Host_Api>("events-api")
     .WaitFor(rabbitmq)
     .WithReference(eventsMigrations)
     .WaitFor(eventsMigrations)
-    .WithEnvironment("ENVIRONMENT", "LocalDevelopment");
+    .WithEnvironment(Environment, CommonEnvironment.LocalDevelopment.ToString);
 
 var eventsMessagingOutbox = builder.AddProject<Projects.Events_Host_Messaging_Outbox>("events-messaging-outbox")
     .WithReference(eventDb)
@@ -39,12 +42,12 @@ var eventsMessagingOutbox = builder.AddProject<Projects.Events_Host_Messaging_Ou
     .WaitFor(rabbitmq)
     .WithReference(eventsApi)
     .WaitFor(eventsApi)
-    .WithEnvironment("ENVIRONMENT", "LocalDevelopment");
+    .WithEnvironment(Environment, CommonEnvironment.LocalDevelopment.ToString);
 
 var usersMigrations = builder.AddProject<Projects.Users_Host_Migrations>("users-migrations")
     .WithReference(userDb)
     .WaitFor(userDb)
-    .WithEnvironment("ENVIRONMENT", "LocalDevelopment");
+    .WithEnvironment(Environment, CommonEnvironment.LocalDevelopment.ToString);
 
 var usersApi = builder.AddProject<Projects.Users_Host_Api>("users-api")
     .WithReference(userDb)
@@ -53,7 +56,7 @@ var usersApi = builder.AddProject<Projects.Users_Host_Api>("users-api")
     .WaitFor(rabbitmq)
     .WithReference(usersMigrations)
     .WaitFor(usersMigrations)
-    .WithEnvironment("ENVIRONMENT", "LocalDevelopment");
+    .WithEnvironment(Environment, CommonEnvironment.LocalDevelopment.ToString);
 
 var usersMessagingOutbox = builder.AddProject<Projects.Users_Host_Messaging_Outbox>("users-messaging-outbox")
     .WithReference(userDb)
@@ -62,12 +65,12 @@ var usersMessagingOutbox = builder.AddProject<Projects.Users_Host_Messaging_Outb
     .WaitFor(rabbitmq)
     .WithReference(usersApi)
     .WaitFor(usersApi)
-    .WithEnvironment("ENVIRONMENT", "LocalDevelopment");
+    .WithEnvironment(Environment, CommonEnvironment.LocalDevelopment.ToString);
 
 var ticketsMigrations = builder.AddProject<Projects.Tickets_Host_Migrations>("tickets-migrations")
     .WithReference(ticketDb)
     .WaitFor(ticketDb)
-    .WithEnvironment("ENVIRONMENT", "LocalDevelopment");
+    .WithEnvironment(Environment, CommonEnvironment.LocalDevelopment.ToString);
 
 builder.AddProject<Projects.Tickets_Host_Messaging_Inbox>("tickets-messaging-inbox")
     .WithReference(ticketDb)
@@ -78,7 +81,7 @@ builder.AddProject<Projects.Tickets_Host_Messaging_Inbox>("tickets-messaging-inb
     .WaitFor(ticketsMigrations)
     .WaitFor(eventsMessagingOutbox)
     .WaitFor(usersMessagingOutbox)
-    .WithEnvironment("ENVIRONMENT", "LocalDevelopment");
+    .WithEnvironment(Environment, CommonEnvironment.LocalDevelopment.ToString);
 
 var app = builder.Build();
 await app.RunAsync();
