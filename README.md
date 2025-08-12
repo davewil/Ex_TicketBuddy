@@ -23,8 +23,9 @@ These microservices are in one repo and one dotnet solution, but they can be spl
 - MassTransit (Microservices)
 - OpenTelemetry
 - .NET Aspire
+- YARP (Microservices)
 - Transactional Outbox Pattern (Microservices)
-- React + vite + vitest
+- React + Vite + Vitest
 
 ## Observability
 
