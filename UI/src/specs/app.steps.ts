@@ -1,7 +1,7 @@
 ﻿import {
-    clickUserIcon,
+    clickUserIcon, clickUsersDropdown,
     homePageIsRendered,
-    renderApp,
+    renderApp, selectUserFromDropdown,
     unmountApp, userEmailIsRendered,
     userIconIsRendered,
     usersDropdownIsRendered
@@ -47,4 +47,13 @@ export async function should_show_user_details_when_user_icon_is_clicked() {
     await waitUntil(wait_for_get);
     await clickUserIcon();
     expect(await userEmailIsRendered(Users[0].Email)).toBeTruthy();
+}
+
+export async function should_change_user_details_when_a_different_user_is_selected() {
+    renderApp();
+    await waitUntil(wait_for_get);
+    await clickUsersDropdown();
+    await selectUserFromDropdown(Users[1].Id);
+    await clickUserIcon();
+    expect(await userEmailIsRendered(Users[1].Email)).toBeTruthy();
 }

@@ -15,6 +15,15 @@ export const Header = () => {
         e.stopPropagation();
         setShowUserDetails(!showUserDetails);
     };
+    const onUsersDropdownChange = (e: React.MouseEvent<HTMLSelectElement>) => {
+        e.stopPropagation();
+        const target = e.target as HTMLSelectElement;
+        const selectedUserId = target.value;
+        const selectedUser = users.find(user => user.Id === selectedUserId);
+        if (selectedUser) {
+            useUsersStore.setState({ user: selectedUser });
+        }
+    }
 
     return (
         <HeaderBar>
@@ -29,7 +38,7 @@ export const Header = () => {
                     <p>{user.Email}</p>
                 </UserDetails>
             )}
-            <UsersDropdown data-testid="users-dropdown">
+            <UsersDropdown data-testid="users-dropdown" onClick={onUsersDropdownChange}>
                 {users.map(user => (
                     <option key={user.Id} value={user.Id}>
                         {user.FullName}

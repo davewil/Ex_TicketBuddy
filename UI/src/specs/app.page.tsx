@@ -40,6 +40,18 @@ export function userIconIsRendered() {
     return elements.userIcon() !== null;
 }
 
+export async function clickUsersDropdown() {
+    const usersDropdown = await elements.theUsersDropdown();
+    return userEvent.click(usersDropdown);
+}
+
+export async function selectUserFromDropdown(id: string) {
+    const usersDropdown = await elements.theUsersDropdown();
+    await userEvent.click(usersDropdown);
+    return userEvent.selectOptions(usersDropdown, id);
+
+}
+
 export async function clickUserIcon() {
     const theUserIcon = await elements.theUserIcon();
     return userEvent.click(theUserIcon);
@@ -52,6 +64,7 @@ export function userEmailIsRendered(email: string) {
 const elements = {
     home: () => renderedComponent.queryByText("I am the mocked Home component"),
     usersDropdown: () => renderedComponent.queryByTestId("users-dropdown"),
+    theUsersDropdown: () => renderedComponent.findByTestId("users-dropdown"),
     userIcon: () => renderedComponent.queryByTestId("user-icon"),
     theUserIcon: () => renderedComponent.findByTestId("user-icon"),
     userEmail: (email: string) => renderedComponent.findByText(email),
