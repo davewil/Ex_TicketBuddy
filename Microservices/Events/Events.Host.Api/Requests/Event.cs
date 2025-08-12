@@ -1,3 +1,3 @@
 ﻿namespace Api.Requests;
 
-public record EventPayload(string Name);
+public record EventPayload(string EventName);

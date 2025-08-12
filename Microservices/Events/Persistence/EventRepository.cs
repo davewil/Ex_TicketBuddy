@@ -11,13 +11,13 @@ public class EventRepository(EventDbContext eventDbContext, IPublishEndpoint pub
         if (await Get(theEvent.Id) != null)
         {
             eventDbContext.Update(theEvent);
-            await publishEndpoint.Publish(new EventUpserted{ Id = theEvent.Id, Name = theEvent.Name });
+            await publishEndpoint.Publish(new EventUpserted{ Id = theEvent.Id, Name = theEvent.EventName });
             await eventDbContext.SaveChangesAsync();
         }
         else
         {
             eventDbContext.Add(theEvent);
-            await publishEndpoint.Publish(new EventUpserted{ Id = theEvent.Id, Name = theEvent.Name });
+            await publishEndpoint.Publish(new EventUpserted{ Id = theEvent.Id, Name = theEvent.EventName });
             await eventDbContext.SaveChangesAsync();
         }
     }

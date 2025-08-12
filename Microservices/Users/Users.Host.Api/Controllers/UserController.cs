@@ -7,7 +7,7 @@ using Users.Domain.Entities;
 namespace Api.Controllers;
 
 [ApiController]
-[Route(Routes.User)]
+[Route(UserRoutes.Users)]
 public class UserController(UserService UserService) : ControllerBase
 {
     [HttpGet]
@@ -28,7 +28,7 @@ public class UserController(UserService UserService) : ControllerBase
     public async Task<ActionResult<Guid>> CreateUser([FromBody] UserPayload payload)
     {
         var id = await UserService.Add(payload.FullName, payload.Email);
-        return Created($"/{Routes.User}/{id}", id);
+        return Created($"/{UserRoutes.Users}/{id}", id);
     }    
     
     [HttpPut("{id:guid}")]

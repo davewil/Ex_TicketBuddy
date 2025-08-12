@@ -27,6 +27,7 @@
     <ProjectReference Include="..\Events\Events.Host.Messaging.Outbox\Events.Host.Messaging.Outbox.csproj" />
     <ProjectReference Include="..\Events\Events.Host.Migrations\Events.Host.Migrations.csproj" />
     <ProjectReference Include="..\TicketBuddy.ApiGateway\TicketBuddy.ApiGateway.csproj" />
+    <ProjectReference Include="..\TicketBuddy.DataSeeder\TicketBuddy.DataSeeder.csproj" />
     <ProjectReference Include="..\Tickets\Tickets.Host.Messaging.Inbox\Tickets.Host.Messaging.Inbox.csproj" />
     <ProjectReference Include="..\Tickets\Tickets.Host.Migrations\Tickets.Host.Migrations.csproj" />
     <ProjectReference Include="..\Users\Users.Host.Api\Users.Host.Api.csproj" />

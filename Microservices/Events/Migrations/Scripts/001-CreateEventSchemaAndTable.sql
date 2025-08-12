@@ -10,7 +10,7 @@ GO
 
 CREATE TABLE [Event].[Events](
     [Id] [uniqueidentifier] NOT NULL,
-    [Name] [nvarchar](max) NOT NULL,
+    [EventName] [nvarchar](max) NOT NULL,
     CONSTRAINT [PK_Events] PRIMARY KEY CLUSTERED
 (
 [Id] ASC

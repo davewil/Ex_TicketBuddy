@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using OpenTelemetry.Logs;
@@ -12,6 +13,18 @@ var settings = new Settings(configuration);
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddReverseProxy().LoadFromMemory(settings.Yarp.Routes, settings.Yarp.Clusters);
+
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ListenLocalhost(5000, listenOptions =>
+    {
+        listenOptions.Protocols = Microsoft.AspNetCore.Server.Kestrel.Core.HttpProtocols.Http1AndHttp2;
+    });
+    options.ListenLocalhost(5001, listenOptions =>
+    {
+        listenOptions.UseHttps();
+    });
+});
 
 const string serviceName = "yarpProxy";
 

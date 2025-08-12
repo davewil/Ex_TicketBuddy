@@ -49,6 +49,6 @@ public partial class EventSpecs : Specification
     private void the_event_is_created()
     {
         user.Id.Should().Be(id);
-        user.Name.ToString().Should().Be(valid_name);
+        user.EventName.ToString().Should().Be(valid_name);
     }
 }

@@ -90,9 +90,16 @@ var apiGateway = builder.AddProject<Projects.TicketBuddy_ApiGateway>("api-gatewa
     .WaitFor(usersApi)
     .WithEnvironment(Environment, CommonEnvironment.LocalDevelopment.ToString);
 
+var dataSeeder = builder.AddProject<Projects.TicketBuddy_DataSeeder>("DataSeeder")
+    .WithReference(apiGateway)
+    .WaitFor(apiGateway)
+    .WithEnvironment(Environment, CommonEnvironment.LocalDevelopment.ToString);
+
 builder.AddViteApp(name: "User-Interface", workingDirectory: "../../UI")
     .WithReference(apiGateway)
     .WaitFor(apiGateway)
+    .WithReference(dataSeeder)
+    .WaitFor(dataSeeder)
     .WithNpmPackageInstallation();
 
 var app = builder.Build();

@@ -3,4 +3,4 @@ using Shared.Hosting;
 
 var configuration = Configuration.Build();
 var builder = WebApplication.CreateBuilder(args);
-await new EventApi(builder, configuration).RunAsync();
+await new EventsApi(builder, configuration).RunAsync();

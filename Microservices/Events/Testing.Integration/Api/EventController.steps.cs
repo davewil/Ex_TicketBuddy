@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using System.Text;
 using Api.Hosting;
+using Api.Requests;
 using BDD;
 using Domain.Entities;
 using Events.Integration.Messaging.Outbound.Messages;
@@ -68,7 +69,10 @@ public partial class EventControllerSpecs : TruncateDbSpecification
 
     private void create_content(string the_name)
     {
-        content = new StringContent($"{{\"name\":\"{the_name}\"}}", Encoding.UTF8, application_json);
+        content = new StringContent(
+            JsonSerialization.Serialize(new EventPayload(the_name)),
+            Encoding.UTF8,
+            application_json);
     }
 
     private void a_request_to_create_another_event()
@@ -84,7 +88,7 @@ public partial class EventControllerSpecs : TruncateDbSpecification
 
     private void creating_the_event()
     {
-        var response = client.PostAsync(Routes.Event, content).GetAwaiter().GetResult();
+        var response = client.PostAsync(EventsRoutes.Events, content).GetAwaiter().GetResult();
         response_code = response.StatusCode;
         response_code.ShouldBe(HttpStatusCode.Created);
         returned_id = JsonSerialization.Deserialize<Guid>(response.Content.ReadAsStringAsync().GetAwaiter().GetResult());
@@ -92,14 +96,14 @@ public partial class EventControllerSpecs : TruncateDbSpecification
     
     private void creating_another_event()
     {
-        var response = client.PostAsync(Routes.Event, content).GetAwaiter().GetResult();
+        var response = client.PostAsync(EventsRoutes.Events, content).GetAwaiter().GetResult();
         response_code = response.StatusCode;
         another_id = JsonSerialization.Deserialize<Guid>(response.Content.ReadAsStringAsync().GetAwaiter().GetResult());
     }      
     
     private void updating_the_event()
     {
-        var response = client.PutAsync(Routes.Event + $"/{returned_id}", content).GetAwaiter().GetResult();
+        var response = client.PutAsync(EventsRoutes.Events + $"/{returned_id}", content).GetAwaiter().GetResult();
         response_code = response.StatusCode;
         response_code.ShouldBe(HttpStatusCode.NoContent);
     }
@@ -118,21 +122,21 @@ public partial class EventControllerSpecs : TruncateDbSpecification
 
     private void requesting_the_event()
     {
-        var response = client.GetAsync(Routes.Event + $"/{returned_id}").GetAwaiter().GetResult();
+        var response = client.GetAsync(EventsRoutes.Events + $"/{returned_id}").GetAwaiter().GetResult();
         response_code = response.StatusCode;
         content = response.Content;
     }
     
     private void requesting_the_updated_event()
     {
-        var response = client.GetAsync(Routes.Event + $"/{returned_id}").GetAwaiter().GetResult();
+        var response = client.GetAsync(EventsRoutes.Events + $"/{returned_id}").GetAwaiter().GetResult();
         response_code = response.StatusCode;
         content = response.Content;
     }
     
     private void listing_the_events()
     {
-        var response = client.GetAsync(Routes.Event).GetAwaiter().GetResult();
+        var response = client.GetAsync(EventsRoutes.Events).GetAwaiter().GetResult();
         response_code = response.StatusCode;
         content = response.Content;
     }
@@ -142,7 +146,7 @@ public partial class EventControllerSpecs : TruncateDbSpecification
         var theEvent = JsonSerialization.Deserialize<Event>(content.ReadAsStringAsync().GetAwaiter().GetResult());
         response_code.ShouldBe(HttpStatusCode.OK);
         theEvent.Id.ShouldBe(returned_id);
-        theEvent.Name.ToString().ShouldBe(name);
+        theEvent.EventName.ToString().ShouldBe(name);
         testHarness.Published.Select<Events.Domain.Messaging.Messages.EventUpserted>()
             .Any(e => e.Context.Message.Id == returned_id && e.Context.Message.Name == name).ShouldBeTrue("Event was not published to the bus");
         testHarness.Published.Select<EventUpserted>()
@@ -154,7 +158,7 @@ public partial class EventControllerSpecs : TruncateDbSpecification
         var theEvent = JsonSerialization.Deserialize<Event>(content.ReadAsStringAsync().GetAwaiter().GetResult());
         response_code.ShouldBe(HttpStatusCode.OK);
         theEvent.Id.ShouldBe(returned_id);
-        theEvent.Name.ToString().ShouldBe(new_name);
+        theEvent.EventName.ToString().ShouldBe(new_name);
         testHarness.Published.Select<Events.Domain.Messaging.Messages.EventUpserted>()
             .Any(e => e.Context.Message.Id == returned_id && e.Context.Message.Name == name).ShouldBeTrue("Event was not published to the bus");
         testHarness.Published.Select<EventUpserted>()
@@ -170,7 +174,7 @@ public partial class EventControllerSpecs : TruncateDbSpecification
         var theEvent = JsonSerialization.Deserialize<IReadOnlyList<Event>>(content.ReadAsStringAsync().GetAwaiter().GetResult());
         response_code.ShouldBe(HttpStatusCode.OK);
         theEvent.Count.ShouldBe(2);
-        theEvent.Single(e => e.Id == returned_id).Name.ToString().ShouldBe(name);
-        theEvent.Single(e => e.Id == another_id).Name.ToString().ShouldBe(new_name);
+        theEvent.Single(e => e.Id == returned_id).EventName.ToString().ShouldBe(name);
+        theEvent.Single(e => e.Id == another_id).EventName.ToString().ShouldBe(new_name);
     }
 }

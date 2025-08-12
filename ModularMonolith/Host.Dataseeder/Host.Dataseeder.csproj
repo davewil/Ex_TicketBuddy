@@ -22,15 +22,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Content Update="appsettings.docker.json">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
-      <Content Update="appsettings.local.json">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
-    </ItemGroup>
-
-    <ItemGroup>
       <None Update="appsettings.docker.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>

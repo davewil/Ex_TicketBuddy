@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Api.Controllers;
 
 [ApiController]
-[Route(Routes.Event)]
+[Route(EventsRoutes.Events)]
 public class EventController(EventService EventService) : ControllerBase
 {
     [HttpGet]
@@ -27,14 +27,14 @@ public class EventController(EventService EventService) : ControllerBase
     [HttpPost]
     public async Task<ActionResult<Guid>> CreateEvent([FromBody] EventPayload payload)
     {
-        var id = await EventService.Add(payload.Name);
-        return Created($"/{Routes.Event}/{id}", id);
+        var id = await EventService.Add(payload.EventName);
+        return Created($"/{EventsRoutes.Events}/{id}", id);
     }    
     
     [HttpPut("{id:guid}")]
     public async Task<ActionResult> UpdateEvent(Guid id, [FromBody] EventPayload payload)
     {
-        await EventService.Update(id, payload.Name);
+        await EventService.Update(id, payload.EventName);
         return NoContent();
     }
 }

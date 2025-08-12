@@ -7,6 +7,6 @@ public static class Converters
 {
     public static List<JsonConverter> GetConverters =>
     [
-        new NameConverter(),
+        new EventNameConverter(),
     ];
 }
