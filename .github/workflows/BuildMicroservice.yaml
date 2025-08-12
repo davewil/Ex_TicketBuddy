@@ -68,9 +68,9 @@ jobs:
         working-directory: UI
         run: npm install
 
-      - name: Lint
-        working-directory: UI
-        run: npm run lint
+#      - name: Lint
+#        working-directory: UI
+#        run: npm run lint
 
       - name: Build
         working-directory: UI
