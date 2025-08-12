@@ -49,3 +49,32 @@ jobs:
         env:
           DOCKER_HOST: tcp://localhost:2375
         run: dotnet test ModularMonolith/TicketBuddy.sln --configuration Release --no-build --no-restore
+  
+  build-frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: UI/package-lock.json
+
+      - name: Install dependencies
+        working-directory: UI
+        run: npm install
+
+      - name: Lint
+        working-directory: UI
+        run: npm run lint
+
+      - name: Build
+        working-directory: UI
+        run: npm run build
+
+      - name: Test
+        working-directory: UI
+        run: npm run test

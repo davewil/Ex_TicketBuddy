@@ -37,4 +37,4 @@ builder.AddViteApp(name: "User-Interface", workingDirectory: "../../UI")
     .WithNpmPackageInstallation();
 
 var app = builder.Build();
-await app.RunAsync();
+await app.RunAsync(); 
