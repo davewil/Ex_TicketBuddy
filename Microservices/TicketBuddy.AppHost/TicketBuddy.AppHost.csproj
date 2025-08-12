@@ -13,10 +13,12 @@
   <ItemGroup>
     <PackageReference Include="Aspire.Hosting" Version="9.4.0" />
     <PackageReference Include="Aspire.Hosting.AppHost" Version="9.4.0" />
+    <PackageReference Include="Aspire.Hosting.NodeJs" Version="9.4.0" />
     <PackageReference Include="Aspire.Hosting.RabbitMQ" Version="9.4.0" />
     <PackageReference Include="Aspire.Hosting.SqlServer" Version="9.4.0" />
     <PackageReference Include="Aspire.Microsoft.Data.SqlClient" Version="9.4.0" />
     <PackageReference Include="Common.Environment" Version="1.0.10" />
+    <PackageReference Include="CommunityToolkit.Aspire.Hosting.NodeJS.Extensions" Version="9.7.1-beta.344" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.7" />
   </ItemGroup>
 
@@ -24,6 +26,7 @@
     <ProjectReference Include="..\Events\Events.Host.Api\Events.Host.Api.csproj" />
     <ProjectReference Include="..\Events\Events.Host.Messaging.Outbox\Events.Host.Messaging.Outbox.csproj" />
     <ProjectReference Include="..\Events\Events.Host.Migrations\Events.Host.Migrations.csproj" />
+    <ProjectReference Include="..\TicketBuddy.ApiGateway\TicketBuddy.ApiGateway.csproj" />
     <ProjectReference Include="..\Tickets\Tickets.Host.Messaging.Inbox\Tickets.Host.Messaging.Inbox.csproj" />
     <ProjectReference Include="..\Tickets\Tickets.Host.Migrations\Tickets.Host.Migrations.csproj" />
     <ProjectReference Include="..\Users\Users.Host.Api\Users.Host.Api.csproj" />
@@ -35,6 +38,10 @@
     <None Update="properties\launchSettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include=".aspire\settings.json" />
   </ItemGroup>
 
 </Project>

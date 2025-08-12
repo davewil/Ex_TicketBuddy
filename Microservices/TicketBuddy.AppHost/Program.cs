@@ -83,5 +83,17 @@ builder.AddProject<Projects.Tickets_Host_Messaging_Inbox>("tickets-messaging-inb
     .WaitFor(usersMessagingOutbox)
     .WithEnvironment(Environment, CommonEnvironment.LocalDevelopment.ToString);
 
+var apiGateway = builder.AddProject<Projects.TicketBuddy_ApiGateway>("api-gateway")
+    .WithReference(eventsApi)
+    .WaitFor(eventsApi)
+    .WithReference(usersApi)
+    .WaitFor(usersApi)
+    .WithEnvironment(Environment, CommonEnvironment.LocalDevelopment.ToString);
+
+builder.AddViteApp(name: "User-Interface", workingDirectory: "../../UI")
+    .WithReference(apiGateway)
+    .WaitFor(apiGateway)
+    .WithNpmPackageInstallation();
+
 var app = builder.Build();
 await app.RunAsync();
