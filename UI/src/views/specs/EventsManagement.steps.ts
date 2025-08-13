@@ -1,6 +1,14 @@
 ﻿import {MockServer} from "../../testing/mock-server.ts";
 import {afterEach, beforeEach, expect} from "vitest";
-import {eventFormIsRendered, formFieldIsRendered, renderEventsManagement, unmountEventsManagement, fillEventForm, clickSubmitEventButton} from "./EventsManagement.page.tsx";
+import {
+    eventFormIsRendered,
+    formFieldIsRendered,
+    renderEventsManagement,
+    unmountEventsManagement,
+    fillEventForm,
+    clickSubmitEventButton,
+    formFieldIsReset
+} from "./EventsManagement.page.tsx";
 import { Venue } from "../../domain/event.ts";
 import {waitUntil} from "../../testing/utilities.ts";
 
@@ -49,4 +57,6 @@ export async function should_allow_user_to_create_new_event() {
         Date: eventDateStringWithTime,
         Venue: eventVenue
     });
+    expect(formFieldIsReset("Event Name")).toBeTruthy();
+    expect(formFieldIsReset("Date")).toBeTruthy();
 }

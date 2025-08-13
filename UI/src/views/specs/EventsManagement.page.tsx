@@ -2,6 +2,7 @@
 import {MemoryRouter} from "react-router-dom";
 import {EventsManagement} from "../EventsManagement.tsx";
 import {userEvent} from "@testing-library/user-event";
+import {ConvertVenueToString, Venue} from "../../domain/event.ts";
 
 let renderedComponent: RenderResult;
 
@@ -23,6 +24,11 @@ export function eventFormIsRendered() {
 
 export function formFieldIsRendered(fieldName: string) {
     return elements.formField(fieldName) !== null;
+}
+
+export function formFieldIsReset(fieldName: string) {
+    const field = elements.formField(fieldName)! as HTMLInputElement;
+    return field.value === "";
 }
 
 export async function fillEventForm(eventData: {

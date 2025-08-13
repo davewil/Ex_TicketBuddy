@@ -33,6 +33,8 @@ export const EventsManagement = () => {
                 EventName: formData.eventName,
                 Date: new Date(formData.date),
                 Venue: formData.venue,
+            }).then(() => {
+                setFormData(initialFormData);
             });
         }
     };
