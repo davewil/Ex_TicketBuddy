@@ -2,7 +2,6 @@
 import {MemoryRouter} from "react-router-dom";
 import {EventsManagement} from "../EventsManagement.tsx";
 import {userEvent} from "@testing-library/user-event";
-import {ConvertVenueToString, Venue} from "../../domain/event.ts";
 
 let renderedComponent: RenderResult;
 
