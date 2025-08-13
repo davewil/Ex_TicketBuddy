@@ -9,6 +9,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution", "Solution", "{85
 		..\Observability.png = ..\Observability.png
 		..\README.md = ..\README.md
 		..\.github\workflows\BuildMicroservice.yaml = ..\.github\workflows\BuildMicroservice.yaml
+		Microservices.drawio = Microservices.drawio
+		Microservices.drawio.png = Microservices.drawio.png
+		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Testing", "Testing", "{A9E5EBD2-F136-4009-8BA3-183C3FACC9EE}"
