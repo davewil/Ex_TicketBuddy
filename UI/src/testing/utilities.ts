@@ -1,6 +1,6 @@
 ﻿export function waitUntil(condition_function: () => boolean) {
-    const poll = (resolve: any) => {
-        if (condition_function()) resolve()
+    const poll = (resolve: (value: unknown) => void) => {
+        if (condition_function()) resolve({})
         else setTimeout(() => poll(resolve), 400);
     }
 
@@ -8,6 +8,5 @@
 }
 
 export const delay = (millis: number) => new Promise((resolve) => {
-    // @ts-ignore
     setTimeout(_ => resolve(_), millis)
 });

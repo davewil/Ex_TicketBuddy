@@ -13,7 +13,7 @@ export async function get<T>(url: string): Promise<T> {
         });
 }
 
-export async function post(url: string, body: any): Promise<any> {
+export async function post(url: string, body: unknown): Promise<unknown> {
     return fetch(api + url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -21,7 +21,7 @@ export async function post(url: string, body: any): Promise<any> {
     }).then(handleResponse())
 }
 
-export async function put(url: string, body: any): Promise<any> {
+export async function put(url: string, body: unknown): Promise<unknown> {
     return fetch(api + url, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
@@ -29,12 +29,12 @@ export async function put(url: string, body: any): Promise<any> {
     }).then(handleResponse())
 }
 
-export async function deleteCall(url: string): Promise<any> {
+export async function deleteCall(url: string): Promise<unknown> {
     return fetch(api + url, {
         method: "DELETE",
     })
         .then(handleResponse())
-        .catch((err: any) => {
+        .catch((err: Error) => {
             throw {
                 message: err?.message || 'Network error',
                 status: 0
@@ -42,7 +42,7 @@ export async function deleteCall(url: string): Promise<any> {
         })
 }
 
-function handleResponse(): ((value: Response) => any) | null | undefined {
+function handleResponse(): ((value: Response) => unknown) | null | undefined {
     return async (response) => {
         if (!response.ok) {
             throw {

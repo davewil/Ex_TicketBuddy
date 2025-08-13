@@ -1,5 +1,5 @@
 ﻿import {setupServer, SetupServerApi} from "msw/node";
-import {delay, http, HttpResponse} from "msw";
+import {delay, http, HttpResponse, type JsonBodyType} from "msw";
 
 export class MockServer {
     private server: SetupServerApi;
@@ -24,7 +24,7 @@ export class MockServer {
         this.content = null;
     }
 
-    public get(url: string, response: any, delayValue?: number, success = true): () => boolean {
+    public get(url: string, response: JsonBodyType, delayValue?: number, success = true): () => boolean {
         let called = false;
         const was_called = () => called;
         this.server.use(http.get(url, async (req) => {
@@ -37,7 +37,7 @@ export class MockServer {
         return was_called
     }
 
-    public post(url: string, response?: any, success = true, delayValue?: number, onCall?: () => void): () => boolean {
+    public post(url: string, response?: JsonBodyType, success = true, delayValue?: number, onCall?: () => void): () => boolean {
         let called = false;
         const was_called = () => called;
         this.server.use(http.post(url, async (req) => {
