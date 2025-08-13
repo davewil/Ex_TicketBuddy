@@ -1,3 +1,5 @@
-﻿namespace Api.Requests;
+﻿using Events.Domain.Primitives;
 
-public record EventPayload(string EventName);
+namespace Api.Requests;
+
+public record EventPayload(EventName EventName);

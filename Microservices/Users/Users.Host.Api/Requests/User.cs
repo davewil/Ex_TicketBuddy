@@ -1,3 +1,5 @@
-﻿namespace Api.Requests;
+﻿using Users.Domain.Primitives;
 
-public record UserPayload(string FullName, string Email);
+namespace Api.Requests;
+
+public record UserPayload(Name FullName, Email Email);
