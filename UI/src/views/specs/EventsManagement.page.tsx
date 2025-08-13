@@ -28,23 +28,16 @@ export function formFieldIsRendered(fieldName: string) {
 export async function fillEventForm(eventData: {
     eventName: string,
     date: string,
-    venue: string,
-    capacity: string
+    venue: string
 }) {
-    await userEvent.type(elements.theFormField("eventName"), eventData.eventName);
-    await userEvent.type(elements.theFormField("date"), eventData.date);
-    await userEvent.type(elements.theFormField("venue"), eventData.venue);
-    await userEvent.type(elements.theFormField("capacity"), eventData.capacity);
+    await userEvent.type(elements.theFormField("Event Name"), eventData.eventName);
+    await userEvent.type(elements.theFormField("Date"), eventData.date);
+    await userEvent.type(elements.theFormField("Venue"), eventData.venue);
 }
 
 export async function clickSubmitEventButton() {
     const button = elements.submitEventButton();
     return userEvent.click(button);
-}
-
-export function submitButtonIsDisabled() {
-    const button = elements.submitEventButton();
-    return button.hasAttribute("disabled");
 }
 
 const elements = {

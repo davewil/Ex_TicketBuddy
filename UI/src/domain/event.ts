@@ -5,6 +5,12 @@
     Venue : Venue;
 }
 
+export interface EventPayload {
+    EventName: string;
+    Date: Date;
+    Venue : Venue;
+}
+
 export enum Venue {
     O2ArenaLondon = "02ArenaLondon",
     WembleyStadiumLondon = "WembleyStadiumLondon",

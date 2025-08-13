@@ -1,6 +1,7 @@
 ﻿import React, {useState} from 'react';
 import {Button, Container, FormContainer, FormGroup, Input, Label, Select} from './EventsManagement.styles.tsx';
 import {ConvertVenueToString, Venue} from '../domain/event.ts';
+import {postEvent} from "../api/events.api.ts";
 
 type EventFormData = {
     eventName: string;
@@ -27,6 +28,13 @@ export const EventsManagement = () => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+        if (isFormValid()) {
+            postEvent({
+                EventName: formData.eventName,
+                Date: new Date(formData.date),
+                Venue: formData.venue,
+            });
+        }
     };
 
     const isFormValid = () => {
