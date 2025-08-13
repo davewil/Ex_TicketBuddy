@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Persistence.Events;
-using Persistence.Users;
+using Tickets.Persistence.Events;
+using Tickets.Persistence.Users;
 
 namespace Host.Messaging.Outbox.Hosting;
 

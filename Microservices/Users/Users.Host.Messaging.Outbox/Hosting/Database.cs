@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Persistence;
+using Users.Persistence;
 
 namespace Users.Host.Messaging.Outbox.Hosting;
 

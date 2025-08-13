@@ -1,6 +1,6 @@
 ﻿using MassTransit;
 using Microsoft.Extensions.DependencyInjection;
-using Persistence;
+using Users.Persistence;
 using Users.Domain.Messaging;
 
 namespace Users.Host.Messaging.Outbox.Hosting;

@@ -1,11 +1,8 @@
 ﻿using System.Text.Json.Serialization;
-using Application;
-using Domain;
+using Events.Application;
+using Events.Domain;
 using OpenTelemetry;
-using OpenTelemetry.Exporter;
-using OpenTelemetry.Metrics;
-using OpenTelemetry.Trace;
-using Persistence;
+using Events.Persistence;
 using WebHost;
 
 namespace Api.Hosting;

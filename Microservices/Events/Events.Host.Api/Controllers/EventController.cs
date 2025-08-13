@@ -1,7 +1,7 @@
 using Api.Hosting;
 using Api.Requests;
-using Application;
-using Domain.Entities;
+using Events.Application;
+using Events.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers;

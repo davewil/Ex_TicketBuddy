@@ -29,8 +29,8 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\Shared\Shared.Hosting\Shared.Hosting.csproj" />
-      <ProjectReference Include="..\Application\Application.csproj" />
-      <ProjectReference Include="..\Persistence\Persistence.csproj" />
+      <ProjectReference Include="..\Users.Application\Users.Application.csproj" />
+      <ProjectReference Include="..\Users.Persistence\Users.Persistence.csproj" />
     </ItemGroup>
 
     <ItemGroup>

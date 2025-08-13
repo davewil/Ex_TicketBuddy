@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Persistence;
+using Events.Persistence;
 
 namespace Api.Hosting;
 

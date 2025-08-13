@@ -1,7 +1,7 @@
 ﻿using System.Text.Json.Serialization;
-using Application;
+using Users.Application;
 using OpenTelemetry;
-using Persistence;
+using Users.Persistence;
 using Users.Domain;
 using WebHost;
 

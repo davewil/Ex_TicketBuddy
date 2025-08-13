@@ -1,5 +1,5 @@
 ﻿using MassTransit;
-using Persistence;
+using Events.Persistence;
 
 namespace Api.Hosting;
 

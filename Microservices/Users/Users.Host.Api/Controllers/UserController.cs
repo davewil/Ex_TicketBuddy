@@ -1,6 +1,6 @@
 using Api.Hosting;
 using Api.Requests;
-using Application;
+using Users.Application;
 using Microsoft.AspNetCore.Mvc;
 using Users.Domain.Entities;
 

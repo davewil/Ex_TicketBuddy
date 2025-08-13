@@ -2,9 +2,9 @@
 using Host.Messaging.Outbox.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Persistence;
-using Persistence.Events;
-using Persistence.Users;
+using Tickets.Persistence;
+using Tickets.Persistence.Events;
+using Tickets.Persistence.Users;
 using Shared.Hosting;
 
 var settings = new Settings(Configuration.Build());

@@ -10,7 +10,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\Shared\Shared.Hosting\Shared.Hosting.csproj" />
-      <ProjectReference Include="..\Migrations\Migrations.csproj" />
+      <ProjectReference Include="..\Users.Migrations\Users.Migrations.csproj" />
     </ItemGroup>
     
     <ItemGroup>

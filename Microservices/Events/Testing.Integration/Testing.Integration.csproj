@@ -11,8 +11,8 @@
     <ItemGroup>
       <ProjectReference Include="..\..\Shared\Shared.Testing\Shared.Testing.csproj" />
       <ProjectReference Include="..\Events.Host.Api\Events.Host.Api.csproj" />
-      <ProjectReference Include="..\Domain\Domain.csproj" />
-      <ProjectReference Include="..\Migrations\Migrations.csproj" />
+      <ProjectReference Include="..\Events.Domain\Events.Domain.csproj" />
+      <ProjectReference Include="..\Events.Migrations\Events.Migrations.csproj" />
     </ItemGroup>
     
     <ItemGroup>

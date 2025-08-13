@@ -3,13 +3,12 @@ using MassTransit;
 using MassTransit.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Migrations;
-using Persistence;
-using Persistence.Events;
-using Persistence.Users;
+using Tickets.Migrations;
 using Shared.Testing;
 using Testcontainers.MsSql;
 using Tickets.Integration.Messaging.Inbound;
+using Tickets.Persistence.Events;
+using Tickets.Persistence.Users;
 
 namespace Testing.Integration.InboundMessaging;
 

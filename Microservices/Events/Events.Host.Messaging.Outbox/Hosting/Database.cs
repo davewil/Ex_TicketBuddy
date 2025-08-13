@@ -1,7 +1,7 @@
 ﻿using Events.Host.Messaging.Outbox;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Persistence;
+using Events.Persistence;
 
 namespace Host.Messaging.Outbox.Hosting;
 

@@ -1,6 +1,6 @@
-using Domain.Entities;
+using Tickets.Domain.Entities;
 using MassTransit;
-using Persistence.Users;
+using Tickets.Persistence.Users;
 using Users.Integration.Messaging.Outbound.Messages;
 
 namespace Tickets.Integration.Messaging.Inbound.Consumers

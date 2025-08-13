@@ -9,8 +9,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Application\Application.csproj" />
-      <ProjectReference Include="..\Domain\Domain.csproj" />
+      <ProjectReference Include="..\Events.Application\Events.Application.csproj" />
+      <ProjectReference Include="..\Events.Domain\Events.Domain.csproj" />
     </ItemGroup>
 
     <ItemGroup>

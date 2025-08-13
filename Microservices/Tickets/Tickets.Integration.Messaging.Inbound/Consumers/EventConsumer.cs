@@ -1,8 +1,7 @@
 using Events.Integration.Messaging.Outbound.Messages;
 using MassTransit;
-using Persistence;
-using Persistence.Events;
-using Event = Domain.Entities.Event;
+using Tickets.Persistence.Events;
+using Event = Tickets.Domain.Entities.Event;
 
 namespace Tickets.Integration.Messaging.Inbound.Consumers
 {

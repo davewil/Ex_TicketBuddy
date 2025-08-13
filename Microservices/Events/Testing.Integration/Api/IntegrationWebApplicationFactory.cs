@@ -1,12 +1,12 @@
-﻿using Application;
+﻿using Events.Application;
 using Events.Domain.Messaging;
+using Events.Persistence;
 using MassTransit;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Persistence;
 
 namespace Integration.Api;
 

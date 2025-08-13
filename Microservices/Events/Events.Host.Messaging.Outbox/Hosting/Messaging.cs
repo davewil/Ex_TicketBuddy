@@ -1,7 +1,7 @@
 ﻿using Events.Domain.Messaging;
 using MassTransit;
 using Microsoft.Extensions.DependencyInjection;
-using Persistence;
+using Events.Persistence;
 
 namespace Events.Host.Messaging.Outbox.Hosting;
 
