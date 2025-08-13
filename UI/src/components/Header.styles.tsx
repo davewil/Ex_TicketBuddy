@@ -2,6 +2,7 @@
 import TicketStub from "../assets/ticket-stub.svg";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser } from '@fortawesome/free-solid-svg-icons';
+import { Link } from 'react-router-dom';
 
 export const HeaderBar = styled.div`
     display: flex;
@@ -84,7 +85,7 @@ export const UserDetails = styled.div`
     }
 `;
 
-export const EventsManagementLink = styled.a`
+export const EventsManagementLink = styled(Link)`
     margin-left: 20px;
     color: #61dafb;
     text-decoration: none;
@@ -99,6 +100,5 @@ export const EventsManagementLink = styled.a`
     }
     &:focus {
         outline: none;
-        border: 2px solid #61dafb;
     }
 `;

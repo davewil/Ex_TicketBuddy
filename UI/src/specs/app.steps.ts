@@ -1,6 +1,9 @@
 ﻿import {
+    clickEventsManagementLink,
     clickUserIcon,
-    clickUsersDropdown, eventsManagementLinkIsRendered,
+    clickUsersDropdown,
+    eventsManagementLinkIsRendered,
+    eventsManagementPageIsRendered,
     homePageIsRendered,
     renderApp,
     selectUserFromDropdown,
@@ -8,13 +11,13 @@
     userEmailIsRendered,
     userIconIsRendered,
     usersDropdownIsRendered
-} from "./app.page.tsx";
+} from "./app.page";
 import {afterEach, beforeEach, expect} from "vitest";
-import {MockServer} from "../testing/mock-server.ts";
-import {Users} from "../testing/data.ts";
-import {waitUntil} from "../testing/utilities.ts";
-import {userRoutes} from "../api/users.api.ts";
-import {UserType} from "../domain/user.ts";
+import {MockServer} from "../testing/mock-server";
+import {Users} from "../testing/data";
+import {waitUntil} from "../testing/utilities";
+import {userRoutes} from "../api/users.api";
+import {UserType} from "../domain/user";
 
 const mockServer = MockServer.New();
 let wait_for_get: () => boolean;
@@ -68,4 +71,14 @@ export async function should_display_event_management_navigation_if_user_is_admi
     await clickUsersDropdown();
     await selectUserFromDropdown(Users.filter(u => u.UserType === UserType.Administrator)[0].Id);
     expect(eventsManagementLinkIsRendered()).toBeTruthy();
+}
+
+export async function should_navigate_to_events_management_page_when_link_is_clicked() {
+    renderApp();
+    await waitUntil(wait_for_get);
+    await clickUsersDropdown();
+    await selectUserFromDropdown(Users.filter(u => u.UserType === UserType.Administrator)[0].Id);
+    expect(eventsManagementLinkIsRendered()).toBeTruthy();
+    await clickEventsManagementLink();
+    expect(eventsManagementPageIsRendered()).toBeTruthy();
 }

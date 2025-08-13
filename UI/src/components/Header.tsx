@@ -42,7 +42,7 @@ export const Header = () => {
             <TicketStubImage/>
             {user &&
                 <>
-                    {user.UserType === UserType.Administrator && <EventsManagementLink>Events Management</EventsManagementLink>}
+                    {user.UserType === UserType.Administrator && <EventsManagementLink to="/events-management">Events Management</EventsManagementLink>}
                     <UserIconContainer onClick={onUserIconClick} data-testid="user-icon">
                         <UserIcon />
                     </UserIconContainer>

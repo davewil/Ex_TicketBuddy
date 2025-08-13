@@ -16,6 +16,16 @@ vi.mock("../views/Home", () => {
     }
 })
 
+vi.mock("../views/EventsManagement", () => {
+    return {
+        EventsManagement: () => {
+            return (
+                <div>I am the mocked Home events management</div>
+            );
+        }
+    }
+})
+
 export function renderApp() {
     renderedComponent = render(
             <MemoryRouter>
@@ -65,6 +75,15 @@ export function eventsManagementLinkIsRendered() {
     return elements.eventsManagementLink() !== null;
 }
 
+export async function clickEventsManagementLink() {
+    const link = await elements.theEventsManagementLink();
+    return userEvent.click(link);
+}
+
+export function eventsManagementPageIsRendered() {
+    return elements.eventsManagementPage() !== null;
+}
+
 const elements = {
     home: () => renderedComponent.queryByText("I am the mocked Home component"),
     usersDropdown: () => renderedComponent.queryByTestId("users-dropdown"),
@@ -73,4 +92,6 @@ const elements = {
     theUserIcon: () => renderedComponent.findByTestId("user-icon"),
     userEmail: (email: string) => renderedComponent.findByText(email),
     eventsManagementLink: () => renderedComponent.queryByText("Events Management"),
+    theEventsManagementLink: () => renderedComponent.findByText("Events Management"),
+    eventsManagementPage: () => renderedComponent.queryByText("I am the mocked Home events management"),
 }
