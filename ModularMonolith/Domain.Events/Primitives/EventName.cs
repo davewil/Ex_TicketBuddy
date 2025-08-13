@@ -4,12 +4,12 @@ using System.Text.RegularExpressions;
 
 namespace Domain.Events.Primitives;
 
-[JsonConverter(typeof(NameConverter))]
-public readonly record struct Name
+[JsonConverter(typeof(EventNameConverter))]
+public readonly record struct EventName
 {
     private string value { get; }
 
-    public Name(string name)
+    public EventName(string name)
     {
         Validation.BasedOn(errors =>
         {
@@ -30,19 +30,19 @@ public readonly record struct Name
         return value;
     }
 
-    public static implicit operator string(Name name) => name.value;
+    public static implicit operator string(EventName eventName) => eventName.value;
     
-    public static implicit operator Name(string name) => new(name);
+    public static implicit operator EventName(string name) => new(name);
 }
 
-public class NameConverter : JsonConverter<Name>
+public class EventNameConverter : JsonConverter<EventName>
 {
-    public override void Write(Utf8JsonWriter writer, Name value, JsonSerializerOptions options)
+    public override void Write(Utf8JsonWriter writer, EventName value, JsonSerializerOptions options)
     {
         writer.WriteStringValue(value.ToString());
     }
 
-    public override Name Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    public override EventName Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         return reader.GetString()!;
     }
