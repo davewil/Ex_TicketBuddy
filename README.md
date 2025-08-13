@@ -7,6 +7,8 @@ Built as both a modular monolith and as microservices to compare and contrast.
 Built in well-defined modules to be hosted as a single application. Services communicate through in-process calls.
 A modular monolith is where a team should start when building a new application.
 
+[Modular Monolith Architecture](./ModularMonolith.drawio.png)
+
 ## Microservices
 Built with a distributed architecture designed to run locally. Services communicate through asynchronous messages using MassTransit with RabbitMQ.
 The aim is to demonstrate a fully observable and decoupled system.
@@ -15,6 +17,8 @@ Admittedly, the transactional outbox pattern is overkill.
 Microservices are a good choice when the application is expected to grow significantly, or when different teams will work on different parts of the application.
 
 These microservices are in one repo and one dotnet solution, but they can be split into multiple repositories and solutions if needed and referenced as NuGet packages.
+
+[Microservices Architecture](./Microservices.drawio.png)
 
 ## Key technologies/choices:
 - ASP.NET Core
