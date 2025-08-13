@@ -15,14 +15,14 @@ GO
 
 INSERT INTO [Event].[EventVenues] ([Id], [Name], [Capacity])
 VALUES 
-    (0, 'The O2 Arena, London', 20000),
-    (1, 'Wembley Stadium, London', 90000),
-    (2, 'Manchester Arena', 21000),
-    (3, 'Utilita Arena, Birmingham', 15800),
-    (4, 'The SSE Hydro, Glasgow', 13000),
-    (5, 'First Direct Arena, Leeds', 13500),
-    (6, 'Principality Stadium, Cardiff', 74500),
-    (7, 'Emirates Old Trafford, Manchester', 26000),
-    (8, 'Royal Albert Hall, London', 5272),
-    (9, 'Roundhouse, London', 3300)
+    (0, 'The O2 Arena, London', 10),
+    (1, 'Wembley Stadium, London', 11),
+    (2, 'Manchester Arena', 12),
+    (3, 'Utilita Arena, Birmingham', 13),
+    (4, 'The SSE Hydro, Glasgow', 14),
+    (5, 'First Direct Arena, Leeds', 15),
+    (6, 'Principality Stadium, Cardiff', 16),
+    (7, 'Emirates Old Trafford, Manchester', 17),
+    (8, 'Royal Albert Hall, London', 18),
+    (9, 'Roundhouse, London', 20)
 GO
