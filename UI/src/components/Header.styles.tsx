@@ -83,3 +83,22 @@ export const UserDetails = styled.div`
         color: #666;
     }
 `;
+
+export const EventsManagementLink = styled.a`
+    margin-left: 20px;
+    color: #61dafb;
+    text-decoration: none;
+    &:hover {
+        text-decoration: underline;
+    }
+    &:visited {
+        color: #61dafb;
+    }
+    &:active {
+        color: #21a1f1;
+    }
+    &:focus {
+        outline: none;
+        border: 2px solid #61dafb;
+    }
+`;

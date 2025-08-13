@@ -1,8 +1,17 @@
-﻿import {HeaderBar, TicketStubImage, UserDetails, UserIcon, UserIconContainer, UsersDropdown} from "./Header.styles.tsx";
+﻿import {
+    EventsManagementLink,
+    HeaderBar,
+    TicketStubImage,
+    UserDetails,
+    UserIcon,
+    UserIconContainer,
+    UsersDropdown
+} from "./Header.styles.tsx";
 import {useUsersStore} from "../stores/users.store.ts";
 import {useShallow} from "zustand/react/shallow";
-import {useState} from "react";
 import * as React from "react";
+import {useState} from "react";
+import {UserType} from "../domain/user.ts";
 
 export const Header = () => {
     const { user, users } = useUsersStore(useShallow((state => ({
@@ -20,8 +29,10 @@ export const Header = () => {
         const target = e.target as HTMLSelectElement;
         const selectedUserId = target.value;
         const selectedUser = users.find(user => user.Id === selectedUserId);
-        if (selectedUser) {
+        if (selectedUser?.Id !== user?.Id) {
             useUsersStore.setState({ user: selectedUser });
+            setShowUserDetails(false);
+            console.log(`Selected user: ${selectedUser?.UserType}`);
         }
     }
 
@@ -29,22 +40,27 @@ export const Header = () => {
         <HeaderBar>
             <h1>TicketBuddy</h1>
             <TicketStubImage/>
-            {user && <UserIconContainer onClick={onUserIconClick} data-testid="user-icon">
-                <UserIcon />
-            </UserIconContainer>}
-            {user && showUserDetails && (
-                <UserDetails>
-                    <p>{user.FullName}</p>
-                    <p>{user.Email}</p>
-                </UserDetails>
-            )}
-            <UsersDropdown data-testid="users-dropdown" onClick={onUsersDropdownChange}>
+            {user &&
+                <>
+                    {user.UserType === UserType.Administrator && <EventsManagementLink>Events Management</EventsManagementLink>}
+                    <UserIconContainer onClick={onUserIconClick} data-testid="user-icon">
+                        <UserIcon />
+                    </UserIconContainer>
+                    {showUserDetails && (
+                        <UserDetails>
+                            <p>{user.FullName}</p>
+                            <p>{user.Email}</p>
+                        </UserDetails>
+                    )}
+                </>
+            }
+            {users?.length > 0 && <UsersDropdown data-testid="users-dropdown" onClick={onUsersDropdownChange}>
                 {users.map(user => (
                     <option key={user.Id} value={user.Id}>
                         {user.FullName}
                     </option>
                 ))}
-            </UsersDropdown>
+            </UsersDropdown>}
         </HeaderBar>
     );
 }

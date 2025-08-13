@@ -6,6 +6,6 @@
 }
 
 export enum UserType{
-    Customer = 0,
-    Administrator = 1,
+    Customer= "Customer",
+    Administrator = "Administrator",
 }

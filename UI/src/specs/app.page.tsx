@@ -61,6 +61,10 @@ export function userEmailIsRendered(email: string) {
     return elements.userEmail(email);
 }
 
+export function eventsManagementLinkIsRendered() {
+    return elements.eventsManagementLink() !== null;
+}
+
 const elements = {
     home: () => renderedComponent.queryByText("I am the mocked Home component"),
     usersDropdown: () => renderedComponent.queryByTestId("users-dropdown"),
@@ -68,4 +72,5 @@ const elements = {
     userIcon: () => renderedComponent.queryByTestId("user-icon"),
     theUserIcon: () => renderedComponent.findByTestId("user-icon"),
     userEmail: (email: string) => renderedComponent.findByText(email),
+    eventsManagementLink: () => renderedComponent.queryByText("Events Management"),
 }
