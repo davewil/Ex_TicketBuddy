@@ -9,10 +9,9 @@ export const HeaderBar = styled.div`
     align-items: center;
     padding: 10px 20px;
     background-color: #282c34;
-    color: white;
     font-size: 1.5em;
     
-    h1 {
+    > h1 {
         margin: 0;
         font-size: 1.8em;
         font-weight: bold;
@@ -20,7 +19,11 @@ export const HeaderBar = styled.div`
     }
 `
 
-export const TicketStubImage = () => <img src={TicketStub} alt="Ticket Stub" width={150} height={100} />;
+export const TicketStubImage = () => (
+    <Link to="/">
+        <img src={TicketStub} alt="Ticket Stub" width={150} height={100} />
+    </Link>
+);
 
 export const UserIconContainer = styled.div`
     margin-left: auto;

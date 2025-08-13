@@ -1,12 +1,15 @@
 ﻿import {
     clickEventsManagementLink,
+    clickTicketLogo,
     clickUserIcon,
     clickUsersDropdown,
     eventsManagementLinkIsRendered,
     eventsManagementPageIsRendered,
     homePageIsRendered,
     renderApp,
+    renderAppAtEventsManagement,
     selectUserFromDropdown,
+    ticketLogoIsRendered,
     unmountApp,
     userEmailIsRendered,
     userIconIsRendered,
@@ -81,4 +84,14 @@ export async function should_navigate_to_events_management_page_when_link_is_cli
     expect(eventsManagementLinkIsRendered()).toBeTruthy();
     await clickEventsManagementLink();
     expect(eventsManagementPageIsRendered()).toBeTruthy();
+}
+
+export async function should_navigate_to_home_page_when_ticket_logo_is_clicked() {
+    renderAppAtEventsManagement();
+    await waitUntil(wait_for_get);
+    expect(eventsManagementPageIsRendered()).toBeTruthy();
+    expect(ticketLogoIsRendered()).toBeTruthy();
+    await clickTicketLogo();
+    expect(homePageIsRendered()).toBeTruthy();
+    expect(eventsManagementPageIsRendered()).toBeFalsy();
 }

@@ -34,6 +34,14 @@ export function renderApp() {
     return renderedComponent;
 }
 
+export function renderAppAtEventsManagement() {
+    renderedComponent = render(
+            <MemoryRouter initialEntries={['/events-management']}>
+                <App/>
+            </MemoryRouter>)
+    return renderedComponent;
+}
+
 export function unmountApp() {
     renderedComponent.unmount();
 }
@@ -84,6 +92,15 @@ export function eventsManagementPageIsRendered() {
     return elements.eventsManagementPage() !== null;
 }
 
+export function ticketLogoIsRendered() {
+    return elements.ticketLogo() !== null;
+}
+
+export async function clickTicketLogo() {
+    const logo = await elements.theTicketLogo();
+    return userEvent.click(logo);
+}
+
 const elements = {
     home: () => renderedComponent.queryByText("I am the mocked Home component"),
     usersDropdown: () => renderedComponent.queryByTestId("users-dropdown"),
@@ -94,4 +111,6 @@ const elements = {
     eventsManagementLink: () => renderedComponent.queryByText("Events Management"),
     theEventsManagementLink: () => renderedComponent.findByText("Events Management"),
     eventsManagementPage: () => renderedComponent.queryByText("I am the mocked Home events management"),
+    ticketLogo: () => renderedComponent.queryByAltText("Ticket Stub"),
+    theTicketLogo: () => renderedComponent.findByAltText("Ticket Stub"),
 }
