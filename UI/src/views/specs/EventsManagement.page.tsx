@@ -17,6 +17,11 @@ export function unmountEventsManagement() {
     renderedComponent.unmount();
 }
 
+export function clickAddEventIcon() {
+    const icon = elements.addEventIcon();
+    return userEvent.click(icon);
+}
+
 export function eventFormIsRendered() {
     return elements.eventForm() !== null;
 }
@@ -48,6 +53,7 @@ export async function clickSubmitEventButton() {
 }
 
 const elements = {
+    addEventIcon: () => renderedComponent.getByRole("link", { name: /add event/i }),
     eventForm: () => renderedComponent.queryByTestId("event-creation-form"),
     formField: (name: string) => renderedComponent.queryByLabelText(name),
     theFormField: (name: string) => renderedComponent.getByLabelText(name),

@@ -1,4 +1,6 @@
 ﻿import styled from "styled-components";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faPlus} from "@fortawesome/free-solid-svg-icons";
 
 export const Container = styled.div`
     padding: 20px;
@@ -54,3 +56,5 @@ export const Button = styled.button`
         cursor: not-allowed;
     }
 `;
+
+export const AddIcon = () => <FontAwesomeIcon icon={faPlus} />;

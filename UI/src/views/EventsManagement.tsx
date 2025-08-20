@@ -1,8 +1,18 @@
 ﻿import React, {useState} from 'react';
-import {Button, Container, FormContainer, FormGroup, Input, Label, Select} from './EventsManagement.styles.tsx';
+import {
+    AddIcon,
+    Button,
+    Container,
+    FormContainer,
+    FormGroup,
+    Input,
+    Label,
+    Select
+} from './EventsManagement.styles.tsx';
 import {ConvertVenueToString, Venue} from '../domain/event.ts';
 import {postEvent} from "../api/events.api.ts";
 import moment from 'moment'
+import {Link, Outlet, Route, Routes} from "react-router-dom";
 
 type EventFormData = {
     eventName: string;
@@ -19,6 +29,28 @@ const initialFormData: EventFormData = {
 };
 
 export const EventsManagement = () => {
+    return (
+        <>
+            <Routes>
+                <Route index element={<ListEvents />} />
+                <Route path="add" element={<AddEvent />} />
+            </Routes>
+            <Outlet />
+        </>
+    );
+}
+
+export const ListEvents = () => {
+    return (
+        <Container>
+            <Link to="add">
+                Add Event <AddIcon/>
+            </Link>
+        </Container>
+    );
+}
+
+export const AddEvent = () => {
     const [formData, setFormData] = useState<EventFormData>(initialFormData);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -102,12 +134,7 @@ export const EventsManagement = () => {
                     </Select>
                 </FormGroup>
 
-                <Button
-                    type="submit"
-                    disabled={!isFormValid()}
-                >
-                    Create Event
-                </Button>
+                <Button type="submit" disabled={!isFormValid()}>Create Event</Button>
             </FormContainer>
         </Container>
     );

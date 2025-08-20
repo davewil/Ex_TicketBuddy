@@ -7,7 +7,7 @@ import {
     unmountEventsManagement,
     fillEventForm,
     clickSubmitEventButton,
-    formFieldIsReset
+    formFieldIsReset, clickAddEventIcon
 } from "./EventsManagement.page.tsx";
 import { Venue } from "../../domain/event.ts";
 import {waitUntil} from "../../testing/utilities.ts";
@@ -27,6 +27,7 @@ afterEach(() => {
 
 export async function should_render_event_creation_form() {
     renderEventsManagement();
+    await clickAddEventIcon();
     expect(eventFormIsRendered()).toBeTruthy();
     expect(formFieldIsRendered("Event Name")).toBeTruthy();
     expect(formFieldIsRendered("Start Date")).toBeTruthy();
@@ -36,6 +37,7 @@ export async function should_render_event_creation_form() {
 
 export async function should_allow_user_to_create_new_event() {
     renderEventsManagement();
+    await clickAddEventIcon();
     expect(eventFormIsRendered()).toBeTruthy();
 
     const eventName = "Test Event";

@@ -30,7 +30,7 @@ function App() {
 
 export const AppRoutes = () => (
     <Routes>
-        <Route path="/events-management" element={<EventsManagement />} />
+        <Route path="/events-management/*" element={<EventsManagement />} />
         <Route path="*" element={<Home/>} />
     </Routes>
 );
