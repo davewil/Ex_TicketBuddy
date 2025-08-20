@@ -1,7 +1,8 @@
 ﻿import {useEffect, useState} from "react";
 import {getEvents} from "../api/events.api";
-import {type Event} from "../domain/event";
+import {ConvertVenueToString, type Event} from "../domain/event";
 import {EventItem, EventList} from "./Home.styles.tsx";
+import moment from "moment";
 
 export const Home = () => {
     const [events, setEvents] = useState<Event[]>([]);
@@ -20,7 +21,8 @@ export const Home = () => {
                     <EventItem key={index}>
                         <div>
                             <h2>{event.EventName}</h2>
-                            <p>{event.StartDate.toLocaleString()} - {event.EndDate.toLocaleString()}</p>
+                            <p>{moment(event.StartDate).format('MMMM Do YYYY, h:mm A')} to {moment(event.EndDate).format('MMMM Do YYYY, h:mm A')}</p>
+                            <p>Venue: {ConvertVenueToString(event.Venue)}</p>
                             <button>Find tickets</button>
                         </div>
 

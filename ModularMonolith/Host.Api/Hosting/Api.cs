@@ -16,11 +16,7 @@ internal sealed class Api(WebApplicationBuilder webApplicationBuilder, IConfigur
     protected override string ApplicationName => nameof(Api);
     protected override string TelemetryConnectionString => _settings.Telemetry.ConnectionString;
 
-    protected override List<JsonConverter> JsonConverters => 
-        Converters.GetConverters.Concat(
-            EventsConverters.GetConverters.Concat(
-                UsersConverters.GetConverters))
-            .ToList();
+    protected override List<JsonConverter> JsonConverters => EventsConverters.GetConverters.Concat(UsersConverters.GetConverters).ToList();
 
     protected override void ConfigureServices(IServiceCollection services)
     {
