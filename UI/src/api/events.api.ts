@@ -6,5 +6,10 @@ export const getEvents = async () => {
 };
 
 export const postEvent = async (event: EventPayload) => {
-    return post("/events", event);
+    const eventWithMoments = {
+        ...event,
+        StartDate: event.StartDate.toISOString(),
+        EndDate: event.EndDate.toISOString(),
+    }
+    return post("/events", eventWithMoments);
 }

@@ -24,9 +24,11 @@ public partial class EventControllerSpecs : TruncateDbSpecification
     private const string application_json = "application/json";
     private const string name = "wibble";
     private const string new_name = "wobble";
-    private readonly DateTimeOffset event_date = DateTimeOffset.Now.AddDays(1);
-    private readonly DateTimeOffset new_event_date = DateTimeOffset.Now.AddDays(2);
-    private readonly DateTimeOffset past_event_date = DateTimeOffset.Now.AddDays(-1);
+    private readonly DateTimeOffset event_start_date = DateTimeOffset.Now.AddDays(1);
+    private readonly DateTimeOffset event_end_date = DateTimeOffset.Now.AddDays(1).AddHours(2);
+    private readonly DateTimeOffset new_event_start_date = DateTimeOffset.Now.AddDays(2);
+    private readonly DateTimeOffset new_event_end_date = DateTimeOffset.Now.AddDays(2).AddHours(2);
+    private readonly DateTimeOffset past_event_start_date = DateTimeOffset.Now.AddDays(-1);
     private static MsSqlContainer database = null!;
 
     protected override void before_all()
@@ -61,41 +63,41 @@ public partial class EventControllerSpecs : TruncateDbSpecification
 
     private void a_request_to_create_an_event()
     {
-        create_content(name, event_date);
+        create_content(name, event_start_date, event_end_date);
     }
 
     private void a_request_to_create_an_event_imminently()
     {
-        create_content(name, DateTimeOffset.Now.AddSeconds(1));
+        create_content(name, DateTimeOffset.Now.AddSeconds(1), DateTimeOffset.Now.AddSeconds(2));
     }
     
     private void a_request_to_create_an_event_with_a_date_in_the_past()
     {
-        create_content(name, past_event_date);
+        create_content(name, past_event_start_date, event_end_date);
     }
     
     private void a_request_to_update_the_event_with_a_date_in_the_past()
     {
-        create_content(new_name, past_event_date);
+        create_content(new_name, past_event_start_date, event_end_date);
     }
 
-    private void create_content(string the_name, DateTimeOffset the_event_date, Venue venue = Venue.FirstDirectArenaLeeds)
+    private void create_content(string the_name, DateTimeOffset the_event_date, DateTimeOffset the_event_end_date, Venue venue = Venue.FirstDirectArenaLeeds)
     {
         content = new StringContent(
-            JsonSerialization.Serialize(new EventPayload(the_name, the_event_date, venue)),
+            JsonSerialization.Serialize(new EventPayload(the_name, the_event_date, the_event_end_date, venue)),
             Encoding.UTF8,
             application_json);
     }
 
     private void a_request_to_create_another_event()
     {
-        create_content(new_name, event_date);
+        create_content(new_name, event_start_date, event_end_date);
 
     }
     
     private void a_request_to_update_the_event()
     {
-        create_content(new_name, new_event_date, Venue.EmiratesOldTraffordManchester);
+        create_content(new_name, new_event_start_date, new_event_end_date, Venue.EmiratesOldTraffordManchester);
     }
 
     private void creating_the_event()
@@ -187,7 +189,7 @@ public partial class EventControllerSpecs : TruncateDbSpecification
         response_code.ShouldBe(HttpStatusCode.OK);
         theEvent.Id.ShouldBe(returned_id);
         theEvent.EventName.ToString().ShouldBe(name);
-        theEvent.Date.ShouldBe(event_date);
+        theEvent.StartDate.ShouldBe(event_start_date);
         theEvent.Venue.ShouldBe(Venue.FirstDirectArenaLeeds);
     }
     
@@ -211,7 +213,7 @@ public partial class EventControllerSpecs : TruncateDbSpecification
         response_code.ShouldBe(HttpStatusCode.OK);
         theEvent.Id.ShouldBe(returned_id);
         theEvent.EventName.ToString().ShouldBe(new_name);
-        theEvent.Date.ShouldBe(new_event_date);
+        theEvent.StartDate.ShouldBe(new_event_start_date);
         theEvent.Venue.ShouldBe(Venue.EmiratesOldTraffordManchester);
     }    
     

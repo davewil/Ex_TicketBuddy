@@ -32,11 +32,13 @@ export function formFieldIsReset(fieldName: string) {
 
 export async function fillEventForm(eventData: {
     eventName: string,
-    date: string,
+    startDate: string,
+    endDate: string,
     venue: string
 }) {
     await userEvent.type(elements.theFormField("Event Name"), eventData.eventName);
-    await userEvent.type(elements.theFormField("Date"), eventData.date);
+    await userEvent.type(elements.theFormField("Start Date"), eventData.startDate);
+    await userEvent.type(elements.theFormField("End Date"), eventData.endDate);
     await userEvent.type(elements.theFormField("Venue"), eventData.venue);
 }
 

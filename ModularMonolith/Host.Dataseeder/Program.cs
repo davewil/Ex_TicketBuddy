@@ -75,18 +75,19 @@ public static class Program
     {
         var eventData = new[]
         {
-            (Name: "Summer Rock Festival", Date: DateTimeOffset.Now.AddDays(30), Venue: Venue.O2ArenaLondon),
-            (Name: "Classical Symphony", Date: DateTimeOffset.Now.AddDays(45), Venue: Venue.RoyalAlbertHallLondon),
-            (Name: "International Football Match", Date: DateTimeOffset.Now.AddDays(60), Venue: Venue.WembleyStadiumLondon),
-            (Name: "Comedy Night Special", Date: DateTimeOffset.Now.AddDays(15), Venue: Venue.ManchesterArena),
-            (Name: "Tech Conference 2025", Date: DateTimeOffset.Now.AddDays(90), Venue: Venue.PrincipalityStadiumCardiff)
+            (Name: "Summer Rock Festival", StartDate: DateTimeOffset.Now.AddDays(30), EndDate: DateTimeOffset.Now.AddDays(30).AddHours(1), Venue: Venue.O2ArenaLondon),
+            (Name: "Classical Symphony", StartDate: DateTimeOffset.Now.AddDays(45), EndDate: DateTimeOffset.Now.AddDays(45).AddHours(1),Venue: Venue.RoyalAlbertHallLondon),
+            (Name: "International Football Match", StartDate: DateTimeOffset.Now.AddDays(60), EndDate: DateTimeOffset.Now.AddDays(60).AddHours(1),Venue: Venue.WembleyStadiumLondon),
+            (Name: "Comedy Night Special", StartDate: DateTimeOffset.Now.AddDays(15), EndDate: DateTimeOffset.Now.AddDays(15).AddHours(1),Venue: Venue.ManchesterArena),
+            (Name: "Tech Conference 2025", StartDate: DateTimeOffset.Now.AddDays(90), EndDate: DateTimeOffset.Now.AddDays(90).AddHours(1), Venue: Venue.PrincipalityStadiumCardiff)
         };
 
         foreach (var eventInfo in eventData)
         {
             var payload = new EventPayload(
                 eventInfo.Name,
-                eventInfo.Date,
+                eventInfo.StartDate,
+                eventInfo.EndDate,
                 eventInfo.Venue
             );
 

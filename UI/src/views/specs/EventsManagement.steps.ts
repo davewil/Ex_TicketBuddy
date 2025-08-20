@@ -29,7 +29,8 @@ export async function should_render_event_creation_form() {
     renderEventsManagement();
     expect(eventFormIsRendered()).toBeTruthy();
     expect(formFieldIsRendered("Event Name")).toBeTruthy();
-    expect(formFieldIsRendered("Date")).toBeTruthy();
+    expect(formFieldIsRendered("Start Date")).toBeTruthy();
+    expect(formFieldIsRendered("End Date")).toBeTruthy();
     expect(formFieldIsRendered("Venue")).toBeTruthy();
 }
 
@@ -38,15 +39,20 @@ export async function should_allow_user_to_create_new_event() {
     expect(eventFormIsRendered()).toBeTruthy();
 
     const eventName = "Test Event";
-    const eventDate = new Date();
-    eventDate.setDate(eventDate.getDate() + 1);
-    const eventDateString = eventDate.toISOString().split("T")[0];
-    const eventDateStringWithTime = eventDate.toISOString().split("T")[0] + "T00:00:00.000Z";
+
+    const startEventDate = new Date();
+    startEventDate.setDate(startEventDate.getDate() + 1);
+    const startEventDateStringWithTime = startEventDate.toISOString().split("T")[0] + "T12:12";
+
+    const endEventDate = new Date(startEventDate);
+    endEventDate.setDate(endEventDate.getDate() + 2);
+    const endEventDateStringWithTime = endEventDate.toISOString().split("T")[0] + "T13:13";
     const eventVenue = Venue.O2ArenaLondon;
 
     await fillEventForm({
         eventName: eventName,
-        date: eventDateString,
+        startDate: startEventDateStringWithTime,
+        endDate: endEventDateStringWithTime,
         venue: eventVenue
     });
     await clickSubmitEventButton();
@@ -54,9 +60,11 @@ export async function should_allow_user_to_create_new_event() {
     const data = mockServer.content
     expect(data).toEqual({
         EventName: eventName,
-        Date: eventDateStringWithTime,
+        StartDate: startEventDate.toISOString().split("T")[0] + "T11:12:00" + ".000Z",
+        EndDate: endEventDate.toISOString().split("T")[0] + "T12:13:00" + ".000Z",
         Venue: eventVenue
     });
     expect(formFieldIsReset("Event Name")).toBeTruthy();
-    expect(formFieldIsReset("Date")).toBeTruthy();
+    expect(formFieldIsReset("Start Date")).toBeTruthy();
+    expect(formFieldIsReset("End Date")).toBeTruthy();
 }

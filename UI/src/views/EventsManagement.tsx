@@ -2,16 +2,19 @@
 import {Button, Container, FormContainer, FormGroup, Input, Label, Select} from './EventsManagement.styles.tsx';
 import {ConvertVenueToString, Venue} from '../domain/event.ts';
 import {postEvent} from "../api/events.api.ts";
+import moment from 'moment'
 
 type EventFormData = {
     eventName: string;
-    date: string;
+    startDateTime: string;
+    endDateTime: string;
     venue: Venue;
 };
 
 const initialFormData: EventFormData = {
     eventName: '',
-    date: '',
+    startDateTime: '',
+    endDateTime: '',
     venue: Venue.O2ArenaLondon,
 };
 
@@ -31,7 +34,8 @@ export const EventsManagement = () => {
         if (isFormValid()) {
             postEvent({
                 EventName: formData.eventName,
-                Date: new Date(formData.date),
+                StartDate: moment(formData.startDateTime),
+                EndDate: moment(formData.endDateTime),
                 Venue: formData.venue,
             }).then(() => {
                 setFormData(initialFormData);
@@ -40,7 +44,7 @@ export const EventsManagement = () => {
     };
 
     const isFormValid = () => {
-        return formData.eventName && formData.date && formData.venue;
+        return formData.eventName && formData.startDateTime && formData.endDateTime && formData.venue;
     };
 
     return (
@@ -61,12 +65,23 @@ export const EventsManagement = () => {
                 </FormGroup>
 
                 <FormGroup>
-                    <Label htmlFor="date">Date</Label>
+                    <Label htmlFor="startDateTime">Start Date</Label>
                     <Input
-                        type="date"
-                        id="date"
-                        name="date"
-                        value={formData.date}
+                        type="datetime-local"
+                        id="startDateTime"
+                        name="startDateTime"
+                        value={formData.startDateTime}
+                        onChange={handleInputChange}
+                    />
+                </FormGroup>
+
+                <FormGroup>
+                    <Label htmlFor="endDateTime">End Date</Label>
+                    <Input
+                        type="datetime-local"
+                        id="endDateTime"
+                        name="endDateTime"
+                        value={formData.endDateTime}
                         onChange={handleInputChange}
                     />
                 </FormGroup>

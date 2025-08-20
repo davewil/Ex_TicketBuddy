@@ -20,7 +20,7 @@ export const Home = () => {
                     <EventItem key={index}>
                         <div>
                             <h2>{event.EventName}</h2>
-                            <p>{new Date(event.Date).toLocaleDateString()}</p>
+                            <p>{event.StartDate.toLocaleString()} - {event.EndDate.toLocaleString()}</p>
                             <button>Find tickets</button>
                         </div>
 

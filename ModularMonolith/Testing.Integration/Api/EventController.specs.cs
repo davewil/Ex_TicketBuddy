@@ -32,7 +32,7 @@ public partial class EventControllerSpecs
     }
     
     [Test]
-    public void cannot_update_event_with_date_in_the_past()
+    public void cannot_update_event_with_start_date_in_the_past()
     {
         Given(an_event_exists);
         And(a_request_to_update_the_event_with_a_date_in_the_past);

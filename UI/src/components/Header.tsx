@@ -32,7 +32,6 @@ export const Header = () => {
         if (selectedUser?.Id !== user?.Id) {
             useUsersStore.setState({ user: selectedUser });
             setShowUserDetails(false);
-            console.log(`Selected user: ${selectedUser?.UserType}`);
         }
     }
 

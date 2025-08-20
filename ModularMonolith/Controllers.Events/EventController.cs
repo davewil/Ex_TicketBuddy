@@ -27,7 +27,7 @@ public class EventController(EventService EventService) : ControllerBase
     public async Task<ActionResult<Guid>> CreateEvent([FromBody] EventPayload payload)
     {
         ValidateDate(payload);
-        var id = await EventService.Add(payload.EventName, payload.Date, payload.Venue);
+        var id = await EventService.Add(payload.EventName, payload.StartDate, payload.EndDate, payload.Venue);
         return Created($"/{Routes.Events}/{id}", id);
     }
 
@@ -35,12 +35,12 @@ public class EventController(EventService EventService) : ControllerBase
     public async Task<ActionResult> UpdateEvent(Guid id, [FromBody] EventPayload payload)
     {
         ValidateDate(payload);
-        await EventService.Update(id, payload.EventName, payload.Date, payload.Venue);
+        await EventService.Update(id, payload.EventName, payload.StartDate, payload.Venue);
         return NoContent();
     }
     
     private static void ValidateDate(EventPayload payload)
     {
-        if (payload.Date < DateTimeOffset.Now) throw new ValidationException("Event date cannot be in the past");
+        if (payload.StartDate < DateTimeOffset.Now) throw new ValidationException("Event date cannot be in the past");
     }
 }

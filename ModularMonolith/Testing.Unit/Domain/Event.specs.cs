@@ -31,6 +31,15 @@ public partial class EventSpecs
             Then(Informs("Name can only have alphanumerical characters"));
         }); 
     }
+        
+    [Test]
+    public void cannot_create_event_with_end_date_before_start_date()
+    {
+        Given(valid_inputs);
+        And(an_event_with_end_date_before_start_date);
+        When(Validating(creating_an_event));
+        Then(Informs("End date cannot be before start date"));
+    }
    
     [Test]
     public void can_create_valid_event()
@@ -39,4 +48,5 @@ public partial class EventSpecs
         When(creating_an_event);
         Then(the_event_is_created);
     }
+
 }

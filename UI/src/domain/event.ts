@@ -1,18 +1,22 @@
-﻿export interface Event {
+﻿import type {Moment} from "moment";
+
+export interface Event {
     Id: string;
     EventName: string;
-    Date: Date;
+    StartDate: Moment;
+    EndDate: Moment;
     Venue : Venue;
 }
 
 export interface EventPayload {
     EventName: string;
-    Date: Date;
+    StartDate: Moment;
+    EndDate: Moment;
     Venue : Venue;
 }
 
 export enum Venue {
-    O2ArenaLondon = "02ArenaLondon",
+    O2ArenaLondon = "O2ArenaLondon",
     WembleyStadiumLondon = "WembleyStadiumLondon",
     ManchesterArena = "ManchesterArena",
     UtilitaArenaBirmingham = "UtilitaArenaBirmingham",

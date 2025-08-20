@@ -9,7 +9,8 @@ public partial class EventSpecs : Specification
 {
     private Guid id;
     private string name = null!;
-    private DateTimeOffset date = DateTimeOffset.Now.AddDays(1);
+    private DateTimeOffset start_date = DateTimeOffset.Now.AddDays(1);
+    private DateTimeOffset end_date = DateTimeOffset.Now.AddDays(1).AddHours(2);
     private Event user = null!;
 
     private const string invalid_name = "Jackie Chan 123!";
@@ -21,13 +22,13 @@ public partial class EventSpecs : Specification
         id = Guid.NewGuid();
         name = null!;
         user = null!;
-        date = DateTimeOffset.Now.AddDays(1);
+        start_date = DateTimeOffset.Now.AddDays(1);
     }
 
     private void valid_inputs()
     {
         name = valid_name;
-        date = DateTimeOffset.Now.AddDays(1);
+        start_date = DateTimeOffset.Now.AddDays(1);
     }
 
     private void a_null_user_name()
@@ -43,16 +44,25 @@ public partial class EventSpecs : Specification
     private void an_event_with_non_alphanumerical_characters()
     {
         name = invalid_name;
-    }    
+    }
+    
+    private void an_event_with_end_date_before_start_date()
+    {
+        start_date = DateTimeOffset.Now.AddDays(2);
+        end_date = DateTimeOffset.Now.AddDays(1);
+    }
     
     private void creating_an_event()
     {
-        user = new Event(id, name, date, Venue.FirstDirectArenaLeeds);
+        user = new Event(id, name, start_date, end_date, Venue.FirstDirectArenaLeeds);
     }    
     
     private void the_event_is_created()
     {
         user.Id.Should().Be(id);
         user.EventName.ToString().Should().Be(valid_name);
+        user.StartDate.Should().Be(start_date);
+        user.EndDate.Should().Be(end_date);
+        user.Venue.Should().Be(Venue.FirstDirectArenaLeeds);
     }
 }
