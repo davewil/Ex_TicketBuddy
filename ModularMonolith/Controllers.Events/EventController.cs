@@ -35,7 +35,7 @@ public class EventController(EventService EventService) : ControllerBase
     public async Task<ActionResult> UpdateEvent(Guid id, [FromBody] EventPayload payload)
     {
         ValidateDate(payload);
-        await EventService.Update(id, payload.EventName, payload.StartDate, payload.Venue);
+        await EventService.Update(id, payload.EventName, payload.StartDate, payload.EndDate, payload.Venue);
         return NoContent();
     }
     

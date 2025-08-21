@@ -141,7 +141,6 @@ public partial class EventControllerSpecs : TruncateDbSpecification
     {
         a_request_to_create_an_event();
         creating_the_event();
-        returned_id = JsonSerialization.Deserialize<Guid>(content.ReadAsStringAsync().GetAwaiter().GetResult());
     }
 
     private static void a_short_wait()

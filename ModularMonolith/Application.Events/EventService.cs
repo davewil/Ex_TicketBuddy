@@ -24,13 +24,13 @@ public class EventService(EventRepository repository)
         return id;
     }
 
-    public async Task Update(Guid id, EventName eventName, DateTimeOffset date, Venue venue)
+    public async Task Update(Guid id, EventName eventName, DateTimeOffset startDate, DateTimeOffset endDate, Venue venue)
     {
         var @event = await repository.Get(id);
         if (@event is null) return;
         
         @event.UpdateName(eventName);
-        @event.UpdateDate(date);
+        @event.UpdateDates(startDate, endDate);
         @event.UpdateVenue(venue);
         await repository.Save(@event);
     }
