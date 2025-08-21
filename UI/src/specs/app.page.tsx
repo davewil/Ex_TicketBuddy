@@ -42,12 +42,24 @@ export function renderAppAtEventsManagement() {
     return renderedComponent;
 }
 
+export function renderAppAtUnknownRoute() {
+    renderedComponent = render(
+            <MemoryRouter initialEntries={['/wibble']}>
+                <App/>
+            </MemoryRouter>)
+    return renderedComponent;
+}
+
 export function unmountApp() {
     renderedComponent.unmount();
 }
 
 export function homePageIsRendered() {
     return elements.home() !== null;
+}
+
+export function notFoundIsRendered() {
+    return elements.notFound() !== null;
 }
 
 export function usersDropdownIsRendered() {
@@ -103,6 +115,7 @@ export async function clickTicketLogo() {
 
 const elements = {
     home: () => renderedComponent.queryByText("I am the mocked Home component"),
+    notFound: () => renderedComponent.queryByText("Page not found"),
     usersDropdown: () => renderedComponent.queryByTestId("users-dropdown"),
     theUsersDropdown: () => renderedComponent.findByTestId("users-dropdown"),
     userIcon: () => renderedComponent.queryByTestId("user-icon"),

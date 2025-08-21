@@ -2,7 +2,7 @@
 import {
     AddIcon,
     Button,
-    Container, EventItem, EventList,
+    EventItem, EventList,
     FormContainer,
     FormGroup,
     Input,
@@ -50,7 +50,7 @@ export const ListEvents = () => {
     },[]);
 
     return (
-        <Container>
+        <>
             <h1>Events Management</h1>
             <Link to="add">Add Event <AddIcon/></Link>
             <EventList>
@@ -65,7 +65,7 @@ export const ListEvents = () => {
                     </EventItem>
                 ))}
             </EventList>
-        </Container>
+        </>
     );
 }
 
@@ -99,7 +99,7 @@ export const AddEvent = () => {
     };
 
     return (
-        <Container>
+        <>
             <h1>Events Management</h1>
             <FormContainer data-testid="event-creation-form" onSubmit={handleSubmit}>
                 <h2>Create New Event</h2>
@@ -155,6 +155,6 @@ export const AddEvent = () => {
 
                 <Button type="submit" disabled={!isFormValid()}>Create Event</Button>
             </FormContainer>
-        </Container>
+        </>
     );
 };

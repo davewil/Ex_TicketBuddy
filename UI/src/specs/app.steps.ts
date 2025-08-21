@@ -5,9 +5,9 @@
     clickUsersDropdown,
     eventsManagementLinkIsRendered,
     eventsManagementPageIsRendered,
-    homePageIsRendered,
+    homePageIsRendered, notFoundIsRendered,
     renderApp,
-    renderAppAtEventsManagement,
+    renderAppAtEventsManagement, renderAppAtUnknownRoute,
     selectUserFromDropdown,
     ticketLogoIsRendered,
     unmountApp,
@@ -38,6 +38,11 @@ afterEach(() => {
 export function should_default_to_home_page() {
     renderApp();
     expect(homePageIsRendered()).toBeTruthy();
+}
+
+export function should_display_not_found_for_unknown_routes() {
+    renderAppAtUnknownRoute()
+    expect(notFoundIsRendered()).toBeTruthy();
 }
 
 export async function should_load_list_of_users_to_select_from() {
