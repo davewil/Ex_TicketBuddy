@@ -7,16 +7,19 @@ import {
     unmountEventsManagement,
     fillEventForm,
     clickSubmitEventButton,
-    formFieldIsReset, clickAddEventIcon
+    formFieldIsReset, clickAddEventIcon, eventExists
 } from "./EventsManagement.page.tsx";
 import { Venue } from "../../domain/event.ts";
 import {waitUntil} from "../../testing/utilities.ts";
+import {Events} from "../../testing/data.ts";
 
 const mockServer = MockServer.New();
 let wait_for_post: () => boolean;
+let wait_for_get_events: () => boolean;
 
 beforeEach(() => {
     mockServer.reset();
+    wait_for_get_events = mockServer.get("/events", Events);
     wait_for_post = mockServer.post("/events", {}, true, undefined);
     mockServer.start();
 });
@@ -24,6 +27,14 @@ beforeEach(() => {
 afterEach(() => {
     unmountEventsManagement();
 });
+
+export async function should_display_list_of_events() {
+    renderEventsManagement();
+    await waitUntil(wait_for_get_events);
+    for (const event of Events) {
+        expect(eventExists(event.EventName)).toBeTruthy();
+    }
+}
 
 export async function should_render_event_creation_form() {
     renderEventsManagement();

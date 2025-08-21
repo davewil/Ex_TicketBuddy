@@ -1,16 +1,16 @@
-﻿import React, {useState} from 'react';
+﻿import React, {useEffect, useState} from 'react';
 import {
     AddIcon,
     Button,
-    Container,
+    Container, EventItem, EventList,
     FormContainer,
     FormGroup,
     Input,
     Label,
     Select
 } from './EventsManagement.styles.tsx';
-import {ConvertVenueToString, Venue} from '../domain/event.ts';
-import {postEvent} from "../api/events.api.ts";
+import {ConvertVenueToString, type Event, Venue} from '../domain/event.ts';
+import {getEvents, postEvent} from "../api/events.api.ts";
 import moment from 'moment'
 import {Link, Outlet, Route, Routes} from "react-router-dom";
 
@@ -41,11 +41,30 @@ export const EventsManagement = () => {
 }
 
 export const ListEvents = () => {
+    const [events, setEvents] = useState<Event[]>([]);
+
+    useEffect(() => {
+        getEvents().then(data => {
+            setEvents(data);
+        });
+    },[]);
+
     return (
         <Container>
-            <Link to="add">
-                Add Event <AddIcon/>
-            </Link>
+            <h1>Events Management</h1>
+            <Link to="add">Add Event <AddIcon/></Link>
+            <EventList>
+                {events.map((event, index) => (
+                    <EventItem key={index}>
+                        <div>
+                            <h2>{event.EventName}</h2>
+                            <p>{moment(event.StartDate).format('MMMM Do YYYY, h:mm A')} to {moment(event.EndDate).format('MMMM Do YYYY, h:mm A')}</p>
+                            <p>Venue: {ConvertVenueToString(event.Venue)}</p>
+                        </div>
+
+                    </EventItem>
+                ))}
+            </EventList>
         </Container>
     );
 }

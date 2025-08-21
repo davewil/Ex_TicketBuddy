@@ -14,7 +14,6 @@ export const EventItem = styled.div`
     width: 100%;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s;
-    cursor: pointer;
     display: flex;
     align-items: flex-end;
     justify-content: flex-start;
