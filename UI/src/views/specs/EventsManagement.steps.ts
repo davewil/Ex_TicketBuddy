@@ -6,11 +6,14 @@ import {
     renderEventsManagement,
     unmountEventsManagement,
     fillEventForm,
-    clickSubmitEventButton,
+    clickSubmitEventButtonToAddEvent,
     clickAddEventIcon,
     eventExists,
     backButtonIsRendered,
-    clickBackButton
+    clickBackButton,
+    clickEditButtonForEvent,
+    editButtonExistsForEvent,
+    clickSubmitEventButtonToUpdateEvent
 } from "./EventsManagement.page.tsx";
 import { Venue } from "../../domain/event.ts";
 import {waitUntil} from "../../testing/utilities.ts";
@@ -18,12 +21,16 @@ import {Events} from "../../testing/data.ts";
 
 const mockServer = MockServer.New();
 let wait_for_post: () => boolean;
+let wait_for_put: () => boolean;
 let wait_for_get_events: () => boolean;
+let wait_for_get_event: () => boolean;
 
 beforeEach(() => {
     mockServer.reset();
     wait_for_get_events = mockServer.get("/events", Events);
+    wait_for_get_event = mockServer.get(`/events/${Events[0].Id}`, Events[0]);
     wait_for_post = mockServer.post("/events", {}, true, undefined);
+    wait_for_put = mockServer.put(`/events/${Events[0].Id}`, {}, true);
     mockServer.start();
 });
 
@@ -71,7 +78,7 @@ export async function should_allow_user_to_create_new_event() {
         endDate: endEventDateStringWithTime,
         venue: eventVenue
     });
-    await clickSubmitEventButton();
+    await clickSubmitEventButtonToAddEvent();
     await waitUntil(wait_for_post);
     const data = mockServer.content
     expect(data).toEqual({
@@ -102,4 +109,45 @@ export async function should_navigate_back_to_events_list_when_back_button_is_cl
     for (const event of Events) {
         expect(eventExists(event.EventName)).toBeTruthy();
     }
+}
+
+export async function should_allow_user_to_edit_existing_event() {
+    renderEventsManagement();
+    await waitUntil(wait_for_get_events);
+
+    const eventToEdit = Events[0];
+    expect(editButtonExistsForEvent(eventToEdit.EventName)).toBeTruthy();
+
+    await clickEditButtonForEvent(eventToEdit.EventName);
+    await waitUntil(wait_for_get_event);
+
+    const updatedEventName = `${eventToEdit.EventName} - Updated`;
+    const startEventDate = new Date();
+    startEventDate.setDate(startEventDate.getDate() + 7);
+    const startEventDateStringWithTime = startEventDate.toISOString().split("T")[0] + "T14:00";
+
+    const endEventDate = new Date(startEventDate);
+    endEventDate.setDate(endEventDate.getDate() + 1);
+    const endEventDateStringWithTime = endEventDate.toISOString().split("T")[0] + "T17:00";
+
+    await fillEventForm({
+        eventName: updatedEventName,
+        startDate: startEventDateStringWithTime,
+        endDate: endEventDateStringWithTime,
+        venue: eventToEdit.Venue
+    });
+
+    await clickSubmitEventButtonToUpdateEvent();
+
+    await waitUntil(wait_for_put);
+
+    const data = mockServer.content;
+    expect(data).toEqual({
+        EventName: updatedEventName,
+        StartDate: startEventDate.toISOString().split("T")[0] + "T14:00:00" + ".000Z",
+        EndDate: endEventDate.toISOString().split("T")[0] + "T17:00:00" + ".000Z",
+        Venue: eventToEdit.Venue
+    });
+
+    expect(eventFormIsRendered()).toBeFalsy();
 }

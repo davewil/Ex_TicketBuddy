@@ -3,7 +3,8 @@ import {
     should_render_event_creation_form,
     should_allow_user_to_create_new_event,
     should_display_list_of_events,
-    should_navigate_back_to_events_list_when_back_button_is_clicked
+    should_navigate_back_to_events_list_when_back_button_is_clicked,
+    should_allow_user_to_edit_existing_event
 } from "./EventsManagement.steps.ts";
 
 describe("Events Management", () => {
@@ -11,4 +12,5 @@ describe("Events Management", () => {
     it("should render event creation form when add event icon clicked", should_render_event_creation_form);
     it('should allow user to create a new event', should_allow_user_to_create_new_event);
     it('should navigate back to events list when back button is clicked', should_navigate_back_to_events_list_when_back_button_is_clicked);
+    it('should allow user to edit an existing event', should_allow_user_to_edit_existing_event);
 });
