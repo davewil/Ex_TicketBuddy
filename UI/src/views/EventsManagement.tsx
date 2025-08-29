@@ -1,7 +1,7 @@
 ﻿import React, {useEffect, useState} from 'react';
 import {
     AddIcon,
-    Button,
+    BackIcon,
     EventItem, EventList,
     FormContainer,
     FormGroup,
@@ -12,7 +12,8 @@ import {
 import {ConvertVenueToString, type Event, Venue} from '../domain/event.ts';
 import {getEvents, postEvent} from "../api/events.api.ts";
 import moment from 'moment'
-import {Link, Outlet, Route, Routes} from "react-router-dom";
+import {Link, Outlet, Route, Routes, useNavigate} from "react-router-dom";
+import {Button} from "../components/Button.styles.tsx";
 
 type EventFormData = {
     eventName: string;
@@ -52,7 +53,11 @@ export const ListEvents = () => {
     return (
         <>
             <h1>Events Management</h1>
-            <Link to="add">Add Event <AddIcon/></Link>
+            <Link to="add">
+                <Button>
+                    Add Event <AddIcon/>
+                </Button>
+            </Link>
             <EventList>
                 {events.map((event, index) => (
                     <EventItem key={index}>
@@ -71,6 +76,7 @@ export const ListEvents = () => {
 
 export const AddEvent = () => {
     const [formData, setFormData] = useState<EventFormData>(initialFormData);
+    const navigate = useNavigate();
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -90,6 +96,7 @@ export const AddEvent = () => {
                 Venue: formData.venue,
             }).then(() => {
                 setFormData(initialFormData);
+                navigate('/events-management');
             });
         }
     };
@@ -101,6 +108,11 @@ export const AddEvent = () => {
     return (
         <>
             <h1>Events Management</h1>
+            <Link to="/events-management">
+                <Button data-testid="back-button">
+                    <BackIcon /> Back to Events
+                </Button>
+            </Link>
             <FormContainer data-testid="event-creation-form" onSubmit={handleSubmit}>
                 <h2>Create New Event</h2>
 

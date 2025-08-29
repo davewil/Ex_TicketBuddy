@@ -1,6 +1,6 @@
 ﻿import styled from "styled-components";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faPlus} from "@fortawesome/free-solid-svg-icons";
+import {faPlus, faArrowLeft} from "@fortawesome/free-solid-svg-icons";
 
 export const EventList = styled.div`
     display: flex;
@@ -54,23 +54,6 @@ export const Select = styled.select`
     font-size: 16px;
 `;
 
-export const Button = styled.button`
-    padding: 10px 15px;
-    background-color: #61dafb;
-    color: #282c34;
-    border: none;
-    border-radius: 4px;
-    font-size: 16px;
-    cursor: pointer;
-    
-    &:hover {
-        background-color: #21a1f1;
-    }
-    
-    &:disabled {
-        background-color: #cccccc;
-        cursor: not-allowed;
-    }
-`;
-
 export const AddIcon = () => <FontAwesomeIcon icon={faPlus} />;
+
+export const BackIcon = () => <FontAwesomeIcon icon={faArrowLeft} style={{ marginRight: '5px' }} />;

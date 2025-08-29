@@ -1,5 +1,5 @@
 ﻿import {render, type RenderResult} from "@testing-library/react";
-import {MemoryRouter} from "react-router-dom";
+import {MemoryRouter, Route, Routes} from "react-router-dom";
 import {EventsManagement} from "../EventsManagement.tsx";
 import {userEvent} from "@testing-library/user-event";
 
@@ -7,8 +7,10 @@ let renderedComponent: RenderResult;
 
 export function renderEventsManagement() {
     renderedComponent = render(
-        <MemoryRouter>
-            <EventsManagement/>
+        <MemoryRouter initialEntries={['/events-management']}>
+            <Routes>
+                <Route path="/events-management/*" element={<EventsManagement />} />
+            </Routes>
         </MemoryRouter>);
     return renderedComponent;
 }
@@ -56,6 +58,15 @@ export async function clickSubmitEventButton() {
     return userEvent.click(button);
 }
 
+export function backButtonIsRendered() {
+    return elements.backButton() !== null;
+}
+
+export async function clickBackButton() {
+    const button = elements.backButton();
+    return userEvent.click(button);
+}
+
 const elements = {
     theEvent: (eventName: string) => renderedComponent.getByText(eventName),
     addEventIcon: () => renderedComponent.getByRole("link", { name: /add event/i }),
@@ -63,4 +74,5 @@ const elements = {
     formField: (name: string) => renderedComponent.queryByLabelText(name),
     theFormField: (name: string) => renderedComponent.getByLabelText(name),
     submitEventButton: () => renderedComponent.getByRole("button", { name: /create event/i }),
+    backButton: () => renderedComponent.getByRole("button", { name: /back to events/i })
 }

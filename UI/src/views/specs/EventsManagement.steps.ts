@@ -7,7 +7,10 @@ import {
     unmountEventsManagement,
     fillEventForm,
     clickSubmitEventButton,
-    formFieldIsReset, clickAddEventIcon, eventExists
+    clickAddEventIcon,
+    eventExists,
+    backButtonIsRendered,
+    clickBackButton
 } from "./EventsManagement.page.tsx";
 import { Venue } from "../../domain/event.ts";
 import {waitUntil} from "../../testing/utilities.ts";
@@ -77,7 +80,26 @@ export async function should_allow_user_to_create_new_event() {
         EndDate: endEventDate.toISOString().split("T")[0] + "T13:13:00" + ".000Z",
         Venue: eventVenue
     });
-    expect(formFieldIsReset("Event Name")).toBeTruthy();
-    expect(formFieldIsReset("Start Date")).toBeTruthy();
-    expect(formFieldIsReset("End Date")).toBeTruthy();
+}
+
+export async function should_navigate_back_to_events_list_when_back_button_is_clicked() {
+    renderEventsManagement();
+    await waitUntil(wait_for_get_events);
+    await clickAddEventIcon();
+
+    expect(eventFormIsRendered()).toBeTruthy();
+    expect(backButtonIsRendered()).toBeTruthy();
+
+    mockServer.reset();
+    wait_for_get_events = mockServer.get("/events", Events);
+    mockServer.start();
+
+    await clickBackButton();
+
+    expect(eventFormIsRendered()).toBeFalsy();
+    await waitUntil(wait_for_get_events);
+
+    for (const event of Events) {
+        expect(eventExists(event.EventName)).toBeTruthy();
+    }
 }
