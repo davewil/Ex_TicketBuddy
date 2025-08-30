@@ -1,16 +1,14 @@
-﻿import {render, type RenderResult} from "@testing-library/react";
-import {MemoryRouter, Route, Routes} from "react-router-dom";
-import {EventsManagement} from "../EventsManagement.tsx";
+﻿import {render, type RenderResult, screen} from "@testing-library/react";
+import {MemoryRouter} from "react-router-dom";
 import {userEvent} from "@testing-library/user-event";
+import {Main} from "../../App.tsx";
 
 let renderedComponent: RenderResult;
 
 export function renderEventsManagement() {
     renderedComponent = render(
         <MemoryRouter initialEntries={['/events-management']}>
-            <Routes>
-                <Route path="/events-management/*" element={<EventsManagement />} />
-            </Routes>
+            <Main/>
         </MemoryRouter>);
     return renderedComponent;
 }
@@ -79,9 +77,14 @@ export async function clickEditButtonForEvent(eventName: string) {
 }
 
 export function editButtonExistsForEvent(eventName: string): boolean {
+    const editButton = elements.editButtonForEvent(eventName);
+    return !!editButton;
+}
+
+export function errorToastIsDisplayed(errorMessage: string): boolean {
     try {
-        const editButton = elements.editButtonForEvent(eventName);
-        return !!editButton;
+        const toastElement = screen.getByText(errorMessage);
+        return !!toastElement;
     } catch (e) {
         return false;
     }

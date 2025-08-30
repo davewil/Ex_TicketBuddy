@@ -13,7 +13,8 @@ import {
     clickBackButton,
     clickEditButtonForEvent,
     editButtonExistsForEvent,
-    clickSubmitEventButtonToUpdateEvent
+    clickSubmitEventButtonToUpdateEvent,
+    errorToastIsDisplayed
 } from "./EventsManagement.page.tsx";
 import { Venue } from "../../domain/event.ts";
 import {waitUntil} from "../../testing/utilities.ts";
@@ -138,7 +139,6 @@ export async function should_allow_user_to_edit_existing_event() {
     });
 
     await clickSubmitEventButtonToUpdateEvent();
-
     await waitUntil(wait_for_put);
 
     const data = mockServer.content;
@@ -150,4 +150,44 @@ export async function should_allow_user_to_edit_existing_event() {
     });
 
     expect(eventFormIsRendered()).toBeFalsy();
+}
+
+export async function should_show_error_toast_when_event_update_fails() {
+    renderEventsManagement();
+    await waitUntil(wait_for_get_events);
+
+    const eventToEdit = Events[0];
+    expect(editButtonExistsForEvent(eventToEdit.EventName)).toBeTruthy();
+
+    await clickEditButtonForEvent(eventToEdit.EventName);
+    await waitUntil(wait_for_get_event);
+
+    mockServer.reset();
+    const errorResponse = {
+        Message: "The request could not be correctly validated.",
+        Errors: ["End date cannot be before start date"]
+    };
+    wait_for_put = mockServer.put(`/events/${eventToEdit.Id}`, errorResponse, false, 400);
+    mockServer.start();
+
+    const currentDate = new Date();
+    const startDate = new Date();
+    startDate.setDate(currentDate.getDate() + 10);
+    const endDate = new Date();
+    endDate.setDate(currentDate.getDate() + 5);
+
+    const startDateString = startDate.toISOString().split("T")[0] + "T14:00";
+    const endDateString = endDate.toISOString().split("T")[0] + "T12:00";
+
+    await fillEventForm({
+        eventName: "Updated Event Name",
+        startDate: startDateString,
+        endDate: endDateString,
+        venue: eventToEdit.Venue
+    });
+
+    await clickSubmitEventButtonToUpdateEvent();
+    await waitUntil(wait_for_put);
+
+    expect(errorToastIsDisplayed("End date cannot be before start date")).toBeTruthy();
 }

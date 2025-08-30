@@ -14,6 +14,8 @@ import {getEventById, getEvents, postEvent, putEvent} from "../api/events.api.ts
 import moment from 'moment'
 import {Link, Outlet, Route, Routes, useNavigate, useParams} from "react-router-dom";
 import {Button} from "../components/Button.styles.tsx";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 type EventFormData = {
     eventName: string;
@@ -215,6 +217,14 @@ export const EditEvent = () => {
             }).then(() => {
                 setFormData(initialFormData);
                 navigate('/events-management');
+            }).catch((error) => {
+                if (error.error && Array.isArray(error.error)) {
+                    error.error.forEach((errorMessage: string) => {
+                        toast.error(errorMessage);
+                    });
+                } else {
+                    toast.error("Failed to update event");
+                }
             });
         }
     };

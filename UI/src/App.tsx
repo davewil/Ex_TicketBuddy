@@ -21,12 +21,18 @@ function App() {
   return (
       <>
           <Header />
-          <MainContainer>
-              <AppRoutes />
-              <ToastContainer />
-          </MainContainer>
+          <Main/>
       </>
   );
+}
+
+export const Main = () => {
+    return (
+        <MainContainer>
+            <AppRoutes />
+            <ToastContainer />
+        </MainContainer>
+    );
 }
 
 export const AppRoutes = () => (
