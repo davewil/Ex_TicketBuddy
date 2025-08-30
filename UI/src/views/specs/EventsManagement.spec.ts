@@ -5,7 +5,8 @@ import {
     should_display_list_of_events,
     should_navigate_back_to_events_list_when_back_button_is_clicked,
     should_allow_user_to_edit_existing_event,
-    should_show_error_toast_when_event_update_fails
+    should_show_error_toast_when_event_update_fails,
+    should_show_error_toast_when_event_creation_fails
 } from "./EventsManagement.steps.ts";
 
 describe("Events Management", () => {
@@ -15,4 +16,5 @@ describe("Events Management", () => {
     it('should navigate back to events list when back button is clicked', should_navigate_back_to_events_list_when_back_button_is_clicked);
     it('should allow user to edit an existing event', should_allow_user_to_edit_existing_event);
     it('should show error toast when event update fails', should_show_error_toast_when_event_update_fails);
+    it('should show error toast when event creation fails', should_show_error_toast_when_event_creation_fails);
 });

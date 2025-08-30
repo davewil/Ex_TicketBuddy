@@ -105,6 +105,16 @@ export const AddEvent = () => {
             }).then(() => {
                 setFormData(initialFormData);
                 navigate('/events-management');
+            }).catch((error) => {
+                // Display each validation error from the API response
+                if (error.error && Array.isArray(error.error)) {
+                    error.error.forEach((errorMessage: string) => {
+                        toast.error(errorMessage);
+                    });
+                } else {
+                    // Fallback for unexpected error format
+                    toast.error("Failed to create event");
+                }
             });
         }
     };
