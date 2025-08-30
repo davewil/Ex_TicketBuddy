@@ -3,6 +3,7 @@ import {getEvents} from "../api/events.api";
 import {ConvertVenueToString, type Event} from "../domain/event";
 import {EventItem, EventList} from "./Home.styles.tsx";
 import moment from "moment";
+import {Button} from "../components/Button.styles.tsx";
 
 export const Home = () => {
     const [events, setEvents] = useState<Event[]>([]);
@@ -23,7 +24,7 @@ export const Home = () => {
                             <h2>{event.EventName}</h2>
                             <p>{moment(event.StartDate).format('MMMM Do YYYY, h:mm A')} to {moment(event.EndDate).format('MMMM Do YYYY, h:mm A')}</p>
                             <p>Venue: {ConvertVenueToString(event.Venue)}</p>
-                            <button>Find tickets</button>
+                            <Button>Find tickets</Button>
                         </div>
 
                     </EventItem>
