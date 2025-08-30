@@ -1,9 +1,10 @@
-﻿using Domain.Events.Entities;
+﻿using MassTransit;
 using Microsoft.EntityFrameworkCore;
+using Event = Domain.Events.Entities.Event;
 
 namespace Events.Persistence;
 
-public class EventRepository(EventDbContext eventDbContext)
+public class EventRepository(EventDbContext eventDbContext, IPublishEndpoint publishEndpoint)
 {
     public async Task Save(Event theEvent)
     {
@@ -17,6 +18,15 @@ public class EventRepository(EventDbContext eventDbContext)
             eventDbContext.Add(theEvent);
             await eventDbContext.SaveChangesAsync();
         }
+        
+        await publishEndpoint.Publish(new Integration.Events.Messaging.EventUpserted
+        {
+            Id = theEvent.Id, 
+            Name = theEvent.EventName,
+            StartDate = theEvent.StartDate,
+            EndDate = theEvent.EndDate,
+            Venue = theEvent.Venue
+        });
     }
 
     public async Task<Event?> Get(Guid id)

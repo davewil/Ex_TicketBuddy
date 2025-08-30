@@ -1,11 +1,7 @@
 ﻿using System.Text.Json.Serialization;
-using Application;
-using Application.Events;
 using Domain.Events;
 using Domain.Users;
-using Events.Persistence;
 using OpenTelemetry;
-using Users.Persistence;
 using WebHost;
 
 namespace Api.Hosting;
@@ -22,10 +18,8 @@ internal sealed class Api(WebApplicationBuilder webApplicationBuilder, IConfigur
     {
         base.ConfigureServices(services);
         services.ConfigureDatabase(_settings);
-        services.AddScoped<EventRepository>();
-        services.AddScoped<EventService>();
-        services.AddScoped<UserRepository>();
-        services.AddScoped<UserService>();
+        services.ConfigureServices();
+        if (IsNotLocalTestingOrBuildPipeline()) services.ConfigureMessaging(_settings);
         services.AddCorsAllowAll();
     }
 

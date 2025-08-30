@@ -11,6 +11,7 @@ public partial class EventControllerSpecs
         When(creating_the_event);
         And(requesting_the_event);
         Then(the_event_is_created);
+        And(an_integration_event_is_published);
     }
     
     [Test]
@@ -29,6 +30,7 @@ public partial class EventControllerSpecs
         When(updating_the_event);
         And(requesting_the_updated_event);
         Then(the_event_is_updated);
+        And(an_another_integration_event_is_published);
     }
     
     [Test]

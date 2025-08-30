@@ -1,6 +1,8 @@
 ﻿using Application;
 using Application.Events;
+using Domain.Events.Messaging;
 using Events.Persistence;
+using MassTransit;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
@@ -42,6 +44,11 @@ public class IntegrationWebApplicationFactory<TProgram>(string connectionString)
             services.AddScoped<EventService>();
             services.AddScoped<UserRepository>();
             services.AddScoped<UserService>();
+            services.AddMassTransitTestHarness(x =>
+            {
+                var applicationAssembly = EventsDomainMessaging.Assembly;
+                x.AddConsumers(applicationAssembly);
+            });
         });
 
         builder.UseEnvironment("Test");

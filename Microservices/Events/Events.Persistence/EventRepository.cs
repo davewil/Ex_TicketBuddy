@@ -1,5 +1,4 @@
-﻿using Events.Domain.Entities;
-using Events.Domain.Messaging.Messages;
+﻿using Events.Domain.Messaging.Messages;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Event = Events.Domain.Entities.Event;

@@ -4,11 +4,17 @@ internal class Settings
 {
     private static IConfiguration Configuration = null!;
     internal DatabaseSettings Database => new();
+    internal RabbitMqSettings RabbitMq => new();
     internal TelemetrySettings Telemetry => new();
    
     internal Settings(IConfiguration theConfiguration)
     {
         Configuration = theConfiguration;
+    }
+    
+    internal class RabbitMqSettings
+    {
+        internal Uri ConnectionString => new(Configuration["ConnectionStrings:Messaging"]!);
     }
     
     internal class TelemetrySettings

@@ -1,0 +1,22 @@
+﻿using System.ComponentModel.DataAnnotations;
+using Domain.Events.Primitives;
+using EventName = Domain.Tickets.Primitives.EventName;
+
+namespace Domain.Tickets.Entities;
+
+public class Event : Aggregate
+{
+    public Event(Guid id, EventName eventName, DateTimeOffset startDate, DateTimeOffset endDate, Venue venue) : base(id)
+    {
+        if (endDate < startDate) throw new ValidationException("End date cannot be before start date");
+        EventName = eventName;
+        StartDate = startDate;
+        EndDate = endDate;
+        Venue = venue;
+    }
+    
+    public EventName EventName { get; private set; }
+    public DateTimeOffset StartDate { get; private set; }
+    public DateTimeOffset EndDate { get; private set; }
+    public Venue Venue { get; private set; }
+}

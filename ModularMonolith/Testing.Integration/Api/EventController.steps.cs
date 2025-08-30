@@ -5,6 +5,9 @@ using Controllers.Events;
 using Controllers.Events.Requests;
 using Domain.Events.Entities;
 using Domain.Events.Primitives;
+using Integration.Events.Messaging;
+using MassTransit.Testing;
+using Microsoft.Extensions.DependencyInjection;
 using Migrations;
 using Shouldly;
 using Testcontainers.MsSql;
@@ -30,6 +33,7 @@ public partial class EventControllerSpecs : TruncateDbSpecification
     private readonly DateTimeOffset new_event_end_date = DateTimeOffset.Now.AddDays(2).AddHours(2);
     private readonly DateTimeOffset past_event_start_date = DateTimeOffset.Now.AddDays(-1);
     private static MsSqlContainer database = null!;
+    private ITestHarness testHarness = null!;
 
     protected override void before_all()
     {
@@ -46,11 +50,14 @@ public partial class EventControllerSpecs : TruncateDbSpecification
         returned_id = Guid.Empty;
         factory = new IntegrationWebApplicationFactory<Program>(database.GetTicketBuddyConnectionString());
         client = factory.CreateClient();
+        testHarness = factory.Services.GetRequiredService<ITestHarness>();
+        testHarness.Start().Await();
     }
 
     protected override void after_each()
     {
         Truncate(database.GetTicketBuddyConnectionString());
+        testHarness.Stop().Await();
         client.Dispose();
         factory.Dispose();
     }
@@ -232,5 +239,17 @@ public partial class EventControllerSpecs : TruncateDbSpecification
         theEvent.Count.ShouldBe(1);
         theEvent.Single().Id.ShouldBe(returned_id);
         theEvent.Single().EventName.ToString().ShouldBe(name);
+    }
+
+    private void an_integration_event_is_published()
+    {
+        testHarness.Published.Select<EventUpserted>()
+            .Any(e => e.Context.Message.Id == returned_id && e.Context.Message.Name == name).ShouldBeTrue("Event was not published to the bus");
+    }
+
+    private void an_another_integration_event_is_published()
+    {
+        testHarness.Published.Select<EventUpserted>()
+            .Any(e => e.Context.Message.Id == returned_id && e.Context.Message.Name == new_name).ShouldBeTrue("Event was not published to the bus");
     }
 }

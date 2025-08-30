@@ -6,11 +6,18 @@ var builder = DistributedApplication.CreateBuilder(args);
 var sqlServer = builder
     .AddSqlServer("SqlServerMonolith")
     .WithPassword(builder.AddParameter("Password", "YourStrong@Passw0rd"))
-    .WithDataVolume("TicketBuddyMonolith.SqlServer")
+    .WithDataVolume("TicketBuddy.Monolith.SqlServer")
     .WithHostPort(1450)
     .WithLifetime(ContainerLifetime.Persistent);
 
 var database = sqlServer.AddDatabase("TicketBuddy");
+
+var rabbitmq = builder
+    .AddRabbitMQ("Messaging")
+    .WithImage("masstransit/rabbitmq")
+    .WithDataVolume("TicketBuddy.Monolith.RabbitMQ")
+    .WithHttpEndpoint(port: 5672, targetPort: 5672)
+    .WithHttpsEndpoint(port: 15672, targetPort: 15672);
 
 var migrations = builder.AddProject<Projects.Host_Migrations>("Migrations")
     .WithReference(database)
@@ -22,6 +29,8 @@ var api = builder.AddProject<Projects.Host_Api>("Api")
     .WaitFor(database)
     .WithReference(migrations)
     .WaitFor(migrations)
+    .WithReference(rabbitmq)
+    .WaitFor(rabbitmq)
     .WithEnvironment(Environment, CommonEnvironment.LocalDevelopment.ToString);
 
 var dataseeder = builder.AddProject<Projects.Host_Dataseeder>("Dataseeder")
