@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="MassTransit" Version="8.5.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Domain.Tickets\Domain.Tickets.csproj" />
+      <ProjectReference Include="..\Integration.Events.Messaging\Integration.Events.Messaging.csproj" />
+      <ProjectReference Include="..\Persistence.Tickets\Persistence.Tickets.csproj" />
+    </ItemGroup>
+
+</Project>
