@@ -167,7 +167,7 @@ export async function should_show_error_toast_when_event_update_fails() {
         Message: "The request could not be correctly validated.",
         Errors: ["End date cannot be before start date"]
     };
-    wait_for_put = mockServer.put(`/events/${eventToEdit.Id}`, errorResponse, false, 400);
+    wait_for_put = mockServer.put(`/events/${eventToEdit.Id}`, errorResponse, false);
     mockServer.start();
 
     const currentDate = new Date();
@@ -199,7 +199,6 @@ export async function should_show_error_toast_when_event_creation_fails() {
     await clickAddEventIcon();
     expect(eventFormIsRendered()).toBeTruthy();
 
-    // Reset mock server to return error on POST
     mockServer.reset();
     const errorResponse = {
         Message: "The request could not be correctly validated.",
@@ -208,12 +207,11 @@ export async function should_show_error_toast_when_event_creation_fails() {
     wait_for_post = mockServer.post("/events", errorResponse, false, 400);
     mockServer.start();
 
-    // Create an invalid event (end date before start date)
     const currentDate = new Date();
     const startDate = new Date();
     startDate.setDate(currentDate.getDate() + 10);
     const endDate = new Date();
-    endDate.setDate(currentDate.getDate() + 5); // End date is before start date
+    endDate.setDate(currentDate.getDate() + 5);
 
     const startDateString = startDate.toISOString().split("T")[0] + "T14:00";
     const endDateString = endDate.toISOString().split("T")[0] + "T12:00";
@@ -228,6 +226,5 @@ export async function should_show_error_toast_when_event_creation_fails() {
     await clickSubmitEventButtonToAddEvent();
     await waitUntil(wait_for_post);
 
-    // Verify that an error toast is displayed with the correct message
     expect(errorToastIsDisplayed("End date cannot be before start date")).toBeTruthy();
 }
