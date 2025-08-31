@@ -104,10 +104,14 @@ public partial class TicketControllerSpecs : TruncateDbSpecification
         response_code.ShouldBe(HttpStatusCode.OK);
         var tickets = JsonSerialization.Deserialize<IList<Domain.Tickets.Entities.Ticket>>(content.ReadAsStringAsync().GetAwaiter().GetResult());
         tickets.Count.ShouldBe(17);
+        tickets = tickets.OrderBy(t => t.SeatNumber).ToList();
+        uint counter = 1;
         foreach (var ticket in tickets)
         {
             ticket.EventId.ShouldBe(event_id);
             ticket.Price.ShouldBe(price);
+            ticket.SeatNumber.ShouldBe(counter);
+            counter++;
         }
     }
 }

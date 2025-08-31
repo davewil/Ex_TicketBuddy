@@ -7,6 +7,7 @@ namespace Persistence.Tickets;
 
 public class TicketDbContext(DbContextOptions<TicketDbContext> options) : DbContext(options)
 {
+    private const string DefaultSchema = "Ticket";
     public DbSet<Event> Events => Set<Event>();
     public DbSet<Ticket> Tickets => Set<Ticket>();
     public DbSet<Venue> Venues => Set<Venue>();
@@ -15,12 +16,13 @@ public class TicketDbContext(DbContextOptions<TicketDbContext> options) : DbCont
     {
         modelBuilder.Entity<Event>().HasKey(e => e.Id);
         modelBuilder.Entity<Event>().Property(e => e.EventName).HasConversion(name => name.ToString(), name => new EventName(name));
-        modelBuilder.Entity<Event>().ToTable("Events","Ticket", e => e.ExcludeFromMigrations());
+        modelBuilder.Entity<Event>().ToTable("Events",DefaultSchema, e => e.ExcludeFromMigrations());
         
         modelBuilder.Entity<Ticket>().HasKey(t => t.Id);
-        modelBuilder.Entity<Ticket>().ToTable("Tickets","Ticket", t => t.ExcludeFromMigrations());
+        modelBuilder.Entity<Ticket>().Property(t => t.SeatNumber).HasConversion(seat => (int)seat, seat => (uint)seat);
+        modelBuilder.Entity<Ticket>().ToTable("Tickets",DefaultSchema, t => t.ExcludeFromMigrations());
         
         modelBuilder.Entity<Venue>().HasKey(v => v.Id);
-        modelBuilder.Entity<Venue>().ToTable("EventVenues","Ticket", v => v.ExcludeFromMigrations());
+        modelBuilder.Entity<Venue>().ToTable("EventVenues",DefaultSchema, v => v.ExcludeFromMigrations());
     }
 }

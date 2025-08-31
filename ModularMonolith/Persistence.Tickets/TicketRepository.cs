@@ -12,12 +12,13 @@ public class TicketRepository(TicketDbContext context)
     }
     public async Task ReleaseTicketsForEvent(Guid eventId, int numberOfTickets, decimal pricePerTicket)
     {
-        for (var i = 0; i < numberOfTickets; i++)
+        for (uint i = 0; i < numberOfTickets; i++)
         {
             var ticket = new Domain.Tickets.Entities.Ticket(
                 Guid.NewGuid(),
                 eventId,
-                pricePerTicket);
+                pricePerTicket,
+                i + 1);
             context.Tickets.Add(ticket);
         }
         await context.SaveChangesAsync();
