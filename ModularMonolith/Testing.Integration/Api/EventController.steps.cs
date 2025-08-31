@@ -244,12 +244,12 @@ public partial class EventControllerSpecs : TruncateDbSpecification
     private void an_integration_event_is_published()
     {
         testHarness.Published.Select<EventUpserted>()
-            .Any(e => e.Context.Message.Id == returned_id && e.Context.Message.Name == name).ShouldBeTrue("Event was not published to the bus");
+            .Any(e => e.Context.Message.Id == returned_id && e.Context.Message.EventName == name).ShouldBeTrue("Event was not published to the bus");
     }
 
     private void an_another_integration_event_is_published()
     {
         testHarness.Published.Select<EventUpserted>()
-            .Any(e => e.Context.Message.Id == returned_id && e.Context.Message.Name == new_name).ShouldBeTrue("Event was not published to the bus");
+            .Any(e => e.Context.Message.Id == returned_id && e.Context.Message.EventName == new_name).ShouldBeTrue("Event was not published to the bus");
     }
 }

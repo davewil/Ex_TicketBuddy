@@ -1,13 +1,14 @@
-﻿using Application;
-using Application.Events;
+﻿using Api.Hosting;
 using Domain.Events.Messaging;
 using Events.Persistence;
+using Integration.Tickets.Messaging;
 using MassTransit;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Persistence.Tickets;
 using Users.Persistence;
 
 namespace Integration;
@@ -39,15 +40,25 @@ public class IntegrationWebApplicationFactory<TProgram>(string connectionString)
                         errorNumbersToAdd: null);
                 });
             });
+            services.AddDbContext<TicketDbContext>(options =>
+            {
+                options.UseSqlServer(connectionString, sqlOptions =>
+                {
+                    sqlOptions.EnableRetryOnFailure(
+                        maxRetryCount: 5,
+                        maxRetryDelay: TimeSpan.FromSeconds(30),
+                        errorNumbersToAdd: null);
+                });
+            });
             
-            services.AddScoped<EventRepository>();
-            services.AddScoped<EventService>();
-            services.AddScoped<UserRepository>();
-            services.AddScoped<UserService>();
+            services.ConfigureServices();
             services.AddMassTransitTestHarness(x =>
             {
                 var applicationAssembly = EventsDomainMessaging.Assembly;
                 x.AddConsumers(applicationAssembly);
+                
+                var ticketsIntegrationInboundAssembly = TicketsIntegrationMessagingInbound.Assembly;
+                x.AddConsumers(ticketsIntegrationInboundAssembly);
             });
         });
 

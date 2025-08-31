@@ -1,8 +1,10 @@
 ﻿using Application;
 using Application.Events;
-using Events.Persistence;
+using Application.Tickets;
+using Persistence.Tickets;
 using Users.Persistence;
 using WebHost;
+using EventRepository = Events.Persistence.EventRepository;
 
 namespace Api.Hosting;
 
@@ -14,7 +16,9 @@ public static class Services
         services.AddScoped<EventService>();
         services.AddScoped<UserRepository>();
         services.AddScoped<UserService>();
-        services.AddScoped<Persistence.Tickets.Events.EventRepository>();
+        services.AddScoped<Persistence.Tickets.EventRepository>();
+        services.AddScoped<TicketRepository>();
+        services.AddScoped<TicketService>();
         services.AddCorsAllowAll();
     }
 }

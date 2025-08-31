@@ -1,6 +1,6 @@
 using Integration.Events.Messaging;
 using MassTransit;
-using Persistence.Tickets.Events;
+using Persistence.Tickets;
 using Event = Domain.Tickets.Entities.Event;
 
 namespace Integration.Tickets.Messaging.Consumers
@@ -9,7 +9,7 @@ namespace Integration.Tickets.Messaging.Consumers
     {
         public async Task Consume(ConsumeContext<EventUpserted> context)
         {
-            await EventRepository.Save(new Event(context.Message.Id,context.Message.Name, context.Message.StartDate, context.Message.EndDate, context.Message.Venue));
+            await EventRepository.Save(new Event(context.Message.Id,context.Message.EventName, context.Message.StartDate, context.Message.EndDate, context.Message.Venue));
         }
     }
 }

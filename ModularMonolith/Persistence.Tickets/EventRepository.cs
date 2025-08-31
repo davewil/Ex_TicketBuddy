@@ -1,8 +1,11 @@
-namespace Persistence.Tickets.Events;
+using Domain.Tickets.Entities;
+using Microsoft.EntityFrameworkCore;
+
+namespace Persistence.Tickets;
 
 public class EventRepository(TicketDbContext ticketDbContext)
 {
-    public async Task Save(Domain.Tickets.Entities.Event theEvent)
+    public async Task Save(Event theEvent)
     {
         if (await Get(theEvent.Id) != null)
         {
@@ -16,7 +19,12 @@ public class EventRepository(TicketDbContext ticketDbContext)
         }
     }
 
-    private async Task<Domain.Tickets.Entities.Event?> Get(Guid id)
+    public async Task<Venue> GetVenue(Domain.Events.Primitives.Venue venue)
+    {
+        return await ticketDbContext.Venues.FirstAsync(v => v.Id == venue);
+    }
+
+    public async Task<Event?> Get(Guid id)
     {
         return await ticketDbContext.Events.FindAsync(id);
     }

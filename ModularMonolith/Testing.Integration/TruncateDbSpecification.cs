@@ -8,8 +8,10 @@ public class TruncateDbSpecification : Specification
     protected static void Truncate(string connectionString)
     {
         const string the_command = """
-                                   EXEC sp_MSForEachTable @command1='TRUNCATE TABLE ?'
-                                   , @whereand = 'AND o.name <> ''SchemaVersions'''
+                                   EXEC sp_MSforeachtable 
+                                   @command1 = 'TRUNCATE TABLE ?',
+                                   @whereand = 'AND NOT (o.name = ''SchemaVersions'')
+                                                AND NOT (o.name = ''EventVenues'')';
                                    """;
         using var connection = new SqlConnection(connectionString);
         var command = connection.CreateCommand();

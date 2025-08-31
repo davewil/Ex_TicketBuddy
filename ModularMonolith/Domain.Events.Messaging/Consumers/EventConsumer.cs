@@ -10,7 +10,7 @@ namespace Domain.Events.Messaging.Consumers
            await context.Publish(new Integration.Events.Messaging.EventUpserted
            {
                Id = context.Message.Id, 
-               Name = context.Message.Name,
+               EventName = context.Message.Name,
                StartDate = context.Message.StartDate,
                EndDate = context.Message.EndDate,
                Venue = context.Message.Venue

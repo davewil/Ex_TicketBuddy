@@ -22,7 +22,7 @@ public class EventRepository(EventDbContext eventDbContext, IPublishEndpoint pub
         await publishEndpoint.Publish(new Integration.Events.Messaging.EventUpserted
         {
             Id = theEvent.Id, 
-            Name = theEvent.EventName,
+            EventName = theEvent.EventName,
             StartDate = theEvent.StartDate,
             EndDate = theEvent.EndDate,
             Venue = theEvent.Venue

@@ -1,6 +1,6 @@
 ﻿using Events.Persistence;
 using Microsoft.EntityFrameworkCore;
-using Persistence.Tickets.Events;
+using Persistence.Tickets;
 using Users.Persistence;
 
 namespace Api.Hosting;
