@@ -333,7 +333,7 @@ export const EditEvent = () => {
             </FormContainer>
 
             <TicketReleaseContainer>
-                <h3>Release Tickets</h3>
+                <h2>Release Tickets</h2>
                 <TicketPriceContainer>
                     <span>£</span>
                     <TicketPriceInput

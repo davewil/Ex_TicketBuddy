@@ -48,7 +48,7 @@ export const TicketPriceInput = styled.input`
     padding: 5px;
     border: 1px solid #ddd;
     border-radius: 4px;
-    font-size: 14px;
+    font-size: 16px;
 `;
 
 export const FormContainer = styled.form`
