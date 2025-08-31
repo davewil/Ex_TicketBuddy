@@ -10,7 +10,15 @@ public class TicketRepository(TicketDbContext context)
         return await context.Tickets
             .Where(t => t.EventId == eventId && t.UserId == null)
             .ToListAsync();
+    }    
+    
+    public async Task<IList<Domain.Tickets.Entities.Ticket>> GetTicketsForEventByUser(Guid eventId, Guid userId)
+    {
+        return await context.Tickets
+            .Where(t => t.EventId == eventId && t.UserId == userId)
+            .ToListAsync();
     }
+    
     public async Task ReleaseTicketsForEvent(Guid eventId, int numberOfTickets, decimal pricePerTicket)
     {
         await CheckIfTicketsAlreadyReleased(eventId);
@@ -24,6 +32,21 @@ public class TicketRepository(TicketDbContext context)
                 i + 1);
             context.Tickets.Add(ticket);
         }
+        await context.SaveChangesAsync();
+    }
+    
+    public async Task UpdateTicketPricesForEvent(Guid eventId, decimal newPricePerTicket)
+    {
+        var ticketsToUpdate = await context.Tickets
+            .Where(t => t.EventId == eventId && t.UserId == null)
+            .ToListAsync();
+        
+        foreach (var ticket in ticketsToUpdate)
+        {
+            ticket.UpdatePrice(newPricePerTicket);
+            context.Tickets.Update(ticket);
+        }
+        
         await context.SaveChangesAsync();
     }
 

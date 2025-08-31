@@ -16,4 +16,10 @@ public class Ticket(Guid Id, Guid eventId, decimal price, uint SeatNumber, Guid?
         UserId = userId;
         PurchasedAt = DateTimeOffset.UtcNow;
     }
+    
+    public void UpdatePrice(decimal newPrice)
+    {
+        if (UserId is not null) return;
+        Price = newPrice;
+    }
 }

@@ -34,6 +34,7 @@ public partial class TicketControllerSpecs : TruncateDbSpecification
     private static MsSqlContainer database = null!;
     private ITestHarness testHarness = null!;
     private Guid[] ticket_ids = null!;
+    private static string EventTicketsForUser(Guid eventId, Guid userId) => $"{Routes.Events}/{eventId}/tickets/user/{userId}";
 
     protected override void before_all()
     {
@@ -119,7 +120,6 @@ public partial class TicketControllerSpecs : TruncateDbSpecification
 
     private void requesting_the_tickets()
     {
-        response_code.ShouldBe(HttpStatusCode.Created);
         var response = client.GetAsync(Routes.EventTickets(event_id)).GetAwaiter().GetResult();
         response_code = response.StatusCode;
         content = response.Content;
@@ -144,6 +144,14 @@ public partial class TicketControllerSpecs : TruncateDbSpecification
     private void purchasing_two_tickets_again()
     {
         purchasing_two_tickets();
+    }
+
+    private void updating_the_ticket_prices()
+    {
+        create_content();
+        var response = client.PutAsync(Routes.EventTickets(event_id), content).GetAwaiter().GetResult();
+        response_code = response.StatusCode;
+        content = response.Content;
     }
 
     private void the_tickets_are_released()
@@ -184,5 +192,31 @@ public partial class TicketControllerSpecs : TruncateDbSpecification
         response_code.ShouldBe(HttpStatusCode.BadRequest);
         var theError = JsonSerialization.Deserialize<ApiError>(content.ReadAsStringAsync().GetAwaiter().GetResult());
         theError.Errors.ShouldContain("Tickets are not available");
+    }
+
+    private void the_ticket_prices_are_updated()
+    {
+        response_code.ShouldBe(HttpStatusCode.OK);
+        var response = client.GetAsync(Routes.EventTickets(event_id)).GetAwaiter().GetResult();
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
+        var tickets = JsonSerialization.Deserialize<IList<Domain.Tickets.Entities.Ticket>>(response.Content.ReadAsStringAsync().GetAwaiter().GetResult());
+        tickets.Count.ShouldBe(15);
+        tickets.Where(t => ticket_ids.Take(2).Contains(t.Id)).ToList().Count.ShouldBe(0);
+        foreach (var ticket in tickets)
+        {
+            ticket.Price.ShouldBe(price);
+        }
+    }
+
+    private void purchased_tickets_are_not_updated()
+    {
+        var response = client.GetAsync(EventTicketsForUser(event_id, user_id)).GetAwaiter().GetResult();
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
+        var tickets = JsonSerialization.Deserialize<IList<Domain.Tickets.Entities.Ticket>>(response.Content.ReadAsStringAsync().GetAwaiter().GetResult());
+        tickets.Count.ShouldBe(2);
+        foreach (var ticket in tickets)
+        {
+            ticket.Price.ShouldBe(price);
+        }
     }
 }
