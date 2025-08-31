@@ -36,8 +36,7 @@ public class TicketRepository(TicketDbContext context, IPublishEndpoint publishE
         await context.SaveChangesAsync();
         await publishEndpoint.Publish(new Integration.Tickets.Messaging.Outbound.TicketsReleased
         {
-            EventId = eventId,
-            NumberOfTickets = numberOfTickets
+            EventId = eventId
         });
     }
     

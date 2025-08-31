@@ -7,11 +7,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="MassTransit" Version="8.5.1" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\Domain.Events\Domain.Events.csproj" />
+      <ProjectReference Include="..\Integration.Tickets.Messaging.Outbound\Integration.Tickets.Messaging.Outbound.csproj" />
+      <ProjectReference Include="..\Persistence.Events\Persistence.Events.csproj" />
     </ItemGroup>
 
 </Project>

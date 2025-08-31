@@ -54,7 +54,7 @@ public partial class EventSpecs : Specification
     
     private void creating_an_event()
     {
-        user = new Event(id, name, start_date, end_date, Venue.FirstDirectArenaLeeds);
+        user = new Event(id, name, start_date, end_date, Venue.FirstDirectArenaLeeds, false);
     }    
     
     private void the_event_is_created()

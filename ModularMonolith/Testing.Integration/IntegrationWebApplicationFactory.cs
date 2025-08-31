@@ -1,6 +1,7 @@
 ﻿using Api.Hosting;
 using Domain.Events.Messaging;
 using Domain.Users.Messaging;
+using Integration.Events.Messaging.Inbound;
 using Integration.Tickets.Messaging.Inbound;
 using MassTransit;
 using Microsoft.AspNetCore.Hosting;
@@ -22,6 +23,9 @@ public class IntegrationWebApplicationFactory<TProgram>(string connectionString)
             {
                 var applicationAssembly = EventsDomainMessaging.Assembly;
                 x.AddConsumers(applicationAssembly);
+                
+                var eventsIntegrationInboundAssembly = EventsIntegrationMessagingInbound.Assembly;
+                x.AddConsumers(eventsIntegrationInboundAssembly);
                 
                 var ticketsIntegrationInboundAssembly = TicketsIntegrationMessagingInbound.Assembly;
                 x.AddConsumers(ticketsIntegrationInboundAssembly);

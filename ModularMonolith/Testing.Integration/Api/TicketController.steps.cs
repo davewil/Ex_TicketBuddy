@@ -173,7 +173,7 @@ public partial class TicketControllerSpecs : TruncateDbSpecification
 
     private void a_tickets_released_message_is_published()
     {
-        testHarness.Published.Any<TicketsReleased>(x => x.Context.Message.EventId == event_id && x.Context.Message.NumberOfTickets == 17).Await().ShouldBeTrue();
+        testHarness.Published.Any<TicketsReleased>(x => x.Context.Message.EventId == event_id).Await().ShouldBeTrue();
     }
 
     private void the_tickets_are_purchased()

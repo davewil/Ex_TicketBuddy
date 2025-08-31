@@ -5,19 +5,21 @@ namespace Domain.Events.Entities;
 
 public class Event : Aggregate
 {
-    public Event(Guid id, EventName eventName, DateTimeOffset startDate, DateTimeOffset endDate, Venue venue) : base(id)
+    public Event(Guid id, EventName eventName, DateTimeOffset startDate, DateTimeOffset endDate, Venue venue, bool ticketsReleased) : base(id)
     {
         if (endDate < startDate) throw new ValidationException("End date cannot be before start date");
         EventName = eventName;
         StartDate = startDate;
         EndDate = endDate;
         Venue = venue;
+        TicketsReleased = ticketsReleased;
     }
     
     public EventName EventName { get; private set; }
     public DateTimeOffset StartDate { get; private set; }
     public DateTimeOffset EndDate { get; private set; }
     public Venue Venue { get; private set; }
+    public bool TicketsReleased { get; private set; }
     public void UpdateName(EventName eventName) => EventName = eventName;
     public void UpdateDates(DateTimeOffset startDate, DateTimeOffset endDate)
     {
@@ -27,4 +29,5 @@ public class Event : Aggregate
         EndDate = endDate;
     }
     public void UpdateVenue(Venue venue) => Venue = venue;
+    public void TicketsHaveBeenReleased() => TicketsReleased = true;
 }

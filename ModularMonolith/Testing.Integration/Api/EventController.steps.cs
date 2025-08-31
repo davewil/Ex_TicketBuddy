@@ -6,6 +6,7 @@ using Controllers.Events.Requests;
 using Domain.Events.Entities;
 using Domain.Events.Primitives;
 using Integration.Events.Messaging.Outbound;
+using Integration.Tickets.Messaging.Outbound;
 using MassTransit.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Migrations;
@@ -167,6 +168,15 @@ public partial class EventControllerSpecs : TruncateDbSpecification
         creating_another_event();
     }
 
+    private void tickets_are_released_for_the_event()
+    {
+        testHarness.Bus.Publish(new TicketsReleased
+        {
+            EventId = returned_id
+        }).Await();
+        testHarness.Consumed.Any<TicketsReleased>(x => x.Context.Message.EventId == returned_id).Await();
+    }
+
     private void requesting_the_event()
     {
         var response = client.GetAsync(Routes.Events + $"/{returned_id}").GetAwaiter().GetResult();
@@ -239,6 +249,17 @@ public partial class EventControllerSpecs : TruncateDbSpecification
         theEvent.Count.ShouldBe(1);
         theEvent.Single().Id.ShouldBe(returned_id);
         theEvent.Single().EventName.ToString().ShouldBe(name);
+    }
+
+    private void the_event_is_marked_as_having_tickets_released()
+    {
+        var theEvent = JsonSerialization.Deserialize<Event>(content.ReadAsStringAsync().Await());
+        response_code.ShouldBe(HttpStatusCode.OK);
+        theEvent.Id.ShouldBe(returned_id);
+        theEvent.EventName.ToString().ShouldBe(name);
+        theEvent.StartDate.ShouldBe(event_start_date);
+        theEvent.Venue.ShouldBe(Venue.FirstDirectArenaLeeds);
+        theEvent.TicketsReleased.ShouldBeTrue();
     }
 
     private void an_integration_event_is_published()

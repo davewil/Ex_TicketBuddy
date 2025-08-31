@@ -19,7 +19,7 @@ public class EventService(EventRepository repository)
     public async Task<Guid> Add(EventName eventName, DateTimeOffset startDate, DateTimeOffset endDate, Venue venue)
     {
         var id = Guid.NewGuid();
-        var @event = new Event(id, eventName, startDate, endDate, venue);
+        var @event = new Event(id, eventName, startDate, endDate, venue, false);
         await repository.Save(@event);
         return id;
     }
