@@ -24,6 +24,25 @@ services:
       - sqlserver
     networks:
       - ticketbuddy-monolith-network
+  rabbitmq:
+    container_name: rabbitmq
+    image: masstransit/rabbitmq
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    restart: always
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - ticketbuddy-network
+    healthcheck:
+      test: [ "CMD", "rabbitmqctl", "status" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
   migrations:
     container_name: monolith-migrations
     build:
@@ -47,6 +66,8 @@ services:
         condition: service_completed_successfully
       aspire-dashboard:
         condition: service_started
+      rabbitmq:
+        condition: service_healthy
     environment:
       - ENVIRONMENT=Development
     ports:
