@@ -17,7 +17,7 @@
     <ItemGroup>
         <ProjectReference Include="..\Domain.Events\Domain.Events.csproj" />
         <ProjectReference Include="..\Domain\Domain.csproj" />
-        <ProjectReference Include="..\Integration.Events.Messaging\Integration.Events.Messaging.csproj" />
+        <ProjectReference Include="..\Integration.Events.Messaging.Outbound\Integration.Events.Messaging.Outbound.csproj" />
     </ItemGroup>
     
 </Project>

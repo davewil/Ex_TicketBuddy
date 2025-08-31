@@ -1,6 +1,6 @@
 using MassTransit;
 
-namespace Integration.Tickets.Messaging.Consumers
+namespace Integration.Tickets.Messaging.Inbound.Consumers
 {
     public class EventConsumerDefinition : ConsumerDefinition<EventConsumer>
     {

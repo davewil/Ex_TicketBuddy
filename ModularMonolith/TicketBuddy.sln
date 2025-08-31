@@ -58,9 +58,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tickets", "Tickets", "{CCE5
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.Events.Messaging", "Domain.Events.Messaging\Domain.Events.Messaging.csproj", "{A1D68DDF-944C-4BB9-A62C-FCEC893117D0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Integration.Events.Messaging", "Integration.Events.Messaging\Integration.Events.Messaging.csproj", "{192B9F0A-835C-4A68-8E88-961C2CFE89AC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Integration.Events.Messaging.Outbound", "Integration.Events.Messaging.Outbound\Integration.Events.Messaging.Outbound.csproj", "{192B9F0A-835C-4A68-8E88-961C2CFE89AC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Integration.Tickets.Messaging", "Integration.Tickets.Messaging\Integration.Tickets.Messaging.csproj", "{8CF08423-F4B9-4BA6-B2AD-3B5207B2D23E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Integration.Tickets.Messaging.Inbound", "Integration.Tickets.Messaging.Inbound\Integration.Tickets.Messaging.Inbound.csproj", "{8CF08423-F4B9-4BA6-B2AD-3B5207B2D23E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistence.Tickets", "Persistence.Tickets\Persistence.Tickets.csproj", "{23726E44-E345-4904-A70A-5E2C6B7E668D}"
 EndProject
@@ -72,7 +72,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Tickets", "Appl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.Users.Messaging", "Domain.Users.Messaging\Domain.Users.Messaging.csproj", "{45170EFF-6C54-42A2-B8D2-A3670B9EDB95}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Integration.Users.Messaging", "Integration.Users.Messaging\Integration.Users.Messaging.csproj", "{467F1445-ACC0-48D6-B40B-EE7C5DB01B10}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Integration.Users.Messaging.Outbound", "Integration.Users.Messaging.Outbound\Integration.Users.Messaging.Outbound.csproj", "{467F1445-ACC0-48D6-B40B-EE7C5DB01B10}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Integration.Tickets.Messaging.Outbound", "Integration.Tickets.Messaging.Outbound\Integration.Tickets.Messaging.Outbound.csproj", "{E9FFF522-D434-46E3-AD72-522D5D6319D0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -184,6 +186,10 @@ Global
 		{467F1445-ACC0-48D6-B40B-EE7C5DB01B10}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{467F1445-ACC0-48D6-B40B-EE7C5DB01B10}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{467F1445-ACC0-48D6-B40B-EE7C5DB01B10}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E9FFF522-D434-46E3-AD72-522D5D6319D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E9FFF522-D434-46E3-AD72-522D5D6319D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E9FFF522-D434-46E3-AD72-522D5D6319D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E9FFF522-D434-46E3-AD72-522D5D6319D0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -208,5 +214,6 @@ Global
 		{3890D4C1-E63B-4935-964F-DA52EB6C3999} = {CCE57025-2696-4882-A2CA-DEB5F8413740}
 		{45170EFF-6C54-42A2-B8D2-A3670B9EDB95} = {BFAD1DFA-E07E-4062-98FB-54AC88B5EA9D}
 		{467F1445-ACC0-48D6-B40B-EE7C5DB01B10} = {BFAD1DFA-E07E-4062-98FB-54AC88B5EA9D}
+		{E9FFF522-D434-46E3-AD72-522D5D6319D0} = {CCE57025-2696-4882-A2CA-DEB5F8413740}
 	EndGlobalSection
 EndGlobal

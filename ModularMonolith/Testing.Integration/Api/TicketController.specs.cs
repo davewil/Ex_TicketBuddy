@@ -11,6 +11,7 @@ public partial class TicketControllerSpecs
         When(releasing_the_tickets);
         And(requesting_the_tickets);
         Then(the_tickets_are_released);
+        And(a_tickets_released_message_is_published);
     }
 
     [Test]

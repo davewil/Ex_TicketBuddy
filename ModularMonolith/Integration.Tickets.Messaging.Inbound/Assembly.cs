@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace Integration.Tickets.Messaging;
+namespace Integration.Tickets.Messaging.Inbound;
 
 public static class TicketsIntegrationMessagingInbound
 {

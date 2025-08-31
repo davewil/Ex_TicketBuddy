@@ -1,9 +1,9 @@
-using Integration.Events.Messaging;
+using Integration.Events.Messaging.Outbound;
 using MassTransit;
 using Persistence.Tickets;
 using Event = Domain.Tickets.Entities.Event;
 
-namespace Integration.Tickets.Messaging.Consumers
+namespace Integration.Tickets.Messaging.Inbound.Consumers
 {
     public class EventConsumer(EventRepository EventRepository) : IConsumer<EventUpserted>
     {

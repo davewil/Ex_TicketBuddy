@@ -1,9 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
 
 namespace Persistence.Tickets;
 
-public class TicketRepository(TicketDbContext context)
+public class TicketRepository(TicketDbContext context, IPublishEndpoint publishEndpoint)
 {
     public async Task<IList<Domain.Tickets.Entities.Ticket>> GetTicketsForEvent(Guid eventId)
     {
@@ -33,6 +34,11 @@ public class TicketRepository(TicketDbContext context)
             context.Tickets.Add(ticket);
         }
         await context.SaveChangesAsync();
+        await publishEndpoint.Publish(new Integration.Tickets.Messaging.Outbound.TicketsReleased
+        {
+            EventId = eventId,
+            NumberOfTickets = numberOfTickets
+        });
     }
     
     public async Task UpdateTicketPricesForEvent(Guid eventId, decimal newPricePerTicket)

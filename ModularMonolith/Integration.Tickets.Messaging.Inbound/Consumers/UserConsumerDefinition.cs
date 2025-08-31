@@ -1,4 +1,4 @@
-using Integration.Tickets.Messaging.Consumers;
+using Integration.Tickets.Messaging.Inbound.Consumers;
 using MassTransit;
 
 namespace Tickets.Integration.Messaging.Inbound.Consumers

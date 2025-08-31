@@ -7,7 +7,7 @@ namespace Domain.Users.Messaging.Consumers
     {
         public async Task Consume(ConsumeContext<UserUpserted> context)
         {
-           await context.Publish(new Integration.Users.Messaging.Messages.UserUpserted{ Id = context.Message.Id, FullName = context.Message.FullName, Email = context.Message.Email });
+           await context.Publish(new Integration.Users.Messaging.Outbound.Messages.UserUpserted{ Id = context.Message.Id, FullName = context.Message.FullName, Email = context.Message.Email });
         }
     }
 }

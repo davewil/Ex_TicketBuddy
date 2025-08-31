@@ -4,8 +4,9 @@ using BDD;
 using Controllers.Tickets;
 using Controllers.Tickets.Requests;
 using Domain.Events.Primitives;
-using Integration.Events.Messaging;
-using Integration.Users.Messaging.Messages;
+using Integration.Events.Messaging.Outbound;
+using Integration.Tickets.Messaging.Outbound;
+using Integration.Users.Messaging.Outbound.Messages;
 using MassTransit.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Migrations;
@@ -168,6 +169,11 @@ public partial class TicketControllerSpecs : TruncateDbSpecification
             ticket.SeatNumber.ShouldBe(counter);
             counter++;
         }
+    }
+
+    private void a_tickets_released_message_is_published()
+    {
+        testHarness.Published.Any<TicketsReleased>(x => x.Context.Message.EventId == event_id && x.Context.Message.NumberOfTickets == 17).Await().ShouldBeTrue();
     }
 
     private void the_tickets_are_purchased()

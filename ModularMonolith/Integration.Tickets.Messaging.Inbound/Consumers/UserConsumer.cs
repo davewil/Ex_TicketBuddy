@@ -1,9 +1,9 @@
 using Domain.Tickets.Entities;
-using Integration.Users.Messaging.Messages;
+using Integration.Users.Messaging.Outbound.Messages;
 using MassTransit;
 using Persistence.Tickets;
 
-namespace Integration.Tickets.Messaging.Consumers
+namespace Integration.Tickets.Messaging.Inbound.Consumers
 {
     public class UserConsumer(UserRepository userRepository) : IConsumer<UserUpserted>
     {
