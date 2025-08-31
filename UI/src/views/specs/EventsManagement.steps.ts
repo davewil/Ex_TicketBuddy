@@ -14,7 +14,10 @@ import {
     clickEditButtonForEvent,
     editButtonExistsForEvent,
     clickSubmitEventButtonToUpdateEvent,
-    errorToastIsDisplayed
+    errorToastIsDisplayed,
+    ticketPriceInputIsRendered,
+    clickReleaseTicketsButton,
+    enterTicketPrice, releaseTicketsButtonIsRendered
 } from "./EventsManagement.page.tsx";
 import { Venue } from "../../domain/event.ts";
 import {waitUntil} from "../../testing/utilities.ts";
@@ -227,4 +230,64 @@ export async function should_show_error_toast_when_event_creation_fails() {
     await waitUntil(wait_for_post);
 
     expect(errorToastIsDisplayed("End date cannot be before start date")).toBeTruthy();
+}
+
+export async function should_allow_user_to_release_tickets_for_event() {
+    let wait_for_post_tickets: () => boolean;
+
+    renderEventsManagement();
+    await waitUntil(wait_for_get_events);
+
+    const eventToReleaseTicketsFor = Events[0];
+
+    // Navigate to edit event view
+    await clickEditButtonForEvent(eventToReleaseTicketsFor.EventName);
+    await waitUntil(wait_for_get_event);
+
+    mockServer.reset();
+    wait_for_post_tickets = mockServer.post(`/events/${eventToReleaseTicketsFor.Id}/tickets`, {}, true);
+    mockServer.start();
+
+    expect(ticketPriceInputIsRendered()).toBeTruthy();
+    expect(releaseTicketsButtonIsRendered()).toBeTruthy();
+
+    await enterTicketPrice("25.99");
+    await clickReleaseTicketsButton();
+
+    await waitUntil(wait_for_post_tickets);
+
+    const data = mockServer.content;
+    expect(data).toEqual({
+        Price: 25.99
+    });
+}
+
+export async function should_show_error_toast_when_ticket_release_fails() {
+    let wait_for_post_tickets_error: () => boolean;
+
+    renderEventsManagement();
+    await waitUntil(wait_for_get_events);
+
+    const eventToReleaseTicketsFor = Events[0];
+
+    await clickEditButtonForEvent(eventToReleaseTicketsFor.EventName);
+    await waitUntil(wait_for_get_event);
+
+    mockServer.reset();
+    const errorResponse = {
+        Message: "The request could not be correctly validated.",
+        Errors: ["Ticket price must be greater than zero"]
+    };
+    wait_for_post_tickets_error = mockServer.post(`/events/${eventToReleaseTicketsFor.Id}/tickets`, errorResponse, false);
+    mockServer.start();
+
+    expect(ticketPriceInputIsRendered()).toBeTruthy();
+    expect(releaseTicketsButtonIsRendered()).toBeTruthy();
+
+    await enterTicketPrice("-5.00");
+    await clickReleaseTicketsButton();
+
+    await waitUntil(wait_for_post_tickets_error);
+
+    expect(errorToastIsDisplayed("Ticket price must be greater than zero")).toBeTruthy();
 }

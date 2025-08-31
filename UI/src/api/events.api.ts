@@ -26,3 +26,9 @@ export const putEvent = async (id: string, event: EventPayload) => {
     }
     return put(`/events/${id}`, eventWithMoments);
 }
+
+export const releaseTickets = async (eventId: string, price: number) => {
+    return post(`/events/${eventId}/tickets`, {
+        Price: price
+    });
+}

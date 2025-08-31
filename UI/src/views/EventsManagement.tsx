@@ -2,15 +2,21 @@
 import {
     AddIcon,
     BackIcon,
-    EventItem, EventList,
+    TicketIcon,
+    EventItem,
+    EventList,
+    EventContent,
+    EventActions,
+    TicketReleaseContainer,
+    TicketPriceInput,
     FormContainer,
     FormGroup,
     Input,
     Label,
-    Select
+    Select, TicketPriceContainer
 } from './EventsManagement.styles.tsx';
 import {ConvertVenueToString, type Event, Venue} from '../domain/event.ts';
-import {getEventById, getEvents, postEvent, putEvent} from "../api/events.api.ts";
+import {getEventById, getEvents, postEvent, putEvent, releaseTickets} from "../api/events.api.ts";
 import moment from 'moment'
 import {Link, Outlet, Route, Routes, useNavigate, useParams} from "react-router-dom";
 import {Button} from "../components/Button.styles.tsx";
@@ -64,17 +70,18 @@ export const ListEvents = () => {
             <EventList>
                 {events.map((event, index) => (
                     <EventItem key={index} className="event-item">
-                        <div>
+                        <EventContent>
                             <h2>{event.EventName}</h2>
                             <p>{moment(event.StartDate).format('MMMM Do YYYY, h:mm A')} to {moment(event.EndDate).format('MMMM Do YYYY, h:mm A')}</p>
                             <p>Venue: {ConvertVenueToString(event.Venue)}</p>
+                        </EventContent>
+                        <EventActions>
                             <Link to={`edit/${event.Id}`}>
                                 <Button data-testid={`edit-event-${event.EventName}`}>
                                     Edit Event
                                 </Button>
                             </Link>
-                        </div>
-
+                        </EventActions>
                     </EventItem>
                 ))}
             </EventList>
@@ -189,6 +196,7 @@ export const AddEvent = () => {
 
 export const EditEvent = () => {
     const [formData, setFormData] = useState<EventFormData>(initialFormData);
+    const [ticketPrice, setTicketPrice] = useState<string>("");
     const navigate = useNavigate();
     const { id } = useParams<{ id: string }>() as { id: string };
 
@@ -214,6 +222,10 @@ export const EditEvent = () => {
         });
     };
 
+    const handleTicketPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setTicketPrice(e.target.value);
+    };
+
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if (isFormValid()) {
@@ -235,6 +247,22 @@ export const EditEvent = () => {
                 }
             });
         }
+    };
+
+    const handleReleaseTickets = async () => {
+        const price = parseFloat(ticketPrice);
+
+        releaseTickets(id, price).then(() => {
+            setTicketPrice("");
+        }).catch((error) => {
+            if (error.error && Array.isArray(error.error)) {
+                error.error.forEach((errorMessage: string) => {
+                    toast.error(errorMessage);
+                });
+            } else {
+                toast.error("Failed to release tickets");
+            }
+        });
     };
 
     const isFormValid = () => {
@@ -303,6 +331,27 @@ export const EditEvent = () => {
 
                 <Button type="submit" data-testid="update-event-button" disabled={!isFormValid()}>Update Event</Button>
             </FormContainer>
+
+            <TicketReleaseContainer>
+                <h3>Release Tickets</h3>
+                <TicketPriceContainer>
+                    <span>£</span>
+                    <TicketPriceInput
+                        type="number"
+                        placeholder="Price"
+                        step="0.01"
+                        value={ticketPrice}
+                        onChange={handleTicketPriceChange}
+                        data-testid="ticket-price-input"
+                    />
+                    <Button
+                        onClick={handleReleaseTickets}
+                        data-testid="release-tickets-button"
+                    >
+                        <TicketIcon /> Release Tickets
+                    </Button>
+                </TicketPriceContainer>
+            </TicketReleaseContainer>
         </>
     );
 };

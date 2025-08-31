@@ -82,12 +82,27 @@ export function editButtonExistsForEvent(eventName: string): boolean {
 }
 
 export function errorToastIsDisplayed(errorMessage: string): boolean {
-    try {
-        const toastElement = screen.getByText(errorMessage);
-        return !!toastElement;
-    } catch (e) {
-        return false;
-    }
+    const toastElement = screen.getByText(errorMessage);
+    return !!toastElement;
+}
+
+export function ticketPriceInputIsRendered(): boolean {
+    return elements.ticketPriceInput() !== null;
+}
+
+export function releaseTicketsButtonIsRendered(): boolean {
+    return elements.releaseTicketsButton() !== null;
+}
+
+export async function enterTicketPrice(price: string) {
+    const priceInput = elements.ticketPriceInput()!;
+    await userEvent.clear(priceInput);
+    return userEvent.type(priceInput, price);
+}
+
+export async function clickReleaseTicketsButton() {
+    const releaseButton = elements.releaseTicketsButton()!;
+    return userEvent.click(releaseButton);
 }
 
 const elements = {
@@ -99,11 +114,15 @@ const elements = {
     createEventButton: () => renderedComponent.getByRole("button", { name: /create event/i }),
     updateEventButton: () => renderedComponent.getByRole("button", { name: /update event/i }),
     backButton: () => renderedComponent.getByRole("button", { name: /back to events/i }),
+    ticketPriceInput: () => renderedComponent.queryByTestId("ticket-price-input"),
+    releaseTicketsButton: () => renderedComponent.queryByRole("button", { name: /release tickets/i }),
     editButtonForEvent: (eventName: string) => {
-        const eventElement = renderedComponent.getByText(eventName).closest('.event-item');
-        if (!eventElement) {
-            throw new Error(`Could not find event with name ${eventName}`);
-        }
         return renderedComponent.getByTestId(`edit-event-${eventName}`);
     },
+    releaseTicketsButtonForEvent: (eventName: string) => {
+        return renderedComponent.getByTestId(`release-tickets-${eventName}`);
+    },
+    ticketPriceInputForEvent: (eventName: string) => {
+        return renderedComponent.getByTestId(`ticket-price-${eventName}`);
+    }
 }
