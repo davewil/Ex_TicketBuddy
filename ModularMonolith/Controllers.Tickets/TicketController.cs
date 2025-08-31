@@ -20,4 +20,11 @@ public class TicketController(TicketService TicketService) : ControllerBase
         await TicketService.ReleaseTicketsForEvent(id, payload.price);
         return Created($"/{Routes.Tickets}/{id}", id);
     }
+    
+    [HttpPost(Routes.TicketsPurchase)]
+    public async Task<ActionResult> PurchaseTickets([FromRoute] Guid id, [FromBody] TicketPurchasePayload payload)
+    {
+        await TicketService.PurchaseTickets(id, payload.userId, payload.ticketIds);
+        return Ok();
+    }
 }

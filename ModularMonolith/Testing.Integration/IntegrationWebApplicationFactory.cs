@@ -20,37 +20,7 @@ public class IntegrationWebApplicationFactory<TProgram>(string connectionString)
     {
         builder.ConfigureTestServices(services =>
         {
-            services.AddDbContext<EventDbContext>(options =>
-            {
-                options.UseSqlServer(connectionString, sqlOptions =>
-                {
-                    sqlOptions.EnableRetryOnFailure(
-                        maxRetryCount: 5,
-                        maxRetryDelay: TimeSpan.FromSeconds(30),
-                        errorNumbersToAdd: null);
-                });
-            });            
-            services.AddDbContext<UserDbContext>(options =>
-            {
-                options.UseSqlServer(connectionString, sqlOptions =>
-                {
-                    sqlOptions.EnableRetryOnFailure(
-                        maxRetryCount: 5,
-                        maxRetryDelay: TimeSpan.FromSeconds(30),
-                        errorNumbersToAdd: null);
-                });
-            });
-            services.AddDbContext<TicketDbContext>(options =>
-            {
-                options.UseSqlServer(connectionString, sqlOptions =>
-                {
-                    sqlOptions.EnableRetryOnFailure(
-                        maxRetryCount: 5,
-                        maxRetryDelay: TimeSpan.FromSeconds(30),
-                        errorNumbersToAdd: null);
-                });
-            });
-            
+            services.ConfigureDatabase(connectionString);
             services.ConfigureServices();
             services.AddMassTransitTestHarness(x =>
             {

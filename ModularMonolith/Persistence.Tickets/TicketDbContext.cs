@@ -11,6 +11,7 @@ public class TicketDbContext(DbContextOptions<TicketDbContext> options) : DbCont
     public DbSet<Event> Events => Set<Event>();
     public DbSet<Ticket> Tickets => Set<Ticket>();
     public DbSet<Venue> Venues => Set<Venue>();
+    public DbSet<User> Users => Set<User>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -24,5 +25,10 @@ public class TicketDbContext(DbContextOptions<TicketDbContext> options) : DbCont
         
         modelBuilder.Entity<Venue>().HasKey(v => v.Id);
         modelBuilder.Entity<Venue>().ToTable("EventVenues",DefaultSchema, v => v.ExcludeFromMigrations());
+        
+        modelBuilder.Entity<User>().HasKey(u => u.Id);
+        modelBuilder.Entity<User>().Property(u => u.FullName).HasConversion(name => name.ToString(), name => new Name(name));
+        modelBuilder.Entity<User>().Property(u => u.Email).HasConversion(email => email.ToString(), email => new Email(email));
+        modelBuilder.Entity<User>().ToTable("Users",DefaultSchema, u => u.ExcludeFromMigrations());
     }
 }

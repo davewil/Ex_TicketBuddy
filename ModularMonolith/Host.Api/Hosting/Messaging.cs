@@ -1,4 +1,5 @@
 ﻿using Domain.Events.Messaging;
+using Domain.Users.Messaging;
 using Integration.Tickets.Messaging;
 using MassTransit;
 
@@ -16,6 +17,9 @@ internal static class Messaging
             
             var ticketsIntegrationInboundAssembly = TicketsIntegrationMessagingInbound.Assembly;
             x.AddConsumers(ticketsIntegrationInboundAssembly);
+            
+            var usersDomainAssembly = UsersDomainMessaging.Assembly;
+            x.AddConsumers(usersDomainAssembly);
 
             x.UsingRabbitMq((context, cfg) =>
             {
@@ -23,6 +27,10 @@ internal static class Messaging
                 cfg.ReceiveEndpoint("tickets-inbox-events", e =>
                 {
                     e.Bind<Integration.Events.Messaging.EventUpserted>();
+                });
+                cfg.ReceiveEndpoint("tickets-inbox-users", e =>
+                {
+                    e.Bind<Integration.Users.Messaging.Messages.UserUpserted>();
                 });
                 cfg.ConfigureEndpoints(context);
             });

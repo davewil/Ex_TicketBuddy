@@ -14,4 +14,9 @@ public class TicketService(TicketRepository ticketRepository, EventRepository ev
         var venue = await eventRepository.GetVenue(theEvent!.Venue);
         await ticketRepository.ReleaseTicketsForEvent(theEvent.Id, venue.Capacity, pricePerTicket);
     }
+    
+    public async Task PurchaseTickets(Guid eventId, Guid userId, IList<Guid> ticketIds)
+    {
+        await ticketRepository.PurchaseTickets(eventId, userId, ticketIds);
+    }
 }

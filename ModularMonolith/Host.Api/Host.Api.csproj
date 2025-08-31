@@ -44,6 +44,7 @@
       <ProjectReference Include="..\Controllers.Tickets\Controllers.Tickets.csproj" />
       <ProjectReference Include="..\Controllers.Users\Controllers.Users.csproj" />
       <ProjectReference Include="..\Domain.Events.Messaging\Domain.Events.Messaging.csproj" />
+      <ProjectReference Include="..\Domain.Users.Messaging\Domain.Users.Messaging.csproj" />
       <ProjectReference Include="..\Integration.Tickets.Messaging\Integration.Tickets.Messaging.csproj" />
       <ProjectReference Include="..\Persistence.Tickets\Persistence.Tickets.csproj" />
     </ItemGroup>

@@ -5,7 +5,7 @@ using Controllers.Tickets;
 using Controllers.Tickets.Requests;
 using Domain.Events.Primitives;
 using Integration.Events.Messaging;
-using MassTransit;
+using Integration.Users.Messaging.Messages;
 using MassTransit.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Migrations;
@@ -21,14 +21,18 @@ public partial class TicketControllerSpecs : TruncateDbSpecification
     private HttpContent content = null!;
 
     private readonly Guid event_id = Guid.NewGuid();
+    private readonly Guid user_id = Guid.NewGuid();
     private readonly decimal price = 25.00m;
     private HttpStatusCode response_code;
     private const string application_json = "application/json";
     private const string name = "wibble";
+    private const string full_name = "John Smith";
+    private const string email = "john.smith@gmail.com";
     private readonly DateTimeOffset event_start_date = DateTimeOffset.Now.AddDays(1);
     private readonly DateTimeOffset event_end_date = DateTimeOffset.Now.AddDays(1).AddHours(2);
     private static MsSqlContainer database = null!;
     private ITestHarness testHarness = null!;
+    private Guid[] ticket_ids = null!;
 
     protected override void before_all()
     {
@@ -42,6 +46,7 @@ public partial class TicketControllerSpecs : TruncateDbSpecification
     {
         base.before_each();
         content = null!;
+        ticket_ids = [];
         factory = new IntegrationWebApplicationFactory<Program>(database.GetTicketBuddyConnectionString());
         client = factory.CreateClient();
         testHarness = factory.Services.GetRequiredService<ITestHarness>();
@@ -74,6 +79,26 @@ public partial class TicketControllerSpecs : TruncateDbSpecification
         });
         testHarness.Consumed.Any<EventUpserted>(x => x.Context.Message.Id == event_id).Await();
     }
+
+    private void a_user_exists()
+    {
+        testHarness.Bus.Publish(new UserUpserted
+        {
+            Id = user_id,
+            FullName = full_name,
+            Email = email
+        });
+        testHarness.Consumed.Any<UserUpserted>(x => x.Context.Message.Id == user_id).Await();
+    }
+
+    private void tickets_are_released()
+    {
+        releasing_the_tickets();
+        var ticketsRequest = client.GetAsync(Routes.Events + $"/{event_id}" + "/tickets").GetAwaiter().GetResult();
+        ticketsRequest.StatusCode.ShouldBe(HttpStatusCode.OK);
+        var tickets = JsonSerialization.Deserialize<IList<Domain.Tickets.Entities.Ticket>>(ticketsRequest.Content.ReadAsStringAsync().GetAwaiter().GetResult());
+        ticket_ids = tickets.Select(t => t.Id).ToArray();
+    }
     
     private void create_content()
     {
@@ -99,6 +124,17 @@ public partial class TicketControllerSpecs : TruncateDbSpecification
         content = response.Content;
     }
 
+    private void purchasing_two_tickets()
+    {
+        content = new StringContent(
+            JsonSerialization.Serialize(new TicketPurchasePayload(user_id, ticket_ids.Take(2).ToArray())),
+            Encoding.UTF8,
+            application_json);
+        var response = client.PostAsync(Routes.Events + $"/{event_id}" + "/tickets" + "/purchase", content).GetAwaiter().GetResult();
+        response_code = response.StatusCode;
+        content = response.Content;
+    }
+
     private void the_tickets_are_released()
     {
         response_code.ShouldBe(HttpStatusCode.OK);
@@ -113,5 +149,15 @@ public partial class TicketControllerSpecs : TruncateDbSpecification
             ticket.SeatNumber.ShouldBe(counter);
             counter++;
         }
+    }
+
+    private void the_tickets_are_purchased()
+    {
+        response_code.ShouldBe(HttpStatusCode.OK);
+        var response = client.GetAsync(Routes.Events + $"/{event_id}" + "/tickets").GetAwaiter().GetResult();
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
+        var tickets = JsonSerialization.Deserialize<IList<Domain.Tickets.Entities.Ticket>>(response.Content.ReadAsStringAsync().GetAwaiter().GetResult());
+        tickets.Count.ShouldBe(15);
+        tickets.Where(t => ticket_ids.Take(2).Contains(t.Id)).ToList().Count.ShouldBe(0);
     }
 }

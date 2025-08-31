@@ -7,11 +7,11 @@ namespace Api.Hosting;
 
 internal static class Database
 {
-    internal static void ConfigureDatabase(this IServiceCollection services, Settings settings)
+    internal static void ConfigureDatabase(this IServiceCollection services, string connectionString)
     {
         services.AddDbContext<EventDbContext>(options =>
         {
-            options.UseSqlServer(settings.Database.Connection, sqlOptions =>
+            options.UseSqlServer(connectionString, sqlOptions =>
             {
                 sqlOptions.EnableRetryOnFailure(
                     maxRetryCount: 5,
@@ -21,7 +21,7 @@ internal static class Database
         });
         services.AddDbContext<UserDbContext>(options =>
         {
-            options.UseSqlServer(settings.Database.Connection, sqlOptions =>
+            options.UseSqlServer(connectionString, sqlOptions =>
             {
                 sqlOptions.EnableRetryOnFailure(
                     maxRetryCount: 5,
@@ -31,7 +31,7 @@ internal static class Database
         });
         services.AddDbContext<TicketDbContext>(options =>
         {
-            options.UseSqlServer(settings.Database.Connection, sqlOptions =>
+            options.UseSqlServer(connectionString, sqlOptions =>
             {
                 sqlOptions.EnableRetryOnFailure(
                     maxRetryCount: 5,

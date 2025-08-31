@@ -1,8 +1,16 @@
 ﻿namespace Domain.Tickets.Entities;
 
-public class Ticket(Guid Id, Guid eventId, decimal price, uint SeatNumber) : Aggregate(Id)
+public class Ticket(Guid Id, Guid eventId, decimal price, uint SeatNumber, Guid? UserId = null, DateTimeOffset? PurchasedAt = null) : Aggregate(Id)
 {
     public Guid EventId { get; private set; } = eventId;
     public decimal Price { get; private set; } = price;
     public uint SeatNumber { get; private set; } = SeatNumber;
+    public Guid? UserId { get; private set; } = UserId;
+    public DateTimeOffset? PurchasedAt { get; private set; } = PurchasedAt;
+    
+    public void Purchase(Guid userId)
+    {
+        UserId = userId;
+        PurchasedAt = DateTimeOffset.UtcNow;
+    }
 }

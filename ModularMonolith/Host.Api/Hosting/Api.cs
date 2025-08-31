@@ -17,7 +17,7 @@ internal sealed class Api(WebApplicationBuilder webApplicationBuilder, IConfigur
     protected override void ConfigureServices(IServiceCollection services)
     {
         base.ConfigureServices(services);
-        services.ConfigureDatabase(_settings);
+        services.ConfigureDatabase(_settings.Database.Connection);
         services.ConfigureServices();
         if (IsNotLocalTestingOrBuildPipeline()) services.ConfigureMessaging(_settings);
         services.AddCorsAllowAll();
