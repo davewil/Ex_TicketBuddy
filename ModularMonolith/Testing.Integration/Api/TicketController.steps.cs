@@ -94,7 +94,7 @@ public partial class TicketControllerSpecs : TruncateDbSpecification
     private void tickets_are_released()
     {
         releasing_the_tickets();
-        var ticketsRequest = client.GetAsync(Routes.Events + $"/{event_id}" + "/tickets").GetAwaiter().GetResult();
+        var ticketsRequest = client.GetAsync(Routes.EventTickets(event_id)).GetAwaiter().GetResult();
         ticketsRequest.StatusCode.ShouldBe(HttpStatusCode.OK);
         var tickets = JsonSerialization.Deserialize<IList<Domain.Tickets.Entities.Ticket>>(ticketsRequest.Content.ReadAsStringAsync().GetAwaiter().GetResult());
         ticket_ids = tickets.Select(t => t.Id).ToArray();
@@ -111,7 +111,7 @@ public partial class TicketControllerSpecs : TruncateDbSpecification
     private void releasing_the_tickets()
     {
         create_content();
-        var response = client.PostAsync(Routes.Events + $"/{event_id}" + "/tickets", content).GetAwaiter().GetResult();
+        var response = client.PostAsync(Routes.EventTickets(event_id), content).GetAwaiter().GetResult();
         response_code = response.StatusCode;
         content = response.Content;
         response_code.ShouldBe(HttpStatusCode.Created);
@@ -119,7 +119,7 @@ public partial class TicketControllerSpecs : TruncateDbSpecification
 
     private void requesting_the_tickets()
     {
-        var response = client.GetAsync(Routes.Events + $"/{event_id}" + "/tickets").GetAwaiter().GetResult();
+        var response = client.GetAsync(Routes.EventTickets(event_id)).GetAwaiter().GetResult();
         response_code = response.StatusCode;
         content = response.Content;
     }
@@ -130,7 +130,7 @@ public partial class TicketControllerSpecs : TruncateDbSpecification
             JsonSerialization.Serialize(new TicketPurchasePayload(user_id, ticket_ids.Take(2).ToArray())),
             Encoding.UTF8,
             application_json);
-        var response = client.PostAsync(Routes.Events + $"/{event_id}" + "/tickets" + "/purchase", content).GetAwaiter().GetResult();
+        var response = client.PostAsync(Routes.EventTickets(event_id) + "/purchase", content).GetAwaiter().GetResult();
         response_code = response.StatusCode;
         content = response.Content;
     }
@@ -154,7 +154,7 @@ public partial class TicketControllerSpecs : TruncateDbSpecification
     private void the_tickets_are_purchased()
     {
         response_code.ShouldBe(HttpStatusCode.OK);
-        var response = client.GetAsync(Routes.Events + $"/{event_id}" + "/tickets").GetAwaiter().GetResult();
+        var response = client.GetAsync(Routes.EventTickets(event_id)).GetAwaiter().GetResult();
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
         var tickets = JsonSerialization.Deserialize<IList<Domain.Tickets.Entities.Ticket>>(response.Content.ReadAsStringAsync().GetAwaiter().GetResult());
         tickets.Count.ShouldBe(15);
