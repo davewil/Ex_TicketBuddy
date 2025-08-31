@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
 
 namespace Persistence.Tickets;
 
@@ -12,6 +13,8 @@ public class TicketRepository(TicketDbContext context)
     }
     public async Task ReleaseTicketsForEvent(Guid eventId, int numberOfTickets, decimal pricePerTicket)
     {
+        await CheckIfTicketsAlreadyReleased(eventId);
+
         for (uint i = 0; i < numberOfTickets; i++)
         {
             var ticket = new Domain.Tickets.Entities.Ticket(
@@ -23,7 +26,15 @@ public class TicketRepository(TicketDbContext context)
         }
         await context.SaveChangesAsync();
     }
-    
+
+    private async Task CheckIfTicketsAlreadyReleased(Guid eventId)
+    {
+        var existingTickets = await context.Tickets
+            .Where(t => t.EventId == eventId)
+            .ToListAsync();
+        if (existingTickets.Any()) throw new ValidationException("Tickets have already been released for this event");
+    }
+
     public async Task PurchaseTickets(Guid eventId, Guid userId, IList<Guid> ticketIds)
     {
         var tickets = await context.Tickets

@@ -14,6 +14,15 @@ public partial class TicketControllerSpecs
     }
 
     [Test]
+    public void cannot_release_tickets_for_an_event_twice()
+    {
+        Given(an_event_exists);
+        And(tickets_are_released);
+        When(releasing_the_tickets);
+        Then(user_is_informed_that_tickets_have_already_been_released);
+    }
+
+    [Test]
     public void user_can_purchase_two_tickets()
     {
         Given(an_event_exists);

@@ -23,7 +23,7 @@ public partial class TicketControllerSpecs : TruncateDbSpecification
 
     private readonly Guid event_id = Guid.NewGuid();
     private readonly Guid user_id = Guid.NewGuid();
-    private readonly decimal price = 25.00m;
+    private const decimal price = 25.00m;
     private HttpStatusCode response_code;
     private const string application_json = "application/json";
     private const string name = "wibble";
@@ -115,11 +115,11 @@ public partial class TicketControllerSpecs : TruncateDbSpecification
         var response = client.PostAsync(Routes.EventTickets(event_id), content).GetAwaiter().GetResult();
         response_code = response.StatusCode;
         content = response.Content;
-        response_code.ShouldBe(HttpStatusCode.Created);
     }
 
     private void requesting_the_tickets()
     {
+        response_code.ShouldBe(HttpStatusCode.Created);
         var response = client.GetAsync(Routes.EventTickets(event_id)).GetAwaiter().GetResult();
         response_code = response.StatusCode;
         content = response.Content;
@@ -170,6 +170,13 @@ public partial class TicketControllerSpecs : TruncateDbSpecification
         var tickets = JsonSerialization.Deserialize<IList<Domain.Tickets.Entities.Ticket>>(response.Content.ReadAsStringAsync().GetAwaiter().GetResult());
         tickets.Count.ShouldBe(15);
         tickets.Where(t => ticket_ids.Take(2).Contains(t.Id)).ToList().Count.ShouldBe(0);
+    }
+
+    private void user_is_informed_that_tickets_have_already_been_released()
+    {
+        response_code.ShouldBe(HttpStatusCode.BadRequest);
+        var theError = JsonSerialization.Deserialize<ApiError>(content.ReadAsStringAsync().GetAwaiter().GetResult());
+        theError.Errors.ShouldContain("Tickets have already been released for this event");
     }
 
     private void user_informed_they_cannot_purchase_tickets_that_are_purchased()

@@ -15,7 +15,7 @@ public class TicketController(TicketService TicketService) : ControllerBase
     }
     
     [HttpPost(Routes.Tickets)]
-    public async Task<ActionResult<Guid>> CreateEvent([FromRoute] Guid id, [FromBody] TicketPayload payload)
+    public async Task<ActionResult<Guid>> ReleaseTicketsForEvent([FromRoute] Guid id, [FromBody] TicketPayload payload)
     {
         await TicketService.ReleaseTicketsForEvent(id, payload.price);
         return Created(Routes.EventTickets(id), id);
