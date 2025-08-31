@@ -1,12 +1,12 @@
 ﻿using Api.Hosting;
 using Domain.Events.Messaging;
 using Domain.Users.Messaging;
-using Integration.Events.Messaging.Inbound;
 using Integration.Tickets.Messaging.Inbound;
 using MassTransit;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
+using Persistence.Tickets;
 
 namespace Integration;
 
@@ -24,11 +24,11 @@ public class IntegrationWebApplicationFactory<TProgram>(string connectionString)
                 var applicationAssembly = EventsDomainMessaging.Assembly;
                 x.AddConsumers(applicationAssembly);
                 
-                var eventsIntegrationInboundAssembly = EventsIntegrationMessagingInbound.Assembly;
-                x.AddConsumers(eventsIntegrationInboundAssembly);
-                
                 var ticketsIntegrationInboundAssembly = TicketsIntegrationMessagingInbound.Assembly;
                 x.AddConsumers(ticketsIntegrationInboundAssembly);
+                
+                var ticketsDomainMessagingAssembly = TicketsDomainMessaging.Assembly;
+                x.AddConsumers(ticketsDomainMessagingAssembly);
 
                 var usersApplicationAssembly = UsersDomainMessaging.Assembly;
                 x.AddConsumers(usersApplicationAssembly);

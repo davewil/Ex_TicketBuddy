@@ -25,7 +25,8 @@ public class EventRepository(EventDbContext eventDbContext, IPublishEndpoint pub
             EventName = theEvent.EventName,
             StartDate = theEvent.StartDate,
             EndDate = theEvent.EndDate,
-            Venue = theEvent.Venue
+            Venue = theEvent.Venue,
+            Price = theEvent.Price
         });
     }
 

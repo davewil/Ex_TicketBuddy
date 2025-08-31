@@ -1,9 +1,12 @@
 using Domain.Tickets.Entities;
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
+using Persistence.Tickets.Messages;
+using Event = Domain.Tickets.Entities.Event;
 
 namespace Persistence.Tickets;
 
-public class EventRepository(TicketDbContext ticketDbContext)
+public class EventRepository(TicketDbContext ticketDbContext, IPublishEndpoint publisher)
 {
     public async Task Save(Event theEvent)
     {
@@ -17,6 +20,12 @@ public class EventRepository(TicketDbContext ticketDbContext)
             ticketDbContext.Add(theEvent);
             await ticketDbContext.SaveChangesAsync();
         }
+        await publisher.Publish(new EventUpserted
+        {
+            Id = theEvent.Id,
+            Venue = theEvent.Venue,
+            Price = theEvent.Price
+        });
     }
 
     public async Task<Venue> GetVenue(Domain.Events.Primitives.Venue venue)

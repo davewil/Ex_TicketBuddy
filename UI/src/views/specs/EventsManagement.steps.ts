@@ -15,9 +15,7 @@ import {
     editButtonExistsForEvent,
     clickSubmitEventButtonToUpdateEvent,
     errorToastIsDisplayed,
-    ticketPriceInputIsRendered,
-    clickReleaseTicketsButton,
-    enterTicketPrice, releaseTicketsButtonIsRendered, updateEventFormIsRendered
+    updateEventFormIsRendered
 } from "./EventsManagement.page.tsx";
 import { Venue } from "../../domain/event.ts";
 import {waitUntil} from "../../testing/utilities.ts";
@@ -58,6 +56,8 @@ export async function should_render_event_creation_form() {
     expect(formFieldIsRendered("Start Date")).toBeTruthy();
     expect(formFieldIsRendered("End Date")).toBeTruthy();
     expect(formFieldIsRendered("Venue")).toBeTruthy();
+    expect(formFieldIsRendered("Ticket Price (£)")).toBeTruthy();
+
 }
 
 export async function should_allow_user_to_create_new_event() {
@@ -80,7 +80,8 @@ export async function should_allow_user_to_create_new_event() {
         eventName: eventName,
         startDate: startEventDateStringWithTime,
         endDate: endEventDateStringWithTime,
-        venue: eventVenue
+        venue: eventVenue,
+        Price: 45.00
     });
     await clickSubmitEventButtonToAddEvent();
     await waitUntil(wait_for_post);
@@ -89,7 +90,8 @@ export async function should_allow_user_to_create_new_event() {
         EventName: eventName,
         StartDate: startEventDate.toISOString().split("T")[0] + "T12:12:00" + ".000Z",
         EndDate: endEventDate.toISOString().split("T")[0] + "T13:13:00" + ".000Z",
-        Venue: eventVenue
+        Venue: eventVenue,
+        Price: "45"
     });
 }
 
@@ -138,7 +140,8 @@ export async function should_allow_user_to_edit_existing_event() {
         eventName: updatedEventName,
         startDate: startEventDateStringWithTime,
         endDate: endEventDateStringWithTime,
-        venue: eventToEdit.Venue
+        venue: eventToEdit.Venue,
+        Price: 50
     });
 
     await clickSubmitEventButtonToUpdateEvent();
@@ -149,7 +152,8 @@ export async function should_allow_user_to_edit_existing_event() {
         EventName: updatedEventName,
         StartDate: startEventDate.toISOString().split("T")[0] + "T14:00:00" + ".000Z",
         EndDate: endEventDate.toISOString().split("T")[0] + "T17:00:00" + ".000Z",
-        Venue: eventToEdit.Venue
+        Venue: eventToEdit.Venue,
+        Price: "50"
     });
 
     expect(updateEventFormIsRendered()).toBeFalsy();
@@ -186,7 +190,8 @@ export async function should_show_error_toast_when_event_update_fails() {
         eventName: "Updated Event Name",
         startDate: startDateString,
         endDate: endDateString,
-        venue: eventToEdit.Venue
+        venue: eventToEdit.Venue,
+        Price: eventToEdit.Price
     });
 
     await clickSubmitEventButtonToUpdateEvent();
@@ -223,70 +228,12 @@ export async function should_show_error_toast_when_event_creation_fails() {
         eventName: "Invalid Event",
         startDate: startDateString,
         endDate: endDateString,
-        venue: Venue.O2ArenaLondon
+        venue: Venue.O2ArenaLondon,
+        Price: 30
     });
 
     await clickSubmitEventButtonToAddEvent();
     await waitUntil(wait_for_post);
 
     expect(errorToastIsDisplayed("End date cannot be before start date")).toBeTruthy();
-}
-
-export async function should_allow_user_to_release_tickets_for_event() {
-    let wait_for_post_tickets: () => boolean;
-
-    renderEventsManagement();
-    await waitUntil(wait_for_get_events);
-
-    const eventToReleaseTicketsFor = Events[0];
-
-    await clickEditButtonForEvent(eventToReleaseTicketsFor.EventName);
-    await waitUntil(wait_for_get_event);
-
-    wait_for_post_tickets = mockServer.post(`/events/${eventToReleaseTicketsFor.Id}/tickets`, {}, true);
-
-    expect(ticketPriceInputIsRendered()).toBeTruthy();
-    expect(releaseTicketsButtonIsRendered()).toBeTruthy();
-
-    await enterTicketPrice("25.99");
-    await clickReleaseTicketsButton();
-
-    await waitUntil(wait_for_post_tickets);
-
-    const data = mockServer.content;
-    expect(data).toEqual({
-        Price: 25.99
-    });
-
-    expect(updateEventFormIsRendered()).toBeFalsy();
-}
-
-export async function should_show_error_toast_when_ticket_release_fails() {
-    let wait_for_post_tickets_error: () => boolean;
-
-    renderEventsManagement();
-    await waitUntil(wait_for_get_events);
-
-    const eventToReleaseTicketsFor = Events[0];
-
-    await clickEditButtonForEvent(eventToReleaseTicketsFor.EventName);
-    await waitUntil(wait_for_get_event);
-
-    mockServer.reset();
-    const errorResponse = {
-        Message: "The request could not be correctly validated.",
-        Errors: ["Ticket price must be greater than zero"]
-    };
-    wait_for_post_tickets_error = mockServer.post(`/events/${eventToReleaseTicketsFor.Id}/tickets`, errorResponse, false);
-    mockServer.start();
-
-    expect(ticketPriceInputIsRendered()).toBeTruthy();
-    expect(releaseTicketsButtonIsRendered()).toBeTruthy();
-
-    await enterTicketPrice("-5.00");
-    await clickReleaseTicketsButton();
-
-    await waitUntil(wait_for_post_tickets_error);
-
-    expect(errorToastIsDisplayed("Ticket price must be greater than zero")).toBeTruthy();
 }

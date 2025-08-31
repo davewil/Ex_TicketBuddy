@@ -16,15 +16,15 @@ public class EventService(EventRepository repository)
         return await repository.GetAll();
     }
 
-    public async Task<Guid> Add(EventName eventName, DateTimeOffset startDate, DateTimeOffset endDate, Venue venue)
+    public async Task<Guid> Add(EventName eventName, DateTimeOffset startDate, DateTimeOffset endDate, Venue venue, decimal price)
     {
         var id = Guid.NewGuid();
-        var @event = new Event(id, eventName, startDate, endDate, venue, false);
+        var @event = new Event(id, eventName, startDate, endDate, venue, price);
         await repository.Save(@event);
         return id;
     }
 
-    public async Task Update(Guid id, EventName eventName, DateTimeOffset startDate, DateTimeOffset endDate, Venue venue)
+    public async Task Update(Guid id, EventName eventName, DateTimeOffset startDate, DateTimeOffset endDate, Venue venue, decimal price)
     {
         var @event = await repository.Get(id);
         if (@event is null) return;
@@ -32,6 +32,7 @@ public class EventService(EventRepository repository)
         @event.UpdateName(eventName);
         @event.UpdateDates(startDate, endDate);
         @event.UpdateVenue(venue);
+        @event.UpdatePrice(price);
         await repository.Save(@event);
     }
 }

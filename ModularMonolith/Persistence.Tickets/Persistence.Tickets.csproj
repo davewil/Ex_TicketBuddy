@@ -14,7 +14,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Domain.Tickets\Domain.Tickets.csproj" />
-      <ProjectReference Include="..\Integration.Tickets.Messaging.Outbound\Integration.Tickets.Messaging.Outbound.csproj" />
     </ItemGroup>
 
 </Project>

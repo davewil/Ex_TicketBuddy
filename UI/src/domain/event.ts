@@ -6,6 +6,7 @@ export interface Event {
     StartDate: Moment;
     EndDate: Moment;
     Venue : Venue;
+    Price: number
 }
 
 export interface EventPayload {
@@ -13,6 +14,7 @@ export interface EventPayload {
     StartDate: Moment;
     EndDate: Moment;
     Venue : Venue;
+    Price: number
 }
 
 export enum Venue {

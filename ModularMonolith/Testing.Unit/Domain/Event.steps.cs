@@ -54,7 +54,7 @@ public partial class EventSpecs : Specification
     
     private void creating_an_event()
     {
-        user = new Event(id, name, start_date, end_date, Venue.FirstDirectArenaLeeds, false);
+        user = new Event(id, name, start_date, end_date, Venue.FirstDirectArenaLeeds, 25m);
     }    
     
     private void the_event_is_created()
@@ -64,5 +64,6 @@ public partial class EventSpecs : Specification
         user.StartDate.Should().Be(start_date);
         user.EndDate.Should().Be(end_date);
         user.Venue.Should().Be(Venue.FirstDirectArenaLeeds);
+        user.Price.Should().Be(25m);
     }
 }

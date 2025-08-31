@@ -5,7 +5,6 @@ using Controllers.Tickets;
 using Controllers.Tickets.Requests;
 using Domain.Events.Primitives;
 using Integration.Events.Messaging.Outbound;
-using Integration.Tickets.Messaging.Outbound;
 using Integration.Users.Messaging.Outbound.Messages;
 using MassTransit.Testing;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,9 +21,10 @@ public partial class TicketControllerSpecs : TruncateDbSpecification
     private HttpClient client = null!;
     private HttpContent content = null!;
 
-    private readonly Guid event_id = Guid.NewGuid();
-    private readonly Guid user_id = Guid.NewGuid();
+    private Guid event_id = Guid.NewGuid();
+    private Guid user_id = Guid.NewGuid();
     private const decimal price = 25.00m;
+    private const decimal new_price = 26.00m;
     private HttpStatusCode response_code;
     private const string application_json = "application/json";
     private const string name = "wibble";
@@ -50,6 +50,8 @@ public partial class TicketControllerSpecs : TruncateDbSpecification
         base.before_each();
         content = null!;
         ticket_ids = [];
+        event_id = Guid.NewGuid();
+        user_id = Guid.NewGuid();
         factory = new IntegrationWebApplicationFactory<Program>(database.GetTicketBuddyConnectionString());
         client = factory.CreateClient();
         testHarness = factory.Services.GetRequiredService<ITestHarness>();
@@ -78,9 +80,11 @@ public partial class TicketControllerSpecs : TruncateDbSpecification
             EventName = name,
             StartDate = event_start_date,
             EndDate = event_end_date,
-            Venue = Venue.EmiratesOldTraffordManchester
+            Venue = Venue.EmiratesOldTraffordManchester,
+            Price = price
         });
         testHarness.Consumed.Any<EventUpserted>(x => x.Context.Message.Id == event_id).Await();
+        testHarness.Consumed.Any<Persistence.Tickets.Messages.EventUpserted>(x => x.Context.Message.Id == event_id).Await();
     }
 
     private void a_user_exists()
@@ -94,36 +98,13 @@ public partial class TicketControllerSpecs : TruncateDbSpecification
         testHarness.Consumed.Any<UserUpserted>(x => x.Context.Message.Id == user_id).Await();
     }
 
-    private void tickets_are_released()
-    {
-        releasing_the_tickets();
-        var ticketsRequest = client.GetAsync(Routes.EventTickets(event_id)).GetAwaiter().GetResult();
-        ticketsRequest.StatusCode.ShouldBe(HttpStatusCode.OK);
-        var tickets = JsonSerialization.Deserialize<IList<Domain.Tickets.Entities.Ticket>>(ticketsRequest.Content.ReadAsStringAsync().GetAwaiter().GetResult());
-        ticket_ids = tickets.Select(t => t.Id).ToArray();
-    }
-    
-    private void create_content()
-    {
-        content = new StringContent(
-            JsonSerialization.Serialize(new TicketPayload(price)),
-            Encoding.UTF8,
-            application_json);
-    }
-
-    private void releasing_the_tickets()
-    {
-        create_content();
-        var response = client.PostAsync(Routes.EventTickets(event_id), content).GetAwaiter().GetResult();
-        response_code = response.StatusCode;
-        content = response.Content;
-    }
-
     private void requesting_the_tickets()
     {
         var response = client.GetAsync(Routes.EventTickets(event_id)).GetAwaiter().GetResult();
         response_code = response.StatusCode;
         content = response.Content;
+        var tickets = JsonSerialization.Deserialize<IList<Domain.Tickets.Entities.Ticket>>(content.ReadAsStringAsync().GetAwaiter().GetResult());
+        ticket_ids = tickets.Select(t => t.Id).ToArray();
     }
 
     private void purchasing_two_tickets()
@@ -149,10 +130,15 @@ public partial class TicketControllerSpecs : TruncateDbSpecification
 
     private void updating_the_ticket_prices()
     {
-        create_content();
-        var response = client.PutAsync(Routes.EventTickets(event_id), content).GetAwaiter().GetResult();
-        response_code = response.StatusCode;
-        content = response.Content;
+        testHarness.Bus.Publish(new EventUpserted
+        {
+            Id = event_id,
+            EventName = name,
+            StartDate = event_start_date,
+            EndDate = event_end_date,
+            Venue = Venue.EmiratesOldTraffordManchester,
+            Price = new_price
+        });
     }
 
     private void the_tickets_are_released()
@@ -171,11 +157,6 @@ public partial class TicketControllerSpecs : TruncateDbSpecification
         }
     }
 
-    private void a_tickets_released_message_is_published()
-    {
-        testHarness.Published.Any<TicketsReleased>(x => x.Context.Message.EventId == event_id).Await().ShouldBeTrue();
-    }
-
     private void the_tickets_are_purchased()
     {
         response_code.ShouldBe(HttpStatusCode.OK);
@@ -184,13 +165,6 @@ public partial class TicketControllerSpecs : TruncateDbSpecification
         var tickets = JsonSerialization.Deserialize<IList<Domain.Tickets.Entities.Ticket>>(response.Content.ReadAsStringAsync().GetAwaiter().GetResult());
         tickets.Count.ShouldBe(15);
         tickets.Where(t => ticket_ids.Take(2).Contains(t.Id)).ToList().Count.ShouldBe(0);
-    }
-
-    private void user_is_informed_that_tickets_have_already_been_released()
-    {
-        response_code.ShouldBe(HttpStatusCode.BadRequest);
-        var theError = JsonSerialization.Deserialize<ApiError>(content.ReadAsStringAsync().GetAwaiter().GetResult());
-        theError.Errors.ShouldContain("Tickets have already been released for this event");
     }
 
     private void user_informed_they_cannot_purchase_tickets_that_are_purchased()

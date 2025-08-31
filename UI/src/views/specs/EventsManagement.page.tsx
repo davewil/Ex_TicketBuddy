@@ -42,7 +42,8 @@ export async function fillEventForm(eventData: {
     eventName: string,
     startDate: string,
     endDate: string,
-    venue: string
+    venue: string,
+    Price: number
 }) {
     const eventNameField = elements.theFormField("Event Name");
     await userEvent.clear(eventNameField);
@@ -50,10 +51,13 @@ export async function fillEventForm(eventData: {
     await userEvent.clear(startDateField);
     const endDateField = elements.theFormField("End Date");
     await userEvent.clear(endDateField);
+    const priceField = elements.theFormField("Ticket Price (£)");
+    await userEvent.clear(priceField);
     await userEvent.type(elements.theFormField("Event Name"), eventData.eventName);
     await userEvent.type(elements.theFormField("Start Date"), eventData.startDate);
     await userEvent.type(elements.theFormField("End Date"), eventData.endDate);
     await userEvent.type(elements.theFormField("Venue"), eventData.venue);
+    await userEvent.type(elements.theFormField("Ticket Price (£)"), eventData.Price.toString());
 }
 
 export async function clickSubmitEventButtonToAddEvent() {
@@ -90,25 +94,6 @@ export function errorToastIsDisplayed(errorMessage: string): boolean {
     return !!toastElement;
 }
 
-export function ticketPriceInputIsRendered(): boolean {
-    return elements.ticketPriceInput() !== null;
-}
-
-export function releaseTicketsButtonIsRendered(): boolean {
-    return elements.releaseTicketsButton() !== null;
-}
-
-export async function enterTicketPrice(price: string) {
-    const priceInput = elements.ticketPriceInput()!;
-    await userEvent.clear(priceInput);
-    return userEvent.type(priceInput, price);
-}
-
-export async function clickReleaseTicketsButton() {
-    const releaseButton = elements.releaseTicketsButton()!;
-    return userEvent.click(releaseButton);
-}
-
 const elements = {
     theEvent: (eventName: string) => renderedComponent.getByText(eventName),
     addEventIcon: () => renderedComponent.getByRole("link", { name: /add event/i }),
@@ -119,15 +104,7 @@ const elements = {
     createEventButton: () => renderedComponent.getByRole("button", { name: /create event/i }),
     updateEventButton: () => renderedComponent.getByRole("button", { name: /update event/i }),
     backButton: () => renderedComponent.getByRole("button", { name: /back to events/i }),
-    ticketPriceInput: () => renderedComponent.queryByTestId("ticket-price-input"),
-    releaseTicketsButton: () => renderedComponent.queryByRole("button", { name: /release tickets/i }),
     editButtonForEvent: (eventName: string) => {
         return renderedComponent.getByTestId(`edit-event-${eventName}`);
     },
-    releaseTicketsButtonForEvent: (eventName: string) => {
-        return renderedComponent.getByTestId(`release-tickets-${eventName}`);
-    },
-    ticketPriceInputForEvent: (eventName: string) => {
-        return renderedComponent.getByTestId(`ticket-price-${eventName}`);
-    }
 }

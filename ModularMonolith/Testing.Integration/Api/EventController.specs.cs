@@ -60,13 +60,4 @@ public partial class EventControllerSpecs
         When(listing_the_events);
         Then(the_events_are_listed_without_the_past_event);
     }
-    
-    [Test]
-    public void can_register_an_event_as_having_tickets_released()
-    {
-        Given(an_event_exists);
-        And(tickets_are_released_for_the_event);
-        When(requesting_the_event);
-        Then(the_event_is_marked_as_having_tickets_released);
-    }
 }

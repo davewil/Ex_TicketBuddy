@@ -6,7 +6,6 @@ using Controllers.Events.Requests;
 using Domain.Events.Entities;
 using Domain.Events.Primitives;
 using Integration.Events.Messaging.Outbound;
-using Integration.Tickets.Messaging.Outbound;
 using MassTransit.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Migrations;
@@ -33,6 +32,8 @@ public partial class EventControllerSpecs : TruncateDbSpecification
     private readonly DateTimeOffset new_event_start_date = DateTimeOffset.Now.AddDays(2);
     private readonly DateTimeOffset new_event_end_date = DateTimeOffset.Now.AddDays(2).AddHours(2);
     private readonly DateTimeOffset past_event_start_date = DateTimeOffset.Now.AddDays(-1);
+    private const decimal price = 12.34m;
+    private const decimal new_price = 23.45m;
     private static MsSqlContainer database = null!;
     private ITestHarness testHarness = null!;
 
@@ -71,41 +72,41 @@ public partial class EventControllerSpecs : TruncateDbSpecification
 
     private void a_request_to_create_an_event()
     {
-        create_content(name, event_start_date, event_end_date);
+        create_content(name, event_start_date, event_end_date, Venue.FirstDirectArenaLeeds, price);
     }
 
     private void a_request_to_create_an_event_imminently()
     {
-        create_content(name, DateTimeOffset.Now.AddSeconds(1), DateTimeOffset.Now.AddSeconds(2));
+        create_content(name, DateTimeOffset.Now.AddSeconds(1), DateTimeOffset.Now.AddSeconds(2), Venue.FirstDirectArenaLeeds, price);
     }
     
     private void a_request_to_create_an_event_with_a_date_in_the_past()
     {
-        create_content(name, past_event_start_date, event_end_date);
+        create_content(name, past_event_start_date, event_end_date, Venue.FirstDirectArenaLeeds, price);
     }
     
     private void a_request_to_update_the_event_with_a_date_in_the_past()
     {
-        create_content(new_name, past_event_start_date, event_end_date);
+        create_content(new_name, past_event_start_date, event_end_date, Venue.EmiratesOldTraffordManchester, new_price);
     }
 
-    private void create_content(string the_name, DateTimeOffset the_event_date, DateTimeOffset the_event_end_date, Venue venue = Venue.FirstDirectArenaLeeds)
+    private void create_content(string the_name, DateTimeOffset the_event_date, DateTimeOffset the_event_end_date, Venue venue, decimal thePrice)
     {
         content = new StringContent(
-            JsonSerialization.Serialize(new EventPayload(the_name, the_event_date, the_event_end_date, venue)),
+            JsonSerialization.Serialize(new EventPayload(the_name, the_event_date, the_event_end_date, venue, thePrice)),
             Encoding.UTF8,
             application_json);
     }
 
     private void a_request_to_create_another_event()
     {
-        create_content(new_name, event_start_date, event_end_date);
+        create_content(new_name, event_start_date, event_end_date, Venue.EmiratesOldTraffordManchester, new_price);
 
     }
     
     private void a_request_to_update_the_event()
     {
-        create_content(new_name, new_event_start_date, new_event_end_date, Venue.EmiratesOldTraffordManchester);
+        create_content(new_name, new_event_start_date, new_event_end_date, Venue.EmiratesOldTraffordManchester, new_price);
     }
 
     private void creating_the_event()
@@ -168,15 +169,6 @@ public partial class EventControllerSpecs : TruncateDbSpecification
         creating_another_event();
     }
 
-    private void tickets_are_released_for_the_event()
-    {
-        testHarness.Bus.Publish(new TicketsReleased
-        {
-            EventId = returned_id
-        }).Await();
-        testHarness.Consumed.Any<TicketsReleased>(x => x.Context.Message.EventId == returned_id).Await();
-    }
-
     private void requesting_the_event()
     {
         var response = client.GetAsync(Routes.Events + $"/{returned_id}").GetAwaiter().GetResult();
@@ -207,6 +199,7 @@ public partial class EventControllerSpecs : TruncateDbSpecification
         theEvent.EventName.ToString().ShouldBe(name);
         theEvent.StartDate.ShouldBe(event_start_date);
         theEvent.Venue.ShouldBe(Venue.FirstDirectArenaLeeds);
+        theEvent.Price.ShouldBe(price);
     }
     
     private void the_event_is_not_created()
@@ -231,6 +224,7 @@ public partial class EventControllerSpecs : TruncateDbSpecification
         theEvent.EventName.ToString().ShouldBe(new_name);
         theEvent.StartDate.ShouldBe(new_event_start_date);
         theEvent.Venue.ShouldBe(Venue.EmiratesOldTraffordManchester);
+        theEvent.Price.ShouldBe(new_price);
     }    
     
     private void the_events_are_listed()
@@ -251,26 +245,29 @@ public partial class EventControllerSpecs : TruncateDbSpecification
         theEvent.Single().EventName.ToString().ShouldBe(name);
     }
 
-    private void the_event_is_marked_as_having_tickets_released()
-    {
-        var theEvent = JsonSerialization.Deserialize<Event>(content.ReadAsStringAsync().Await());
-        response_code.ShouldBe(HttpStatusCode.OK);
-        theEvent.Id.ShouldBe(returned_id);
-        theEvent.EventName.ToString().ShouldBe(name);
-        theEvent.StartDate.ShouldBe(event_start_date);
-        theEvent.Venue.ShouldBe(Venue.FirstDirectArenaLeeds);
-        theEvent.TicketsReleased.ShouldBeTrue();
-    }
-
     private void an_integration_event_is_published()
     {
         testHarness.Published.Select<EventUpserted>()
-            .Any(e => e.Context.Message.Id == returned_id && e.Context.Message.EventName == name).ShouldBeTrue("Event was not published to the bus");
+            .Any(e => 
+                e.Context.Message.Id == returned_id && 
+                e.Context.Message.EventName == name &&
+                e.Context.Message.StartDate == event_start_date &&
+                e.Context.Message.EndDate == event_end_date &&
+                e.Context.Message.Venue == Venue.FirstDirectArenaLeeds &&
+                e.Context.Message.Price == price
+                ).ShouldBeTrue("Event was not published to the bus");
     }
 
     private void an_another_integration_event_is_published()
     {
         testHarness.Published.Select<EventUpserted>()
-            .Any(e => e.Context.Message.Id == returned_id && e.Context.Message.EventName == new_name).ShouldBeTrue("Event was not published to the bus");
+            .Any(e => 
+                e.Context.Message.Id == returned_id && 
+                e.Context.Message.EventName == new_name &&
+                e.Context.Message.StartDate == new_event_start_date &&
+                e.Context.Message.EndDate == new_event_end_date &&
+                e.Context.Message.Venue == Venue.EmiratesOldTraffordManchester &&
+                e.Context.Message.Price == new_price
+                ).ShouldBeTrue("Event was not published to the bus");
     }
 }

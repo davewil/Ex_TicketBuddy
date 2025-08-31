@@ -1,8 +1,8 @@
 ﻿using Domain.Events.Messaging;
 using Domain.Users.Messaging;
-using Integration.Events.Messaging.Inbound;
 using Integration.Tickets.Messaging.Inbound;
 using MassTransit;
+using Persistence.Tickets;
 
 namespace Api.Hosting;
 
@@ -16,11 +16,11 @@ internal static class Messaging
             var eventsDomainAssembly = EventsDomainMessaging.Assembly;
             x.AddConsumers(eventsDomainAssembly);
             
-            var eventsIntegrationInboundAssembly = EventsIntegrationMessagingInbound.Assembly;
-            x.AddConsumers(eventsIntegrationInboundAssembly);
-            
             var ticketsIntegrationInboundAssembly = TicketsIntegrationMessagingInbound.Assembly;
             x.AddConsumers(ticketsIntegrationInboundAssembly);
+            
+            var ticketsDomainMessagingAssembly = TicketsDomainMessaging.Assembly;
+            x.AddConsumers(ticketsDomainMessagingAssembly);
             
             var usersDomainAssembly = UsersDomainMessaging.Assembly;
             x.AddConsumers(usersDomainAssembly);

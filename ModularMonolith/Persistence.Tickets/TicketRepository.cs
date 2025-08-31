@@ -1,10 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using MassTransit;
 using Microsoft.EntityFrameworkCore;
 
 namespace Persistence.Tickets;
 
-public class TicketRepository(TicketDbContext context, IPublishEndpoint publishEndpoint)
+public class TicketRepository(TicketDbContext context)
 {
     public async Task<IList<Domain.Tickets.Entities.Ticket>> GetTicketsForEvent(Guid eventId)
     {
@@ -34,10 +33,6 @@ public class TicketRepository(TicketDbContext context, IPublishEndpoint publishE
             context.Tickets.Add(ticket);
         }
         await context.SaveChangesAsync();
-        await publishEndpoint.Publish(new Integration.Tickets.Messaging.Outbound.TicketsReleased
-        {
-            EventId = eventId
-        });
     }
     
     public async Task UpdateTicketPricesForEvent(Guid eventId, decimal newPricePerTicket)
@@ -53,6 +48,13 @@ public class TicketRepository(TicketDbContext context, IPublishEndpoint publishE
         }
         
         await context.SaveChangesAsync();
+    }
+    
+    public async Task<bool> AreTicketsReleasedForEvent(Guid eventId)
+    {
+        return await context.Tickets
+            .Where(t => t.EventId == eventId)
+            .AnyAsync();
     }
 
     private async Task CheckIfTicketsAlreadyReleased(Guid eventId)

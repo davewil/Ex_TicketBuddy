@@ -9,4 +9,5 @@ public record EventUpserted
     public DateTimeOffset StartDate { get; init; }
     public DateTimeOffset EndDate { get; init; }
     public Venue Venue { get; init; }
+    public decimal Price { get; init; }
 }

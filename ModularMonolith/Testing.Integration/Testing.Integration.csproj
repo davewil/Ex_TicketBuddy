@@ -11,7 +11,6 @@
     <ItemGroup>
       <ProjectReference Include="..\Host.Api\Host.Api.csproj" />
       <ProjectReference Include="..\Domain\Domain.csproj" />
-      <ProjectReference Include="..\Integration.Tickets.Messaging.Outbound\Integration.Tickets.Messaging.Outbound.csproj" />
       <ProjectReference Include="..\Migrations\Migrations.csproj" />
     </ItemGroup>
     
