@@ -41,8 +41,8 @@ export const EventsManagement = () => {
         <>
             <Routes>
                 <Route index element={<ListEvents />} />
-                <Route path="add" element={<AddEvent />} />
-                <Route path="edit/:id" element={<EditEvent />} />
+                <Route path="add" element={<EventForm mode="create" />} />
+                <Route path="edit/:id" element={<EventForm mode="edit" />} />
             </Routes>
             <Outlet />
         </>
@@ -88,144 +88,35 @@ export const ListEvents = () => {
     );
 }
 
-export const AddEvent = () => {
+interface EventFormProps {
+    mode: 'create' | 'edit';
+}
+
+export const EventForm = ({ mode }: EventFormProps) => {
     const [formData, setFormData] = useState<EventFormData>(initialFormData);
     const navigate = useNavigate();
-
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        setFormData({
-            ...formData,
-            [name]: value
-        });
-    };
-
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        if (isFormValid()) {
-            postEvent({
-                EventName: formData.eventName,
-                StartDate: moment(formData.startDateTime),
-                EndDate: moment(formData.endDateTime),
-                Venue: formData.venue,
-                Price: formData.price,
-            }).then(() => {
-                setFormData(initialFormData);
-                navigate('/events-management');
-            }).catch((error) => {
-                if (error.error && Array.isArray(error.error)) {
-                    error.error.forEach((errorMessage: string) => {
-                        toast.error(errorMessage);
-                    });
-                } else {
-                    toast.error("Failed to create event");
-                }
-            });
-        }
-    };
-
-    const isFormValid = () => {
-        return formData.eventName && formData.startDateTime && formData.endDateTime && formData.venue;
-    };
-
-    return (
-        <>
-            <h1>Events Management</h1>
-            <Link to="/events-management">
-                <Button data-testid="back-button">
-                    <BackIcon /> Back to Events
-                </Button>
-            </Link>
-            <FormContainer data-testid="event-creation-form" onSubmit={handleSubmit}>
-                <h2>Create New Event</h2>
-
-                <FormGroup>
-                    <Label htmlFor="eventName">Event Name</Label>
-                    <Input
-                        type="text"
-                        id="eventName"
-                        name="eventName"
-                        value={formData.eventName}
-                        onChange={handleInputChange}
-                    />
-                </FormGroup>
-
-                <FormGroup>
-                    <Label htmlFor="startDateTime">Start Date</Label>
-                    <Input
-                        type="datetime-local"
-                        id="startDateTime"
-                        name="startDateTime"
-                        value={formData.startDateTime}
-                        onChange={handleInputChange}
-                    />
-                </FormGroup>
-
-                <FormGroup>
-                    <Label htmlFor="endDateTime">End Date</Label>
-                    <Input
-                        type="datetime-local"
-                        id="endDateTime"
-                        name="endDateTime"
-                        value={formData.endDateTime}
-                        onChange={handleInputChange}
-                    />
-                </FormGroup>
-
-                <FormGroup>
-                    <Label htmlFor="venue">Venue</Label>
-                    <Select
-                        id="venue"
-                        name="venue"
-                        value={formData.venue}
-                        onChange={(e) => setFormData({ ...formData, venue: e.target.value as Venue })}
-                    >
-                        {Object.values(Venue).map((venue) => (
-                            <option key={venue} value={venue}>
-                                {ConvertVenueToString(venue)}
-                            </option>
-                        ))}
-                    </Select>
-                </FormGroup>
-
-                <FormGroup>
-                    <Label htmlFor="price">Ticket Price (£)</Label>
-                    <Input
-                        type="number"
-                        id="price"
-                        name="price"
-                        value={formData.price}
-                        onChange={handleInputChange}
-                        placeholder="Enter ticket price to release tickets"
-                        step="0.01"
-                    />
-                </FormGroup>
-
-                <Button type="submit" disabled={!isFormValid()}>Create Event</Button>
-            </FormContainer>
-        </>
-    );
-};
-
-export const EditEvent = () => {
-    const [formData, setFormData] = useState<EventFormData>(initialFormData);
-    const navigate = useNavigate();
-    const { id } = useParams<{ id: string }>() as { id: string };
+    const { id } = useParams<{ id: string }>();
+    const isEditMode = mode === 'edit';
 
     useEffect(() => {
-        const fetchEventDetails = async () => {
-            const event = await getEventById(id);
-            setFormData({
-                eventName: event.EventName,
-                startDateTime: moment(event.StartDate).format('YYYY-MM-DDTHH:mm'),
-                endDateTime: moment(event.EndDate).format('YYYY-MM-DDTHH:mm'),
-                venue: event.Venue,
-                price: event.Price,
-            });
-        };
+        if (isEditMode && id) {
+            const fetchEventDetails = async () => {
+                getEventById(id).then(event => {
+                setFormData({
+                    eventName: event.EventName,
+                    startDateTime: moment(event.StartDate).format('YYYY-MM-DDTHH:mm'),
+                    endDateTime: moment(event.EndDate).format('YYYY-MM-DDTHH:mm'),
+                    venue: event.Venue,
+                    price: event.Price,
+                })}).catch(() => {
+                    toast.error('Failed to fetch event details');
+                    navigate('/events-management');
+                });
+            };
 
-        fetchEventDetails();
-    }, [id]);
+            fetchEventDetails();
+        }
+    }, [id, isEditMode, navigate]);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -238,22 +129,28 @@ export const EditEvent = () => {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if (isFormValid()) {
-            putEvent(id, {
+            const eventData = {
                 EventName: formData.eventName,
                 StartDate: moment(formData.startDateTime),
                 EndDate: moment(formData.endDateTime),
                 Venue: formData.venue,
                 Price: formData.price,
-            }).then(() => {
+            };
+
+            const apiCall = isEditMode && id
+                ? putEvent(id, eventData)
+                : postEvent(eventData);
+
+            apiCall.then(() => {
                 setFormData(initialFormData);
                 navigate('/events-management');
             }).catch((error) => {
-                if (error.error && Array.isArray(error.error)) {
-                    error.error.forEach((errorMessage: string) => {
+                if (error.errors && Array.isArray(error.errors)) {
+                    error.errors.forEach((errorMessage: string) => {
                         toast.error(errorMessage);
                     });
                 } else {
-                    toast.error("Failed to update event");
+                    toast.error(`Failed to ${isEditMode ? 'update' : 'create'} event`);
                 }
             });
         }
@@ -271,8 +168,11 @@ export const EditEvent = () => {
                     <BackIcon /> Back to Events
                 </Button>
             </Link>
-            <FormContainer data-testid="event-update-form" onSubmit={handleSubmit}>
-                <h2>Edit Event</h2>
+            <FormContainer
+                data-testid={isEditMode ? "event-update-form" : "event-creation-form"}
+                onSubmit={handleSubmit}
+            >
+                <h2>{isEditMode ? 'Edit Event' : 'Create New Event'}</h2>
 
                 <FormGroup>
                     <Label htmlFor="eventName">Event Name</Label>
@@ -336,7 +236,13 @@ export const EditEvent = () => {
                     />
                 </FormGroup>
 
-                <Button type="submit" data-testid="update-event-button" disabled={!isFormValid()}>Update Event</Button>
+                <Button
+                    type="submit"
+                    data-testid={isEditMode ? "update-event-button" : "create-event-button"}
+                    disabled={!isFormValid()}
+                >
+                    {isEditMode ? 'Update Event' : 'Create Event'}
+                </Button>
             </FormContainer>
         </>
     );

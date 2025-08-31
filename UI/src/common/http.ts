@@ -46,7 +46,7 @@ function handleResponse(): ((value: Response) => unknown) | null | undefined {
     return async (response) => {
         if (!response.ok) {
             throw {
-                error: (await response?.json())?.Errors,
+                errors: (await response?.json())?.Errors,
                 code: response.status
             };
         }

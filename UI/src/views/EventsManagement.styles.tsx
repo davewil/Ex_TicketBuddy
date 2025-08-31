@@ -1,6 +1,6 @@
 ﻿import styled from "styled-components";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faPlus, faArrowLeft, faTicket} from "@fortawesome/free-solid-svg-icons";
+import {faPlus, faArrowLeft} from "@fortawesome/free-solid-svg-icons";
 
 export const EventList = styled.div`
     display: flex;
@@ -28,27 +28,6 @@ export const EventActions = styled.div`
     display: flex;
     flex-direction: column;
     gap: 10px;
-`;
-
-export const TicketReleaseContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 10px;
-`;
-
-export const TicketPriceContainer = styled.div`
-    display: flex;
-    align-items: center;
-    gap: 10px;
-`;
-
-export const TicketPriceInput = styled.input`
-    width: 100px;
-    padding: 5px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 16px;
 `;
 
 export const FormContainer = styled.form`
@@ -86,5 +65,3 @@ export const Select = styled.select`
 export const AddIcon = () => <FontAwesomeIcon icon={faPlus} />;
 
 export const BackIcon = () => <FontAwesomeIcon icon={faArrowLeft} style={{ marginRight: '5px' }} />;
-
-export const TicketIcon = () => <FontAwesomeIcon icon={faTicket} style={{ marginRight: '5px' }} />;
