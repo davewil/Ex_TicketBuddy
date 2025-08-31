@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Migrations;
 using Shouldly;
 using Testcontainers.MsSql;
+using WebHost;
 
 namespace Integration.Api;
 
@@ -135,6 +136,16 @@ public partial class TicketControllerSpecs : TruncateDbSpecification
         content = response.Content;
     }
 
+    private void two_tickets_are_purchased()
+    {
+        purchasing_two_tickets();
+    }
+    
+    private void purchasing_two_tickets_again()
+    {
+        purchasing_two_tickets();
+    }
+
     private void the_tickets_are_released()
     {
         response_code.ShouldBe(HttpStatusCode.OK);
@@ -159,5 +170,12 @@ public partial class TicketControllerSpecs : TruncateDbSpecification
         var tickets = JsonSerialization.Deserialize<IList<Domain.Tickets.Entities.Ticket>>(response.Content.ReadAsStringAsync().GetAwaiter().GetResult());
         tickets.Count.ShouldBe(15);
         tickets.Where(t => ticket_ids.Take(2).Contains(t.Id)).ToList().Count.ShouldBe(0);
+    }
+
+    private void user_informed_they_cannot_purchase_tickets_that_are_purchased()
+    {
+        response_code.ShouldBe(HttpStatusCode.BadRequest);
+        var theError = JsonSerialization.Deserialize<ApiError>(content.ReadAsStringAsync().GetAwaiter().GetResult());
+        theError.Errors.ShouldContain("Tickets are not available");
     }
 }

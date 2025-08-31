@@ -1,4 +1,6 @@
-﻿namespace Domain.Tickets.Entities;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Domain.Tickets.Entities;
 
 public class Ticket(Guid Id, Guid eventId, decimal price, uint SeatNumber, Guid? UserId = null, DateTimeOffset? PurchasedAt = null) : Aggregate(Id)
 {
@@ -10,6 +12,7 @@ public class Ticket(Guid Id, Guid eventId, decimal price, uint SeatNumber, Guid?
     
     public void Purchase(Guid userId)
     {
+        if (UserId is not null) throw new ValidationException("Tickets are not available");
         UserId = userId;
         PurchasedAt = DateTimeOffset.UtcNow;
     }

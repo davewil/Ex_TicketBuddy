@@ -22,4 +22,15 @@ public partial class TicketControllerSpecs
         When(purchasing_two_tickets);
         Then(the_tickets_are_purchased);
     }
+    
+    [Test]
+    public void user_cannot_purchase_tickets_that_are_purchased()
+    {
+        Given(an_event_exists);
+        And(tickets_are_released);
+        And(a_user_exists);
+        And(two_tickets_are_purchased);
+        When(purchasing_two_tickets_again);
+        Then(user_informed_they_cannot_purchase_tickets_that_are_purchased);
+    }
 }

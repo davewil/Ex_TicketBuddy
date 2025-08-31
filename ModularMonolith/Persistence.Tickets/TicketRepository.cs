@@ -27,13 +27,15 @@ public class TicketRepository(TicketDbContext context)
     public async Task PurchaseTickets(Guid eventId, Guid userId, IList<Guid> ticketIds)
     {
         var tickets = await context.Tickets
-            .Where(t => ticketIds.Contains(t.Id) && t.UserId == null && t.EventId == eventId)
+            .Where(t => ticketIds.Contains(t.Id) && t.EventId == eventId)
             .ToListAsync();
+        
         foreach (var ticket in tickets)
         {
             ticket.Purchase(userId);
             context.Tickets.Update(ticket);
         }
+        
         await context.SaveChangesAsync();
     }
 }
