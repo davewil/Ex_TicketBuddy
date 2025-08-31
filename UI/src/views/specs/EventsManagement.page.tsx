@@ -26,8 +26,12 @@ export function clickAddEventIcon() {
     return userEvent.click(icon);
 }
 
-export function eventFormIsRendered() {
-    return elements.eventForm() !== null;
+export function createEventFormIsRendered() {
+    return elements.createEventForm() !== null;
+}
+
+export function updateEventFormIsRendered() {
+    return elements.updateEventForm() !== null;
 }
 
 export function formFieldIsRendered(fieldName: string) {
@@ -108,7 +112,8 @@ export async function clickReleaseTicketsButton() {
 const elements = {
     theEvent: (eventName: string) => renderedComponent.getByText(eventName),
     addEventIcon: () => renderedComponent.getByRole("link", { name: /add event/i }),
-    eventForm: () => renderedComponent.queryByTestId("event-creation-form"),
+    createEventForm: () => renderedComponent.queryByTestId("event-creation-form"),
+    updateEventForm: () => renderedComponent.queryByTestId("event-update-form"),
     formField: (name: string) => renderedComponent.queryByLabelText(name),
     theFormField: (name: string) => renderedComponent.getByLabelText(name),
     createEventButton: () => renderedComponent.getByRole("button", { name: /create event/i }),

@@ -1,7 +1,7 @@
 ﻿import {MockServer} from "../../testing/mock-server.ts";
 import {afterEach, beforeEach, expect} from "vitest";
 import {
-    eventFormIsRendered,
+    createEventFormIsRendered,
     formFieldIsRendered,
     renderEventsManagement,
     unmountEventsManagement,
@@ -17,7 +17,7 @@ import {
     errorToastIsDisplayed,
     ticketPriceInputIsRendered,
     clickReleaseTicketsButton,
-    enterTicketPrice, releaseTicketsButtonIsRendered
+    enterTicketPrice, releaseTicketsButtonIsRendered, updateEventFormIsRendered
 } from "./EventsManagement.page.tsx";
 import { Venue } from "../../domain/event.ts";
 import {waitUntil} from "../../testing/utilities.ts";
@@ -53,7 +53,7 @@ export async function should_display_list_of_events() {
 export async function should_render_event_creation_form() {
     renderEventsManagement();
     await clickAddEventIcon();
-    expect(eventFormIsRendered()).toBeTruthy();
+    expect(createEventFormIsRendered()).toBeTruthy();
     expect(formFieldIsRendered("Event Name")).toBeTruthy();
     expect(formFieldIsRendered("Start Date")).toBeTruthy();
     expect(formFieldIsRendered("End Date")).toBeTruthy();
@@ -63,7 +63,7 @@ export async function should_render_event_creation_form() {
 export async function should_allow_user_to_create_new_event() {
     renderEventsManagement();
     await clickAddEventIcon();
-    expect(eventFormIsRendered()).toBeTruthy();
+    expect(createEventFormIsRendered()).toBeTruthy();
 
     const eventName = "Test Event";
 
@@ -98,7 +98,7 @@ export async function should_navigate_back_to_events_list_when_back_button_is_cl
     await waitUntil(wait_for_get_events);
     await clickAddEventIcon();
 
-    expect(eventFormIsRendered()).toBeTruthy();
+    expect(createEventFormIsRendered()).toBeTruthy();
     expect(backButtonIsRendered()).toBeTruthy();
 
     mockServer.reset();
@@ -107,7 +107,7 @@ export async function should_navigate_back_to_events_list_when_back_button_is_cl
 
     await clickBackButton();
 
-    expect(eventFormIsRendered()).toBeFalsy();
+    expect(createEventFormIsRendered()).toBeFalsy();
     await waitUntil(wait_for_get_events);
 
     for (const event of Events) {
@@ -152,7 +152,7 @@ export async function should_allow_user_to_edit_existing_event() {
         Venue: eventToEdit.Venue
     });
 
-    expect(eventFormIsRendered()).toBeFalsy();
+    expect(updateEventFormIsRendered()).toBeFalsy();
 }
 
 export async function should_show_error_toast_when_event_update_fails() {
@@ -200,7 +200,7 @@ export async function should_show_error_toast_when_event_creation_fails() {
     await waitUntil(wait_for_get_events);
 
     await clickAddEventIcon();
-    expect(eventFormIsRendered()).toBeTruthy();
+    expect(createEventFormIsRendered()).toBeTruthy();
 
     mockServer.reset();
     const errorResponse = {
@@ -240,13 +240,10 @@ export async function should_allow_user_to_release_tickets_for_event() {
 
     const eventToReleaseTicketsFor = Events[0];
 
-    // Navigate to edit event view
     await clickEditButtonForEvent(eventToReleaseTicketsFor.EventName);
     await waitUntil(wait_for_get_event);
 
-    mockServer.reset();
     wait_for_post_tickets = mockServer.post(`/events/${eventToReleaseTicketsFor.Id}/tickets`, {}, true);
-    mockServer.start();
 
     expect(ticketPriceInputIsRendered()).toBeTruthy();
     expect(releaseTicketsButtonIsRendered()).toBeTruthy();
@@ -260,6 +257,8 @@ export async function should_allow_user_to_release_tickets_for_event() {
     expect(data).toEqual({
         Price: 25.99
     });
+
+    expect(updateEventFormIsRendered()).toBeFalsy();
 }
 
 export async function should_show_error_toast_when_ticket_release_fails() {

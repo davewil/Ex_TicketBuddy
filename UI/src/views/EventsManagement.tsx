@@ -254,6 +254,7 @@ export const EditEvent = () => {
 
         releaseTickets(id, price).then(() => {
             setTicketPrice("");
+            navigate('/events-management');
         }).catch((error) => {
             if (error.error && Array.isArray(error.error)) {
                 error.error.forEach((errorMessage: string) => {
