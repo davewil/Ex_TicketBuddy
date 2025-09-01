@@ -8,16 +8,21 @@ public class EventRepository(EventDbContext eventDbContext, IPublishEndpoint pub
 {
     public async Task Save(Event theEvent)
     {
-        if (await Get(theEvent.Id) != null)
+        var @event = await Get(theEvent.Id);
+        if (@event is not null)
         {
-            eventDbContext.Update(theEvent);
-            await eventDbContext.SaveChangesAsync();
+            @event.UpdateName(theEvent.EventName);
+            @event.UpdateDates(theEvent.StartDate, theEvent.EndDate);
+            @event.UpdateVenue(theEvent.Venue);
+            @event.UpdatePrice(theEvent.Price);
+            eventDbContext.Update(@event);
         }
         else
         {
             eventDbContext.Add(theEvent);
-            await eventDbContext.SaveChangesAsync();
         }
+
+        await eventDbContext.SaveChangesAsync();
         
         await publishEndpoint.Publish(new Integration.Events.Messaging.Outbound.EventUpserted
         {

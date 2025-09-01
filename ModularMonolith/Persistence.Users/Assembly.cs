@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace Domain.Users.Messaging;
+namespace Users.Persistence;
 
 public static class UsersDomainMessaging
 {

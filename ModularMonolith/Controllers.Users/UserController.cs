@@ -27,19 +27,14 @@ public class UserController(UserRepository UserRepository) : ControllerBase
     {
         var id = Guid.NewGuid();
         var user = new User(id, payload.FullName, payload.Email, payload.UserType);
-        await UserRepository.Save(user);
+        await UserRepository.Add(user);
         return Created($"/{Routes.Users}/{id}", id);
     }    
     
     [HttpPut(Routes.TheUser)]
     public async Task<ActionResult> UpdateUser(Guid id, [FromBody] UpdateUserPayload payload)
     {
-        var user = await UserRepository.Get(id);
-        if (user is null) return NotFound();
-        
-        user.UpdateName(payload.FullName);
-        user.UpdateEmail(payload.Email);
-        await UserRepository.Save(user);
+        await UserRepository.Update(id, payload.FullName, payload.Email);
         return NoContent();
     }
 }

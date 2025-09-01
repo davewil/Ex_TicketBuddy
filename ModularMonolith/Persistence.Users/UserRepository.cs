@@ -1,25 +1,53 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Domain.Users.Entities;
+using Domain.Users.Primitives;
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
 
 namespace Users.Persistence;
 
-public class UserRepository(UserDbContext userDbContext)
+public class UserRepository(UserDbContext userDbContext, IPublishEndpoint publishEndpoint)
 {
-    public async Task Save(User theUser)
+    public async Task Add(User theUser)
     {
         if (await IsEmailAlreadyUsedByOtherUser(theUser.Id, theUser.Email)) throw new ValidationException("Email already exists");
+        var existingUser = await Get(theUser.Id);
 
-        if (await Get(theUser.Id) != null)
+        if (existingUser is not null)
         {
-            userDbContext.Update(theUser);
-            await userDbContext.SaveChangesAsync();
+            throw new ValidationException("User already exists");
         }
-        else
+        
+        userDbContext.Add(theUser);
+        await userDbContext.SaveChangesAsync();
+
+        await publishEndpoint.Publish(new Integration.Users.Messaging.Outbound.Messages.UserUpserted
         {
-            userDbContext.Add(theUser);
-            await userDbContext.SaveChangesAsync();
-        }
+            Id = theUser.Id,
+            FullName = theUser.FullName,
+            Email = theUser.Email
+        });
+    }
+    
+    public async Task Update(Guid id, FullName fullName, Email email)
+    {
+        if (await IsEmailAlreadyUsedByOtherUser(id, email)) throw new ValidationException("Email already exists");
+        var existingUser = await Get(id);
+
+        if (existingUser is null) throw new ValidationException("User does not exist");
+
+        existingUser.UpdateName(fullName);
+        existingUser.UpdateEmail(email);
+        userDbContext.Update(existingUser);
+
+        await userDbContext.SaveChangesAsync();
+
+        await publishEndpoint.Publish(new Integration.Users.Messaging.Outbound.Messages.UserUpserted
+        {
+            Id = existingUser.Id,
+            FullName = existingUser.FullName,
+            Email = existingUser.Email
+        });
     }
 
     private async Task<bool> IsEmailAlreadyUsedByOtherUser(Guid userId, string email)

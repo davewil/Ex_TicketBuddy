@@ -5,7 +5,7 @@ var builder = DistributedApplication.CreateBuilder(args);
 
 var sqlServer = builder
     .AddSqlServer("SqlServerMonolith")
-    .WithPassword(builder.AddParameter("Password", "YourStrong@Passw0rd"))
+    .WithPassword(builder.AddParameter("SQLPassword", "YourStrong@Passw0rd"))
     .WithDataVolume("TicketBuddy.Monolith.SqlServer")
     .WithHostPort(1450)
     .WithLifetime(ContainerLifetime.Persistent);
@@ -13,7 +13,9 @@ var sqlServer = builder
 var database = sqlServer.AddDatabase("TicketBuddy");
 
 var rabbitmq = builder
-    .AddRabbitMQ("Messaging")
+    .AddRabbitMQ("Messaging",
+        userName: builder.AddParameter("RabbitMQUsername", "guest", secret: true),
+        password: builder.AddParameter("RabbitMQPassword", "guest", secret: true))
     .WithImage("masstransit/rabbitmq")
     .WithDataVolume("TicketBuddy.Monolith.RabbitMQ")
     .WithHttpEndpoint(port: 5672, targetPort: 5672)

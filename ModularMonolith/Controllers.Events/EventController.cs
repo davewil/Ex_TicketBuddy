@@ -36,14 +36,7 @@ public class EventController(EventRepository EventRepository) : ControllerBase
     public async Task<ActionResult> UpdateEvent(Guid id, [FromBody] EventPayload payload)
     {
         ValidateDate(payload);
-        var @event = await EventRepository.Get(id);
-        if (@event is null) return NotFound();
-        
-        @event.UpdateName(payload.EventName);
-        @event.UpdateDates(payload.StartDate, payload.EndDate);
-        @event.UpdateVenue(payload.Venue);
-        @event.UpdatePrice(payload.Price);
-        await EventRepository.Save(@event);
+        await EventRepository.Save(new Event(id, payload.EventName, payload.StartDate, payload.EndDate, payload.Venue, payload.Price));
         return NoContent();
     }
     

@@ -9,6 +9,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="MassTransit" Version="8.5.1" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.7" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.7" />
     </ItemGroup>
@@ -16,6 +17,7 @@
     <ItemGroup>
         <ProjectReference Include="..\Domain.Users\Domain.Users.csproj" />
         <ProjectReference Include="..\Domain\Domain.csproj" />
+        <ProjectReference Include="..\Integration.Users.Messaging.Outbound\Integration.Users.Messaging.Outbound.csproj" />
     </ItemGroup>
 
 </Project>

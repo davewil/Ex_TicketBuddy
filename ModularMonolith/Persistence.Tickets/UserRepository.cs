@@ -6,16 +6,19 @@ public class UserRepository(TicketDbContext ticketDbContext)
 {
     public async Task Save(User theUser)
     {
-        if (await Get(theUser.Id) != null)
+        var existingUser = await Get(theUser.Id);
+        if (existingUser is not null)
         {
-            ticketDbContext.Update(theUser);
-            await ticketDbContext.SaveChangesAsync();
+            existingUser.UpdateName(theUser.FullName);
+            existingUser.UpdateEmail(theUser.Email);
+            ticketDbContext.Update(existingUser);
         }
         else
         {
             ticketDbContext.Add(theUser);
-            await ticketDbContext.SaveChangesAsync();
         }
+
+        await ticketDbContext.SaveChangesAsync();
     }
 
     private async Task<User?> Get(Guid id)

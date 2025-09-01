@@ -26,12 +26,7 @@ export function clickFindTicketsButton(index: number) {
     return userEvent.click(buttons[index]);
 }
 
-export function ticketsPageHeaderIsRendered() {
-    return elements.ticketsPageHeader() !== null;
-}
-
 const elements = {
     theEvent: (eventName: string) => renderedComponent.getByText(eventName),
     findTicketsButtons: () => renderedComponent.getAllByRole('button', {name: /Find Tickets/i}),
-    ticketsPageHeader: () => renderedComponent.getByRole('heading', {name: /Tickets/i}),
 }
