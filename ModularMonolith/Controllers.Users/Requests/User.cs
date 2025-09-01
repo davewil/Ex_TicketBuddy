@@ -1,5 +1,4 @@
-﻿using Domain.Events.Primitives;
-using Domain.Users.Primitives;
+﻿using Domain.Users.Primitives;
 
 namespace Controllers.Users.Requests;
 
