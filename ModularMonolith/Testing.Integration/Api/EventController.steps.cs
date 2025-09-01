@@ -84,6 +84,11 @@ public partial class EventControllerSpecs : TruncateDbSpecification
     {
         create_content(name, past_event_start_date, event_end_date, Venue.FirstDirectArenaLeeds, price);
     }
+
+    private void a_request_to_create_an_event_with_the_same_venue_and_time()
+    {
+        create_content(new_name, event_start_date, event_end_date, Venue.FirstDirectArenaLeeds, new_price);
+    }
     
     private void a_request_to_update_the_event_with_a_date_in_the_past()
     {
@@ -109,12 +114,16 @@ public partial class EventControllerSpecs : TruncateDbSpecification
     private void a_request_to_create_another_event()
     {
         create_content(new_name, event_start_date, event_end_date, Venue.EmiratesOldTraffordManchester, new_price);
-
     }
     
     private void a_request_to_update_the_event()
     {
         create_update_content(new_name, new_event_start_date, new_event_end_date, new_price);
+    }
+
+    private void a_request_to_update_the_event_with_a_venue_and_time_that_will_double_book()
+    {
+        create_update_content(new_name, event_start_date, event_end_date, new_price);
     }
 
     private void creating_the_event()
@@ -177,6 +186,12 @@ public partial class EventControllerSpecs : TruncateDbSpecification
         creating_another_event();
     }
 
+    private void another_event_at_same_venue_exists()
+    {
+        create_content(new_name, new_event_start_date, new_event_end_date, Venue.FirstDirectArenaLeeds, new_price);
+        creating_another_event();
+    }
+
     private void requesting_the_event()
     {
         var response = client.GetAsync(Routes.Events + $"/{returned_id}").GetAwaiter().GetResult();
@@ -215,6 +230,13 @@ public partial class EventControllerSpecs : TruncateDbSpecification
         response_code.ShouldBe(HttpStatusCode.BadRequest);
         var apiError = JsonSerialization.Deserialize<ApiError>(content.ReadAsStringAsync().Await());
         apiError.Errors[0].ShouldContain("Event date cannot be in the past");
+    }
+
+    private void the_user_is_informed_that_the_venue_is_unavailable()
+    {
+        response_code.ShouldBe(HttpStatusCode.BadRequest);
+        var apiError = JsonSerialization.Deserialize<ApiError>(content.ReadAsStringAsync().Await());
+        apiError.Errors[0].ShouldContain("Venue is not available at the selected time");
     }
     
     private void the_event_is_not_updated()

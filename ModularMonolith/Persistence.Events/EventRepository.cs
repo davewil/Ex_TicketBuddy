@@ -11,11 +11,10 @@ public class EventRepository(EventDbContext eventDbContext, IPublishEndpoint pub
     public async Task Add(Event theEvent)
     {
         var @event = await Get(theEvent.Id);
-        if (@event is not null)
-        {
-            throw new ValidationException($"Event with id {theEvent.Id} already exists");
-        }
         
+        CheckIfEventAlreadyExists(theEvent, @event);
+        await CheckIfVenueIsAlreadyBooked(theEvent);
+
         eventDbContext.Add(theEvent);
 
         await eventDbContext.SaveChangesAsync();
@@ -30,14 +29,18 @@ public class EventRepository(EventDbContext eventDbContext, IPublishEndpoint pub
             Price = theEvent.Price
         });
     }
-    
+
     public async Task Update(Guid id, EventName eventName, DateTimeOffset startDate, DateTimeOffset endDate, decimal price)
     {
         var @event = await Get(id);
-        if (@event is null) throw new ValidationException($"Event with id {id} not found");
-        @event.UpdateName(eventName);
+        CheckIfEventDoesNotExist(id, @event);
+        
+        @event!.UpdateName(eventName);
         @event.UpdateDates(startDate, endDate);
         @event.UpdatePrice(price);
+        
+        await CheckIfVenueIsAlreadyBooked(@event);
+        
         eventDbContext.Update(@event);
         await eventDbContext.SaveChangesAsync();
         
@@ -50,6 +53,33 @@ public class EventRepository(EventDbContext eventDbContext, IPublishEndpoint pub
             Venue = @event.Venue,
             Price = @event.Price
         });
+    }
+    
+    private static void CheckIfEventAlreadyExists(Event theEvent, Event? @event)
+    {
+        if (@event is not null)
+        {
+            throw new ValidationException($"Event with id {theEvent.Id} already exists");
+        }
+    }
+
+    private async Task CheckIfVenueIsAlreadyBooked(Event theEvent)
+    {
+        var conflictingEvent = await eventDbContext.Events.FirstOrDefaultAsync(e =>
+            e.Venue == theEvent.Venue &&
+            ((theEvent.StartDate >= e.StartDate && theEvent.StartDate < e.EndDate) ||
+             (theEvent.EndDate > e.StartDate && theEvent.EndDate <= e.EndDate) ||
+             (theEvent.StartDate <= e.StartDate && theEvent.EndDate >= e.EndDate)));
+        
+        if (conflictingEvent is not null)
+        {
+            throw new ValidationException($"Venue is not available at the selected time");
+        }
+    }
+
+    private static void CheckIfEventDoesNotExist(Guid id, Event? @event)
+    {
+        if (@event is null) throw new ValidationException($"Event with id {id} not found");
     }
 
     public async Task<Event?> Get(Guid id)
