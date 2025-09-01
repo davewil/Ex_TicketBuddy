@@ -1,5 +1,5 @@
 ﻿import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { getEventById, getTicketsForEvent } from '../api/events.api';
 import { type Ticket } from '../domain/ticket';
 import { type Event } from '../domain/event';
@@ -14,7 +14,9 @@ import {
   LegendItem,
   LegendColor,
   EventTitle
-} from './Tickets.styles.tsx';
+} from './Tickets.styles';
+import { Button } from '../components/Button.styles';
+import { BackIcon } from './EventsManagement.styles';
 
 const SEATS_PER_ROW = 5;
 
@@ -84,6 +86,12 @@ export const Tickets = () => {
 
   return (
     <TicketsContainer>
+      <Link to="/">
+        <Button data-testid="back-button">
+          <BackIcon /> Back to Events
+        </Button>
+      </Link>
+
       <EventTitle>Tickets for Event: {event?.EventName}</EventTitle>
 
       <Legend>

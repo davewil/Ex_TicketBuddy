@@ -1,6 +1,14 @@
 ﻿import {MockServer} from "../../testing/mock-server.ts";
 import {afterEach, beforeEach, expect} from "vitest";
-import {renderTickets, getSeatElement, unmountTickets, getSeatRow, titleIsRendered} from "./Tickets.page.tsx";
+import {
+    renderTickets,
+    getSeatElement,
+    unmountTickets,
+    getSeatRow,
+    titleIsRendered,
+    clickBackToEventsButton,
+    homePageIsRendered
+} from "./Tickets.page.tsx";
 import {waitUntil} from "../../testing/utilities.ts";
 import {Events, TicketsForFirstEvent} from "../../testing/data.ts";
 
@@ -33,4 +41,12 @@ export async function should_display_seat_map_for_event() {
     expect(titleIsRendered(Events[0].EventName)).toBeTruthy();
     expect(getSeatRow(1)).not.toBeNull();
     expect(getSeatRow(2)).not.toBeNull();
+}
+
+export async function should_navigate_back_to_events() {
+    renderTickets(Events[0].Id);
+    await waitUntil(wait_for_get_event);
+    await waitUntil(wait_for_get_tickets);
+    await clickBackToEventsButton();
+    expect(homePageIsRendered()).toBeTruthy();
 }
