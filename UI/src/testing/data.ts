@@ -1,6 +1,7 @@
 ﻿import {type Event, Venue} from '../domain/event';
 import {type User, UserType} from "../domain/user.ts";
 import moment from "moment";
+import type {Ticket} from "../domain/ticket.ts";
 
 export const Events : Event[] = [
     {
@@ -76,4 +77,68 @@ export const Users : User[] = [
         Email: "roger.moore@ticketbuddy.co.uk",
         UserType: UserType.Administrator
     },
+]
+
+
+export const TicketsForFirstEvent: Ticket[] = [
+    {
+        Id: "t1",
+        EventId: Events[0].Id,
+        Price: 50,
+        SeatNumber: 1
+    },
+    {
+        Id: "t2",
+        EventId: Events[0].Id,
+        Price: 50,
+        SeatNumber: 2
+    },
+    {
+        Id: "t3",
+        EventId: Events[0].Id,
+        Price: 50,
+        SeatNumber: 3
+    },
+    {
+        Id: "t4",
+        EventId: Events[0].Id,
+        Price: 50,
+        SeatNumber: 4
+    },
+    {
+        Id: "t5",
+        EventId: Events[0].Id,
+        Price: 50,
+        SeatNumber: 5
+    },
+    {
+        Id: "t6",
+        EventId: Events[0].Id,
+        Price: 50,
+        SeatNumber: 6
+    },
+    {
+        Id: "t7",
+        EventId: Events[0].Id,
+        Price: 50,
+        SeatNumber: 7
+    },
+    {
+        Id: "t8",
+        EventId: Events[0].Id,
+        Price: 50,
+        SeatNumber: 8
+    },
+    {
+        Id: "t9",
+        EventId: Events[0].Id,
+        Price: 50,
+        SeatNumber: 9
+    },
+    {
+        Id: "t10",
+        EventId: Events[0].Id,
+        Price: 50,
+        SeatNumber: 10
+    }
 ]

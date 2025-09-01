@@ -1,5 +1,6 @@
 ﻿import {get, post, put} from "../common/http.ts";
 import {type Event, type EventPayload} from "../domain/event";
+import {type Ticket} from "../domain/ticket";
 
 export const getEvents = async () => {
   return get<Event[]>("/events");
@@ -7,6 +8,10 @@ export const getEvents = async () => {
 
 export const getEventById = async (id: string) => {
     return get<Event>(`/events/${id}`);
+}
+
+export const getTicketsForEvent = async (eventId: string) => {
+    return get<Ticket[]>(`/events/${eventId}/tickets`);
 }
 
 export const postEvent = async (event: EventPayload) => {
