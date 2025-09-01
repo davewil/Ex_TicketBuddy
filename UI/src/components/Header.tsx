@@ -37,8 +37,8 @@ export const Header = () => {
 
     return (
         <HeaderBar>
-            <h1>TicketBuddy</h1>
             <TicketStubImage/>
+            <h1>TicketBuddy</h1>
             {user &&
                 <>
                     {user.UserType === UserType.Administrator && <EventsManagementLink to="/events-management">Events Management</EventsManagementLink>}

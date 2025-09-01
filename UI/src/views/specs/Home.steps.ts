@@ -41,5 +41,6 @@ export async function should_navigate_to_tickets_page_when_find_tickets_clicked(
     await waitUntil(wait_for_get_users);
 
     await clickFindTicketsButton(0);
+    await waitUntil(() => ticketsPageHeaderIsRendered());
     expect(ticketsPageHeaderIsRendered()).toBeTruthy();
 }
