@@ -1,7 +1,13 @@
 ﻿import {MockServer} from "../../testing/mock-server.ts";
 import {afterEach, beforeEach} from "vitest";
 import {Events, Users} from "../../testing/data.ts";
-import {eventExists, renderHome, unmountHome} from "./Home.page.tsx";
+import {
+    clickFindTicketsButton,
+    eventExists,
+    renderHome,
+    ticketsPageHeaderIsRendered,
+    unmountHome
+} from "./Home.page.tsx";
 import {waitUntil} from "../../testing/utilities.ts";
 import {expect} from "vitest";
 
@@ -27,4 +33,13 @@ export async function should_load_events_on_render() {
     for (const event of Events) {
         expect(eventExists(event.EventName)).toBeTruthy();
     }
+}
+
+export async function should_navigate_to_tickets_page_when_find_tickets_clicked() {
+    renderHome();
+    await waitUntil(wait_for_get_events);
+    await waitUntil(wait_for_get_users);
+
+    await clickFindTicketsButton(0);
+    expect(ticketsPageHeaderIsRendered()).toBeTruthy();
 }
