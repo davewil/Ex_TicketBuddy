@@ -156,6 +156,7 @@ export async function should_allow_user_to_edit_existing_event() {
         Price: "50"
     });
 
+    await waitUntil(() => !updateEventFormIsRendered());
     expect(updateEventFormIsRendered()).toBeFalsy();
 }
 
