@@ -96,6 +96,14 @@ public partial class EventControllerSpecs : TruncateDbSpecification
             JsonSerialization.Serialize(new EventPayload(the_name, the_event_date, the_event_end_date, venue, thePrice)),
             Encoding.UTF8,
             application_json);
+    }    
+    
+    private void create_update_content(string the_name, DateTimeOffset the_event_date, DateTimeOffset the_event_end_date, decimal thePrice)
+    {
+        content = new StringContent(
+            JsonSerialization.Serialize(new UpdateEventPayload(the_name, the_event_date, the_event_end_date, thePrice)),
+            Encoding.UTF8,
+            application_json);
     }
 
     private void a_request_to_create_another_event()
@@ -106,7 +114,7 @@ public partial class EventControllerSpecs : TruncateDbSpecification
     
     private void a_request_to_update_the_event()
     {
-        create_content(new_name, new_event_start_date, new_event_end_date, Venue.EmiratesOldTraffordManchester, new_price);
+        create_update_content(new_name, new_event_start_date, new_event_end_date, new_price);
     }
 
     private void creating_the_event()
@@ -223,7 +231,7 @@ public partial class EventControllerSpecs : TruncateDbSpecification
         theEvent.Id.ShouldBe(returned_id);
         theEvent.EventName.ToString().ShouldBe(new_name);
         theEvent.StartDate.ShouldBe(new_event_start_date);
-        theEvent.Venue.ShouldBe(Venue.EmiratesOldTraffordManchester);
+        theEvent.Venue.ShouldBe(Venue.FirstDirectArenaLeeds);
         theEvent.Price.ShouldBe(new_price);
     }    
     
@@ -266,7 +274,7 @@ public partial class EventControllerSpecs : TruncateDbSpecification
                 e.Context.Message.EventName == new_name &&
                 e.Context.Message.StartDate == new_event_start_date &&
                 e.Context.Message.EndDate == new_event_end_date &&
-                e.Context.Message.Venue == Venue.EmiratesOldTraffordManchester &&
+                e.Context.Message.Venue == Venue.FirstDirectArenaLeeds &&
                 e.Context.Message.Price == new_price
                 ).ShouldBeTrue("Event was not published to the bus");
     }

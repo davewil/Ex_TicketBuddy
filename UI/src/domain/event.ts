@@ -17,6 +17,13 @@ export interface EventPayload {
     Price: number
 }
 
+export interface UpdateEventPayload {
+    EventName: string;
+    StartDate: Moment;
+    EndDate: Moment;
+    Price: number
+}
+
 export enum Venue {
     O2ArenaLondon = "O2ArenaLondon",
     WembleyStadiumLondon = "WembleyStadiumLondon",

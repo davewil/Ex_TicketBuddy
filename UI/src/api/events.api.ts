@@ -1,5 +1,5 @@
 ﻿import {get, post, put} from "../common/http.ts";
-import {type Event, type EventPayload} from "../domain/event";
+import {type Event, type EventPayload, type UpdateEventPayload} from "../domain/event";
 import {type Ticket} from "../domain/ticket";
 
 export const getEvents = async () => {
@@ -23,7 +23,7 @@ export const postEvent = async (event: EventPayload) => {
     return post("/events", eventWithMoments);
 }
 
-export const putEvent = async (id: string, event: EventPayload) => {
+export const putEvent = async (id: string, event: UpdateEventPayload) => {
     const eventWithMoments = {
         ...event,
         StartDate: event.StartDate.toISOString(),

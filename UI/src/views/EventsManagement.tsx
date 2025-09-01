@@ -133,13 +133,12 @@ export const EventForm = ({ mode }: EventFormProps) => {
                 EventName: formData.eventName,
                 StartDate: moment(formData.startDateTime),
                 EndDate: moment(formData.endDateTime),
-                Venue: formData.venue,
                 Price: formData.price,
             };
 
             const apiCall = isEditMode && id
                 ? putEvent(id, eventData)
-                : postEvent(eventData);
+                : postEvent({ ...eventData, Venue: formData.venue });
 
             apiCall.then(() => {
                 setFormData(initialFormData);
@@ -214,6 +213,7 @@ export const EventForm = ({ mode }: EventFormProps) => {
                         name="venue"
                         value={formData.venue}
                         onChange={(e) => setFormData({ ...formData, venue: e.target.value as Venue })}
+                        disabled={isEditMode}
                     >
                         {Object.values(Venue).map((venue) => (
                             <option key={venue} value={venue}>

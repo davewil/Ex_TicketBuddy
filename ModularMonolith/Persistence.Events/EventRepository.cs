@@ -1,4 +1,6 @@
-﻿using MassTransit;
+﻿using System.ComponentModel.DataAnnotations;
+using Domain.Events.Primitives;
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Event = Domain.Events.Entities.Event;
 
@@ -6,21 +8,15 @@ namespace Events.Persistence;
 
 public class EventRepository(EventDbContext eventDbContext, IPublishEndpoint publishEndpoint)
 {
-    public async Task Save(Event theEvent)
+    public async Task Add(Event theEvent)
     {
         var @event = await Get(theEvent.Id);
         if (@event is not null)
         {
-            @event.UpdateName(theEvent.EventName);
-            @event.UpdateDates(theEvent.StartDate, theEvent.EndDate);
-            @event.UpdateVenue(theEvent.Venue);
-            @event.UpdatePrice(theEvent.Price);
-            eventDbContext.Update(@event);
+            throw new ValidationException($"Event with id {theEvent.Id} already exists");
         }
-        else
-        {
-            eventDbContext.Add(theEvent);
-        }
+        
+        eventDbContext.Add(theEvent);
 
         await eventDbContext.SaveChangesAsync();
         
@@ -32,6 +28,27 @@ public class EventRepository(EventDbContext eventDbContext, IPublishEndpoint pub
             EndDate = theEvent.EndDate,
             Venue = theEvent.Venue,
             Price = theEvent.Price
+        });
+    }
+    
+    public async Task Update(Guid id, EventName eventName, DateTimeOffset startDate, DateTimeOffset endDate, decimal price)
+    {
+        var @event = await Get(id);
+        if (@event is null) throw new ValidationException($"Event with id {id} not found");
+        @event.UpdateName(eventName);
+        @event.UpdateDates(startDate, endDate);
+        @event.UpdatePrice(price);
+        eventDbContext.Update(@event);
+        await eventDbContext.SaveChangesAsync();
+        
+        await publishEndpoint.Publish(new Integration.Events.Messaging.Outbound.EventUpserted
+        {
+            Id = @event.Id, 
+            EventName = @event.EventName,
+            StartDate = @event.StartDate,
+            EndDate = @event.EndDate,
+            Venue = @event.Venue,
+            Price = @event.Price
         });
     }
 

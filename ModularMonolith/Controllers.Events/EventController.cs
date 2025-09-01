@@ -28,20 +28,24 @@ public class EventController(EventRepository EventRepository) : ControllerBase
     {
         ValidateDate(payload);
         var eventId = Guid.NewGuid();
-        await EventRepository.Save(new Event(eventId, payload.EventName, payload.StartDate, payload.EndDate, payload.Venue, payload.Price));
+        await EventRepository.Add(new Event(eventId, payload.EventName, payload.StartDate, payload.EndDate, payload.Venue, payload.Price));
         return Created($"/{Routes.Events}/{eventId}", eventId);
     }
 
     [HttpPut(Routes.TheEvent)]
-    public async Task<ActionResult> UpdateEvent(Guid id, [FromBody] EventPayload payload)
+    public async Task<ActionResult> UpdateEvent(Guid id, [FromBody] UpdateEventPayload payload)
     {
         ValidateDate(payload);
-        await EventRepository.Save(new Event(id, payload.EventName, payload.StartDate, payload.EndDate, payload.Venue, payload.Price));
+        await EventRepository.Update(id, payload.EventName, payload.StartDate, payload.EndDate, payload.Price);
         return NoContent();
     }
     
-    private static void ValidateDate(EventPayload payload)
+    private static void ValidateDate(EventPayload payload) => ValidateDate(payload.StartDate);
+
+    private static void ValidateDate(UpdateEventPayload payload) => ValidateDate(payload.StartDate);
+    
+    private static void ValidateDate(DateTimeOffset startDate)
     {
-        if (payload.StartDate < DateTimeOffset.Now) throw new ValidationException("Event date cannot be in the past");
+        if (startDate < DateTimeOffset.Now) throw new ValidationException("Event date cannot be in the past");
     }
 }

@@ -38,6 +38,15 @@ export function formFieldIsRendered(fieldName: string) {
     return elements.formField(fieldName) !== null;
 }
 
+export function venueFieldIsDisabled() {
+    const venueSelect = elements.venueField();
+    return venueSelect ? venueSelect.disabled : false;
+}
+
+export function getFormField(fieldName: string) {
+    return elements.theFormField(fieldName);
+}
+
 export async function fillEventForm(eventData: {
     eventName: string,
     startDate: string,
@@ -56,7 +65,6 @@ export async function fillEventForm(eventData: {
     await userEvent.type(elements.theFormField("Event Name"), eventData.eventName);
     await userEvent.type(elements.theFormField("Start Date"), eventData.startDate);
     await userEvent.type(elements.theFormField("End Date"), eventData.endDate);
-    await userEvent.type(elements.theFormField("Venue"), eventData.venue);
     await userEvent.type(elements.theFormField("Ticket Price (£)"), eventData.Price.toString());
 }
 
@@ -101,6 +109,7 @@ const elements = {
     updateEventForm: () => renderedComponent.queryByTestId("event-update-form"),
     formField: (name: string) => renderedComponent.queryByLabelText(name),
     theFormField: (name: string) => renderedComponent.getByLabelText(name),
+    venueField: () => renderedComponent.container.querySelector('#venue') as HTMLSelectElement,
     createEventButton: () => renderedComponent.getByRole("button", { name: /create event/i }),
     updateEventButton: () => renderedComponent.getByRole("button", { name: /update event/i }),
     backButton: () => renderedComponent.getByRole("button", { name: /back to events/i }),

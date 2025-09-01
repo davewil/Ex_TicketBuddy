@@ -15,7 +15,8 @@ import {
     editButtonExistsForEvent,
     clickSubmitEventButtonToUpdateEvent,
     errorToastIsDisplayed,
-    updateEventFormIsRendered
+    updateEventFormIsRendered,
+    venueFieldIsDisabled
 } from "./EventsManagement.page.tsx";
 import { Venue } from "../../domain/event.ts";
 import {waitUntil} from "../../testing/utilities.ts";
@@ -148,11 +149,10 @@ export async function should_allow_user_to_edit_existing_event() {
     await waitUntil(wait_for_put);
 
     const data = mockServer.content;
-    expect(data).toEqual({
+    expect(data).toStrictEqual({
         EventName: updatedEventName,
         StartDate: startEventDate.toISOString().split("T")[0] + "T14:00:00" + ".000Z",
         EndDate: endEventDate.toISOString().split("T")[0] + "T17:00:00" + ".000Z",
-        Venue: eventToEdit.Venue,
         Price: "50"
     });
 
@@ -237,4 +237,47 @@ export async function should_show_error_toast_when_event_creation_fails() {
     await waitUntil(wait_for_post);
 
     expect(errorToastIsDisplayed("End date cannot be before start date")).toBeTruthy();
+}
+
+export async function should_not_allow_venue_change_when_editing_event() {
+    renderEventsManagement();
+    await waitUntil(wait_for_get_events);
+
+    const eventToEdit = Events[0];
+    expect(editButtonExistsForEvent(eventToEdit.EventName)).toBeTruthy();
+
+    await clickEditButtonForEvent(eventToEdit.EventName);
+    await waitUntil(wait_for_get_event);
+
+    expect(formFieldIsRendered("Venue")).toBeTruthy();
+    expect(venueFieldIsDisabled()).toBeTruthy();
+
+    const updatedEventName = `${eventToEdit.EventName} - Updated`;
+    const startEventDate = new Date();
+    startEventDate.setDate(startEventDate.getDate() + 7);
+    const startEventDateStringWithTime = startEventDate.toISOString().split("T")[0] + "T14:00";
+
+    const endEventDate = new Date(startEventDate);
+    endEventDate.setDate(endEventDate.getDate() + 1);
+    const endEventDateStringWithTime = endEventDate.toISOString().split("T")[0] + "T17:00";
+
+    await fillEventForm({
+        eventName: updatedEventName,
+        startDate: startEventDateStringWithTime,
+        endDate: endEventDateStringWithTime,
+        venue: eventToEdit.Venue,
+        Price: 50
+    });
+
+    await clickSubmitEventButtonToUpdateEvent();
+    await waitUntil(wait_for_put);
+
+    const data = mockServer.content;
+
+    expect(data).toStrictEqual({
+        EventName: updatedEventName,
+        StartDate: startEventDate.toISOString().split("T")[0] + "T14:00:00" + ".000Z",
+        EndDate: endEventDate.toISOString().split("T")[0] + "T17:00:00" + ".000Z",
+        Price: "50"
+    });
 }

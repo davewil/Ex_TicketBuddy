@@ -28,6 +28,5 @@ public class Event : Aggregate
         StartDate = startDate;
         EndDate = endDate;
     }
-    public void UpdateVenue(Venue venue) => Venue = venue;
     public void UpdatePrice(decimal price) => Price = price;
 }
