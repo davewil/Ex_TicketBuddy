@@ -128,6 +128,17 @@ public partial class TicketControllerSpecs : TruncateDbSpecification
         purchasing_two_tickets();
     }
 
+    private void purchasing_two_non_existent_tickets()
+    {
+        content = new StringContent(
+            JsonSerialization.Serialize(new TicketPurchasePayload(user_id, [Guid.NewGuid(), Guid.NewGuid()])),
+            Encoding.UTF8,
+            application_json);
+        var response = client.PostAsync(Routes.EventTickets(event_id) + "/purchase", content).GetAwaiter().GetResult();
+        response_code = response.StatusCode;
+        content = response.Content;
+    }
+
     private void updating_the_ticket_prices()
     {
         testHarness.Bus.Publish(new EventUpserted
@@ -139,6 +150,8 @@ public partial class TicketControllerSpecs : TruncateDbSpecification
             Venue = Venue.EmiratesOldTraffordManchester,
             Price = new_price
         });
+        testHarness.Consumed.Any<EventUpserted>(x => x.Context.Message.Id == event_id && x.Context.Message.Price == new_price).Await();
+        testHarness.Consumed.Any<Persistence.Tickets.Messages.EventUpserted>(x => x.Context.Message.Id == event_id && x.Context.Message.Price == new_price).Await();
     }
 
     private void the_tickets_are_released()
@@ -159,12 +172,16 @@ public partial class TicketControllerSpecs : TruncateDbSpecification
 
     private void the_tickets_are_purchased()
     {
-        response_code.ShouldBe(HttpStatusCode.OK);
+        response_code.ShouldBe(HttpStatusCode.NoContent);
         var response = client.GetAsync(Routes.EventTickets(event_id)).GetAwaiter().GetResult();
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
         var tickets = JsonSerialization.Deserialize<IList<Domain.Tickets.Entities.Ticket>>(response.Content.ReadAsStringAsync().GetAwaiter().GetResult());
-        tickets.Count.ShouldBe(15);
-        tickets.Where(t => ticket_ids.Take(2).Contains(t.Id)).ToList().Count.ShouldBe(0);
+        tickets.Count.ShouldBe(17);
+        foreach (var ticket in tickets.Where(t => ticket_ids.Take(2).Contains(t.Id)).ToList())
+        {
+            ticket.UserId.ShouldBe(user_id);
+            ticket.PurchasedAt.ShouldNotBeNull();
+        }
     }
 
     private void user_informed_they_cannot_purchase_tickets_that_are_purchased()
@@ -174,17 +191,23 @@ public partial class TicketControllerSpecs : TruncateDbSpecification
         theError.Errors.ShouldContain("Tickets are not available");
     }
 
+    private void user_informed_they_cannot_purchase_tickets_that_are_non_existent()
+    {
+        response_code.ShouldBe(HttpStatusCode.BadRequest);
+        var theError = JsonSerialization.Deserialize<ApiError>(content.ReadAsStringAsync().GetAwaiter().GetResult());
+        theError.Errors.ShouldContain("One or more tickets do not exist");
+    }
+
     private void the_ticket_prices_are_updated()
     {
-        response_code.ShouldBe(HttpStatusCode.OK);
+        response_code.ShouldBe(HttpStatusCode.NoContent);
         var response = client.GetAsync(Routes.EventTickets(event_id)).GetAwaiter().GetResult();
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
         var tickets = JsonSerialization.Deserialize<IList<Domain.Tickets.Entities.Ticket>>(response.Content.ReadAsStringAsync().GetAwaiter().GetResult());
-        tickets.Count.ShouldBe(15);
-        tickets.Where(t => ticket_ids.Take(2).Contains(t.Id)).ToList().Count.ShouldBe(0);
-        foreach (var ticket in tickets)
+        tickets.Count.ShouldBe(17);
+        foreach (var ticket in tickets.Where(t => !ticket_ids.Take(2).Contains(t.Id)).ToList())
         {
-            ticket.Price.ShouldBe(price);
+            ticket.Price.ShouldBe(new_price);
         }
     }
 

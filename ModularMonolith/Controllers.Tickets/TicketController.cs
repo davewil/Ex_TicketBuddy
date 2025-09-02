@@ -18,7 +18,7 @@ public class TicketController(TicketRepository TicketRepository) : ControllerBas
     public async Task<ActionResult> PurchaseTickets([FromRoute] Guid id, [FromBody] TicketPurchasePayload payload)
     {
         await TicketRepository.PurchaseTickets(id, payload.userId, payload.ticketIds);
-        return Ok();
+        return NoContent();
     }
     
     [HttpGet(Routes.TicketsPurchased)]

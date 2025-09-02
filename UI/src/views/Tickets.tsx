@@ -1,19 +1,20 @@
 ﻿import { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { getEventById, getTicketsForEvent } from '../api/events.api';
 import { type Ticket } from '../domain/ticket';
 import { type Event } from '../domain/event';
 import {
-  TicketsContainer,
-  SeatMapContainer,
-  SeatRow,
-  Seat,
-  ScreenArea,
-  PriceInfo,
-  Legend,
-  LegendItem,
-  LegendColor,
-  EventTitle
+    TicketsContainer,
+    SeatMapContainer,
+    SeatRow,
+    Seat,
+    ScreenArea,
+    PriceInfo,
+    Legend,
+    LegendItem,
+    LegendColor,
+    EventTitle,
+    SelectionInfo, CenteredButtonContainer
 } from './Tickets.styles';
 import { Button } from '../components/Button.styles';
 import { BackIcon } from './EventsManagement.styles';
@@ -25,6 +26,8 @@ export const Tickets = () => {
   const [tickets, setTickets] = useState<Ticket[]>([]);
   const [event, setEvent] = useState<Event | null>(null);
   const [loading, setLoading] = useState(true);
+  const [selectedSeats, setSelectedSeats] = useState<number[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchEventAndTickets = async () => {
@@ -44,6 +47,32 @@ export const Tickets = () => {
     fetchEventAndTickets();
   }, [eventId]);
 
+  const handleSeatClick = (seatNumber: number) => {
+    const ticket = tickets.find(t => t.SeatNumber === seatNumber);
+    if (ticket && ticket.UserId) {
+      return;
+    }
+
+    setSelectedSeats(prevSelectedSeats => {
+      if (prevSelectedSeats.includes(seatNumber)) {
+        return prevSelectedSeats.filter(seat => seat !== seatNumber);
+      } else {
+        return [...prevSelectedSeats, seatNumber];
+      }
+    });
+  };
+
+  const proceedToPurchase = () => {
+    if (selectedSeats.length > 0 && eventId) {
+      navigate(`/tickets/${eventId}/purchase`, {
+        state: {
+          selectedTickets: tickets.filter(t => selectedSeats.includes(t.SeatNumber)),
+          event: event
+        }
+      });
+    }
+  };
+
   const renderSeatMap = () => {
     const maxSeatNumber = Math.max(...tickets.map(ticket => ticket.SeatNumber), 0);
     const numRows = Math.ceil(maxSeatNumber / SEATS_PER_ROW);
@@ -57,13 +86,16 @@ export const Tickets = () => {
       for (let seatNumber = startSeat; seatNumber <= endSeat; seatNumber++) {
         const ticket = tickets.find(t => t.SeatNumber === seatNumber);
         const isBooked = ticket ? !!ticket.UserId : false;
+        const isSelected = selectedSeats.includes(seatNumber);
 
         seats.push(
           <Seat
             key={seatNumber}
             isbooked={isBooked}
-            className={isBooked ? 'booked' : ''}
+            isselected={isSelected}
+            className={isBooked ? 'booked' : isSelected ? 'selected' : ''}
             data-seat={seatNumber}
+            onClick={() => handleSeatClick(seatNumber)}
           >
             {seatNumber}
           </Seat>
@@ -78,6 +110,12 @@ export const Tickets = () => {
     }
 
     return rows;
+  };
+
+  const calculateTotalPrice = () => {
+    if (tickets.length === 0 || selectedSeats.length === 0) return 0;
+    const ticketPrice = tickets[0].Price;
+    return ticketPrice * selectedSeats.length;
   };
 
   if (loading) {
@@ -103,6 +141,10 @@ export const Tickets = () => {
           <LegendColor color="#f5f5f5" />
           <span>Booked</span>
         </LegendItem>
+        <LegendItem>
+          <LegendColor color="#FF9800" />
+          <span>Selected</span>
+        </LegendItem>
       </Legend>
 
       <SeatMapContainer>
@@ -115,6 +157,26 @@ export const Tickets = () => {
           Ticket Price: £{tickets[0].Price.toFixed(2)}
         </PriceInfo>
       )}
+
+      {selectedSeats.length > 0 && (
+        <SelectionInfo>
+          You have selected {selectedSeats.length} seats.
+          <br />
+          Seats: {selectedSeats.sort((a, b) => a - b).join(', ')}
+          <br />
+          Total: £{calculateTotalPrice().toFixed(2)}
+        </SelectionInfo>
+      )}
+
+        <CenteredButtonContainer>
+            <Button
+                onClick={proceedToPurchase}
+                disabled={selectedSeats.length === 0}
+            >
+                Proceed to Purchase
+            </Button>
+        </CenteredButtonContainer>
+
     </TicketsContainer>
   );
 };

@@ -31,3 +31,12 @@ export const putEvent = async (id: string, event: UpdateEventPayload) => {
     }
     return put(`/events/${id}`, eventWithMoments);
 }
+
+export type PurchaseTicketsPayload = {
+    UserId: string;
+    TicketIds: string[];
+};
+
+export const purchaseTickets = async (eventId: string, payload: PurchaseTicketsPayload) => {
+    return post(`/events/${eventId}/tickets/purchase`, payload);
+}

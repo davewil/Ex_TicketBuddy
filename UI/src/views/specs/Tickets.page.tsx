@@ -14,6 +14,16 @@ vi.mock("../Home", () => {
     }
 })
 
+vi.mock("../TicketPurchase", () => {
+    return {
+        TicketPurchase: () => {
+            return (
+                <div data-testid="purchase-page">I am the mocked TicketPurchase component</div>
+            );
+        }
+    }
+})
+
 let renderedComponent: RenderResult;
 
 export function renderTickets(eventId: string) {
@@ -48,10 +58,29 @@ export function homePageIsRendered() {
     return elements.homePageIsRendered() !== null;
 }
 
+export function clickSeat(seatNumber: number) {
+    return userEvent.click(elements.getSeatElement(seatNumber)!);
+}
+
+export function getSelectedSeats() {
+    return elements.getSelectedSeats();
+}
+
+export function clickProceedToPurchaseButton() {
+    return userEvent.click(elements.proceedToPurchaseButton()!);
+}
+
+export function purchasePageIsRendered() {
+    return elements.purchasePageIsRendered() !== null;
+}
+
 export const elements = {
     title: (eventName: string) => renderedComponent.getByRole('heading', {name: `Tickets for Event: ${eventName}`}),
     getSeatElement: (seatNumber: number)=> renderedComponent.container.querySelector(`[data-seat="${seatNumber}"]`),
     getSeatRow: (rowNumber: number)=> renderedComponent.container.querySelector(`[data-row="${rowNumber}"]`),
     backToEventsButton: () => renderedComponent.getByText('Back to Events'),
     homePageIsRendered: () => renderedComponent.getByText('I am the mocked Home component'),
+    proceedToPurchaseButton: () => renderedComponent.getByText('Proceed to Purchase'),
+    getSelectedSeats: () => renderedComponent.container.querySelectorAll('.selected'),
+    purchasePageIsRendered: () => renderedComponent.queryByTestId('purchase-page'),
 };

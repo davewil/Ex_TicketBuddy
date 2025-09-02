@@ -13,6 +13,16 @@ public partial class TicketControllerSpecs
     }
     
     [Test]
+    public void user_can_purchase_two_tickets()
+    {
+        Given(an_event_exists);
+        And(a_user_exists);
+        And(requesting_the_tickets);
+        When(purchasing_two_tickets);
+        Then(the_tickets_are_purchased);
+    }
+    
+    [Test]
     public void can_update_ticket_price_for_unpurchased_tickets()
     {
         Given(an_event_exists);
@@ -22,16 +32,6 @@ public partial class TicketControllerSpecs
         When(updating_the_ticket_prices);
         Then(the_ticket_prices_are_updated);
         And(purchased_tickets_are_not_updated);
-    }
-
-    [Test]
-    public void user_can_purchase_two_tickets()
-    {
-        Given(an_event_exists);
-        And(a_user_exists);
-        And(requesting_the_tickets);
-        When(purchasing_two_tickets);
-        Then(the_tickets_are_purchased);
     }
     
     [Test]
@@ -43,5 +43,14 @@ public partial class TicketControllerSpecs
         And(two_tickets_are_purchased);
         When(purchasing_two_tickets_again);
         Then(user_informed_they_cannot_purchase_tickets_that_are_purchased);
+    }
+    
+    [Test]
+    public void cannot_purchase_tickets_that_do_not_exist()
+    {
+        Given(an_event_exists);
+        And(a_user_exists);
+        When(purchasing_two_non_existent_tickets);
+        Then(user_informed_they_cannot_purchase_tickets_that_are_non_existent);
     }
 }

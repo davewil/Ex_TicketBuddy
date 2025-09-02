@@ -7,7 +7,11 @@ import {
     getSeatRow,
     titleIsRendered,
     clickBackToEventsButton,
-    homePageIsRendered
+    homePageIsRendered,
+    clickSeat,
+    getSelectedSeats,
+    clickProceedToPurchaseButton,
+    purchasePageIsRendered
 } from "./Tickets.page.tsx";
 import {waitUntil} from "../../testing/utilities.ts";
 import {Events, TicketsForFirstEvent} from "../../testing/data.ts";
@@ -49,4 +53,19 @@ export async function should_navigate_back_to_events() {
     await waitUntil(wait_for_get_tickets);
     await clickBackToEventsButton();
     expect(homePageIsRendered()).toBeTruthy();
+}
+
+export async function should_allow_selecting_multiple_seats_and_proceed_to_purchase() {
+    renderTickets(Events[0].Id);
+    await waitUntil(wait_for_get_event);
+    await waitUntil(wait_for_get_tickets);
+
+    await clickSeat(1);
+    await clickSeat(3);
+    await clickSeat(5);
+
+    expect(getSelectedSeats().length).toBe(3);
+
+    await clickProceedToPurchaseButton();
+    expect(purchasePageIsRendered()).toBeTruthy();
 }

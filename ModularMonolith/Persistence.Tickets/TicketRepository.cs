@@ -8,7 +8,7 @@ public class TicketRepository(TicketDbContext context)
     public async Task<IList<Domain.Tickets.Entities.Ticket>> GetTicketsForEvent(Guid eventId)
     {
         return await context.Tickets
-            .Where(t => t.EventId == eventId && t.UserId == null)
+            .Where(t => t.EventId == eventId)
             .ToListAsync();
     }    
     
@@ -70,6 +70,8 @@ public class TicketRepository(TicketDbContext context)
         var tickets = await context.Tickets
             .Where(t => ticketIds.Contains(t.Id) && t.EventId == eventId)
             .ToListAsync();
+        
+        if (tickets.Count != ticketIds.Count) throw new ValidationException("One or more tickets do not exist");
         
         foreach (var ticket in tickets)
         {

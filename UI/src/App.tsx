@@ -9,6 +9,7 @@ import {useEffect} from "react";
 import {EventsManagement} from "./views/EventsManagement.tsx";
 import {NotFound} from "./components/NotFound.tsx";
 import {Tickets} from "./views/Tickets.tsx";
+import {TicketPurchase} from "./views/TicketPurchase.tsx";
 
 function App() {
     const { fetchUsers } = useUsersStore(useShallow((state => ({
@@ -40,6 +41,7 @@ export const AppRoutes = () => (
     <Routes>
         <Route path="/events-management/*" element={<EventsManagement />} />
         <Route path="/tickets/:eventId" element={<Tickets />} />
+        <Route path="/tickets/:eventId/purchase" element={<TicketPurchase />} />
         <Route path="/" element={<Home/>} />
         <Route path="*" element={<NotFound/>}/>
     </Routes>

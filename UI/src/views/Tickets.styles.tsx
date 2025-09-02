@@ -18,7 +18,7 @@ export const SeatRow = styled.div`
   gap: 10px;
 `;
 
-export const Seat = styled.div<{ isbooked: boolean }>`
+export const Seat = styled.div<{ isbooked: boolean; isselected?: boolean }>`
   width: 40px;
   height: 40px;
   border: 2px solid #ccc;
@@ -26,7 +26,11 @@ export const Seat = styled.div<{ isbooked: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: ${props => props.isbooked ? '#f5f5f5' : '#4CAF50'};
+  background-color: ${props => {
+    if (props.isbooked) return '#f5f5f5';
+    if (props.isselected) return '#FF9800';
+    return '#4CAF50';
+  }};
   color: ${props => props.isbooked ? '#999' : '#fff'};
   font-weight: bold;
   cursor: ${props => props.isbooked ? 'not-allowed' : 'pointer'};
@@ -39,6 +43,11 @@ export const Seat = styled.div<{ isbooked: boolean }>`
     background-color: #f5f5f5;
     color: #999;
     cursor: not-allowed;
+  }
+  
+  &.selected {
+    background-color: #FF9800;
+    border-color: #E65100;
   }
 `;
 
@@ -84,4 +93,17 @@ export const LegendColor = styled.div<{ color: string }>`
 export const EventTitle = styled.h1`
   text-align: center;
   margin-bottom: 2rem;
+`;
+
+export const SelectionInfo = styled.div`
+  text-align: center;
+  margin: 1.5rem 0;
+  padding: 1rem;
+  border-radius: 5px;
+`;
+
+export const CenteredButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
 `;
