@@ -1,6 +1,7 @@
 using Integration.Events.Messaging.Outbound;
 using MassTransit;
 using Persistence.Tickets;
+using Persistence.Tickets.Commands;
 using Event = Domain.Tickets.Entities.Event;
 
 namespace Integration.Tickets.Messaging.Inbound.Consumers

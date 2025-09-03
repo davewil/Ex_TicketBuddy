@@ -85,60 +85,70 @@ export const TicketsForFirstEvent: Ticket[] = [
         Id: "t1",
         EventId: Events[0].Id,
         Price: 50,
-        SeatNumber: 1
+        SeatNumber: 1,
+        Purchased: false
     },
     {
         Id: "t2",
         EventId: Events[0].Id,
         Price: 50,
-        SeatNumber: 2
+        SeatNumber: 2,
+        Purchased: false
     },
     {
         Id: "t3",
         EventId: Events[0].Id,
         Price: 50,
-        SeatNumber: 3
+        SeatNumber: 3,
+        Purchased: false
     },
     {
         Id: "t4",
         EventId: Events[0].Id,
         Price: 50,
-        SeatNumber: 4
+        SeatNumber: 4,
+        Purchased: false
     },
     {
         Id: "t5",
         EventId: Events[0].Id,
         Price: 50,
-        SeatNumber: 5
+        SeatNumber: 5,
+        Purchased: false
     },
     {
         Id: "t6",
         EventId: Events[0].Id,
         Price: 50,
-        SeatNumber: 6
+        SeatNumber: 6,
+        Purchased: false
     },
     {
         Id: "t7",
         EventId: Events[0].Id,
         Price: 50,
-        SeatNumber: 7
+        SeatNumber: 7,
+        Purchased: false
     },
     {
         Id: "t8",
         EventId: Events[0].Id,
         Price: 50,
-        SeatNumber: 8
+        SeatNumber: 8,
+        Purchased: false
     },
     {
         Id: "t9",
         EventId: Events[0].Id,
         Price: 50,
-        SeatNumber: 9
+        SeatNumber: 9,
+        Purchased: false
     },
     {
         Id: "t10",
         EventId: Events[0].Id,
         Price: 50,
-        SeatNumber: 10
+        SeatNumber: 10,
+        Purchased: false
     }
 ]

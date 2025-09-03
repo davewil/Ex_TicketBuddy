@@ -2,6 +2,7 @@ using Domain.Tickets.Entities;
 using Integration.Users.Messaging.Outbound.Messages;
 using MassTransit;
 using Persistence.Tickets;
+using Persistence.Tickets.Commands;
 
 namespace Integration.Tickets.Messaging.Inbound.Consumers
 {

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Persistence.Tickets.Messages;
 using Event = Domain.Tickets.Entities.Event;
 
-namespace Persistence.Tickets;
+namespace Persistence.Tickets.Commands;
 
 public class EventRepository(TicketDbContext ticketDbContext, IPublishEndpoint publisher)
 {

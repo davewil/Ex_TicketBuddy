@@ -49,7 +49,7 @@ export const Tickets = () => {
 
   const handleSeatClick = (seatNumber: number) => {
     const ticket = tickets.find(t => t.SeatNumber === seatNumber);
-    if (ticket && ticket.UserId) {
+    if (ticket?.Purchased) {
       return;
     }
 
@@ -85,7 +85,7 @@ export const Tickets = () => {
       const seats = [];
       for (let seatNumber = startSeat; seatNumber <= endSeat; seatNumber++) {
         const ticket = tickets.find(t => t.SeatNumber === seatNumber);
-        const isBooked = ticket ? !!ticket.UserId : false;
+        const isBooked = ticket ? ticket.Purchased : false;
         const isSelected = selectedSeats.includes(seatNumber);
 
         seats.push(

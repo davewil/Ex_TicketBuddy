@@ -1,4 +1,5 @@
 using MassTransit;
+using Persistence.Tickets.Commands;
 using Persistence.Tickets.Messages;
 
 namespace Persistence.Tickets.Consumers

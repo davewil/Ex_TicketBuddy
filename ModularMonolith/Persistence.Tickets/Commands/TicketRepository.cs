@@ -1,24 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 
-namespace Persistence.Tickets;
+namespace Persistence.Tickets.Commands;
 
 public class TicketRepository(TicketDbContext context)
 {
-    public async Task<IList<Domain.Tickets.Entities.Ticket>> GetTicketsForEvent(Guid eventId)
-    {
-        return await context.Tickets
-            .Where(t => t.EventId == eventId)
-            .ToListAsync();
-    }    
-    
-    public async Task<IList<Domain.Tickets.Entities.Ticket>> GetTicketsForEventByUser(Guid eventId, Guid userId)
-    {
-        return await context.Tickets
-            .Where(t => t.EventId == eventId && t.UserId == userId)
-            .ToListAsync();
-    }
-    
     public async Task ReleaseTicketsForEvent(Guid eventId, int numberOfTickets, decimal pricePerTicket)
     {
         await CheckIfTicketsAlreadyReleased(eventId);

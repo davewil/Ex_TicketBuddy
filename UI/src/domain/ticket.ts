@@ -3,6 +3,6 @@
     EventId: string;
     Price: number;
     SeatNumber: number;
-    UserId?: string;
+    Purchased: boolean;
 };
 

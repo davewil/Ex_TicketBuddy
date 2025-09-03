@@ -4,6 +4,7 @@ using BDD;
 using Controllers.Tickets;
 using Controllers.Tickets.Requests;
 using Domain.Events.Primitives;
+using Domain.Tickets.ReadModels;
 using Integration.Events.Messaging.Outbound;
 using Integration.Users.Messaging.Outbound.Messages;
 using MassTransit.Testing;
@@ -157,7 +158,7 @@ public partial class TicketControllerSpecs : TruncateDbSpecification
     private void the_tickets_are_released()
     {
         response_code.ShouldBe(HttpStatusCode.OK);
-        var tickets = JsonSerialization.Deserialize<IList<Domain.Tickets.Entities.Ticket>>(content.ReadAsStringAsync().GetAwaiter().GetResult());
+        var tickets = JsonSerialization.Deserialize<IList<Ticket>>(content.ReadAsStringAsync().GetAwaiter().GetResult());
         tickets.Count.ShouldBe(17);
         tickets = tickets.OrderBy(t => t.SeatNumber).ToList();
         uint counter = 1;
@@ -175,12 +176,11 @@ public partial class TicketControllerSpecs : TruncateDbSpecification
         response_code.ShouldBe(HttpStatusCode.NoContent);
         var response = client.GetAsync(Routes.EventTickets(event_id)).GetAwaiter().GetResult();
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
-        var tickets = JsonSerialization.Deserialize<IList<Domain.Tickets.Entities.Ticket>>(response.Content.ReadAsStringAsync().GetAwaiter().GetResult());
+        var tickets = JsonSerialization.Deserialize<IList<Ticket>>(response.Content.ReadAsStringAsync().GetAwaiter().GetResult());
         tickets.Count.ShouldBe(17);
         foreach (var ticket in tickets.Where(t => ticket_ids.Take(2).Contains(t.Id)).ToList())
         {
-            ticket.UserId.ShouldBe(user_id);
-            ticket.PurchasedAt.ShouldNotBeNull();
+            ticket.Purchased.ShouldBeTrue();
         }
     }
 
@@ -203,7 +203,7 @@ public partial class TicketControllerSpecs : TruncateDbSpecification
         response_code.ShouldBe(HttpStatusCode.NoContent);
         var response = client.GetAsync(Routes.EventTickets(event_id)).GetAwaiter().GetResult();
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
-        var tickets = JsonSerialization.Deserialize<IList<Domain.Tickets.Entities.Ticket>>(response.Content.ReadAsStringAsync().GetAwaiter().GetResult());
+        var tickets = JsonSerialization.Deserialize<IList<Ticket>>(response.Content.ReadAsStringAsync().GetAwaiter().GetResult());
         tickets.Count.ShouldBe(17);
         foreach (var ticket in tickets.Where(t => !ticket_ids.Take(2).Contains(t.Id)).ToList())
         {
@@ -215,7 +215,7 @@ public partial class TicketControllerSpecs : TruncateDbSpecification
     {
         var response = client.GetAsync(EventTicketsForUser(event_id, user_id)).GetAwaiter().GetResult();
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
-        var tickets = JsonSerialization.Deserialize<IList<Domain.Tickets.Entities.Ticket>>(response.Content.ReadAsStringAsync().GetAwaiter().GetResult());
+        var tickets = JsonSerialization.Deserialize<IList<Ticket>>(response.Content.ReadAsStringAsync().GetAwaiter().GetResult());
         tickets.Count.ShouldBe(2);
         foreach (var ticket in tickets)
         {

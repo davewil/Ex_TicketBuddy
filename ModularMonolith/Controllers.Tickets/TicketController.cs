@@ -1,17 +1,18 @@
 ﻿using Controllers.Tickets.Requests;
-using Domain.Tickets.Entities;
+using Domain.Tickets.ReadModels;
 using Microsoft.AspNetCore.Mvc;
-using Persistence.Tickets;
+using Persistence.Tickets.Commands;
+using Persistence.Tickets.Queries;
 
 namespace Controllers.Tickets;
 
 [ApiController]
-public class TicketController(TicketRepository TicketRepository) : ControllerBase
+public class TicketController(TicketRepository TicketRepository, ReadOnlyTicketRepository ReadOnlyTicketRepository) : ControllerBase
 {
     [HttpGet(Routes.Tickets)]
     public async Task<IList<Ticket>> GetTickets([FromRoute] Guid id)
     {
-        return await TicketRepository.GetTicketsForEvent(id);
+        return await ReadOnlyTicketRepository.GetTicketsForEvent(id);
     }
     
     [HttpPost(Routes.TicketsPurchase)]
@@ -24,6 +25,6 @@ public class TicketController(TicketRepository TicketRepository) : ControllerBas
     [HttpGet(Routes.TicketsPurchased)]
     public async Task<IList<Ticket>> GetTicketsForUser([FromRoute] Guid id, [FromRoute] Guid userId)
     {
-        return await TicketRepository.GetTicketsForEventByUser(id, userId);
+        return await ReadOnlyTicketRepository.GetTicketsForEventByUser(id, userId);
     }
 }
