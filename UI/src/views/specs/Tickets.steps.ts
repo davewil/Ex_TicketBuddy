@@ -69,3 +69,14 @@ export async function should_allow_selecting_multiple_seats_and_proceed_to_purch
     await clickProceedToPurchaseButton();
     expect(purchasePageIsRendered()).toBeTruthy();
 }
+
+export async function should_not_allow_selecting_a_purchased_ticket() {
+    renderTickets(Events[0].Id);
+    await waitUntil(wait_for_get_event);
+    await waitUntil(wait_for_get_tickets);
+
+    await clickSeat(10);
+    expect(getSelectedSeats().length).toBe(0);
+    await clickSeat(1);
+    expect(getSelectedSeats().length).toBe(1);
+}

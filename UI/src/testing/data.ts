@@ -149,6 +149,6 @@ export const TicketsForFirstEvent: Ticket[] = [
         EventId: Events[0].Id,
         Price: 50,
         SeatNumber: 10,
-        Purchased: false
+        Purchased: true
     }
 ]
