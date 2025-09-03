@@ -4,7 +4,7 @@ A simple ticket booking platform for events.
 Built as both a modular monolith and as microservices to compare and contrast.
 
 ## Modular Monolith
-Built in well-defined modules to be hosted as a single application. Services communicate through asynchronous messages using MassTransit with RabbitMQ. 
+Built in well-defined modules to be hosted as a single application. Modules communicate through asynchronous messages using MassTransit with RabbitMQ. 
 
 You could also use synchronous calls if preferred though it will not scale as well.
 In-process calls between modules would need to be through well-defined interfaces and risk becoming a monolith.
