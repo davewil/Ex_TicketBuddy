@@ -21,6 +21,14 @@ var rabbitmq = builder
     .WithHttpEndpoint(port: 5672, targetPort: 5672)
     .WithHttpsEndpoint(port: 15672, targetPort: 15672);
 
+var redis = builder
+    .AddRedis("Cache")
+    .WithImage("redis:7.0-alpine")
+    .WithDataVolume("TicketBuddy.Monolith.Redis")
+    .WithPassword(builder.AddParameter("RedisPassword", "YourStrong@Passw0rd"))
+    .WithHostPort(16379)
+    .WithLifetime(ContainerLifetime.Persistent);
+
 var migrations = builder.AddProject<Projects.Host_Migrations>("Migrations")
     .WithReference(database)
     .WaitFor(database)
@@ -33,6 +41,8 @@ var api = builder.AddProject<Projects.Host_Api>("Api")
     .WaitFor(migrations)
     .WithReference(rabbitmq)
     .WaitFor(rabbitmq)
+    .WithReference(redis)
+    .WaitFor(redis)
     .WithEnvironment(Environment, CommonEnvironment.LocalDevelopment.ToString);
 
 var dataseeder = builder.AddProject<Projects.Host_Dataseeder>("Dataseeder")

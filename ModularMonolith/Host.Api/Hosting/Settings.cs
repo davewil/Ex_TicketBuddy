@@ -3,6 +3,7 @@
 internal class Settings
 {
     private static IConfiguration Configuration = null!;
+    internal CacheSettings Cache => new();
     internal DatabaseSettings Database => new();
     internal RabbitMqSettings RabbitMq => new();
     internal TelemetrySettings Telemetry => new();
@@ -25,5 +26,10 @@ internal class Settings
     internal class DatabaseSettings
     {
         public string Connection => Configuration["ConnectionStrings:TicketBuddy"]!;
+    }
+    
+    internal class CacheSettings
+    {
+        public string Connection => Configuration["ConnectionStrings:Cache"]!;
     }
 }

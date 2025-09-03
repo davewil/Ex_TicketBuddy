@@ -53,4 +53,15 @@ public partial class TicketControllerSpecs
         When(purchasing_two_non_existent_tickets);
         Then(user_informed_they_cannot_purchase_tickets_that_are_non_existent);
     }
+    
+    [Test]
+    public void user_can_reserve_a_ticket_for_15_minutes()
+    {
+        Given(an_event_exists);
+        And(a_user_exists);
+        And(requesting_the_tickets);
+        When(reserving_a_ticket);
+        Then(the_ticket_is_reserved);
+        And(the_reservation_expires_in_15_minutes);
+    }
 }

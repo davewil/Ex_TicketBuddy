@@ -4,7 +4,6 @@ using BDD;
 using Controllers.Tickets;
 using Controllers.Tickets.Requests;
 using Domain.Events.Primitives;
-using Domain.Tickets.ReadModels;
 using Integration.Events.Messaging.Outbound;
 using Integration.Users.Messaging.Outbound.Messages;
 using MassTransit.Testing;
@@ -12,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Migrations;
 using Shouldly;
 using Testcontainers.MsSql;
+using Testcontainers.Redis;
 using WebHost;
 
 namespace Integration.Api;
@@ -34,6 +34,7 @@ public partial class TicketControllerSpecs : TruncateDbSpecification
     private readonly DateTimeOffset event_start_date = DateTimeOffset.Now.AddDays(1);
     private readonly DateTimeOffset event_end_date = DateTimeOffset.Now.AddDays(1).AddHours(2);
     private static MsSqlContainer database = null!;
+    private static RedisContainer redis = null!;
     private ITestHarness testHarness = null!;
     private Guid[] ticket_ids = null!;
     private static string EventTicketsForUser(Guid eventId, Guid userId) => $"{Routes.Events}/{eventId}/tickets/user/{userId}";
@@ -45,6 +46,8 @@ public partial class TicketControllerSpecs : TruncateDbSpecification
         database.StartAsync().Await();
         database.ExecScriptAsync("CREATE DATABASE [TicketBuddy.Tickets]").GetAwaiter().GetResult();
         Migration.Upgrade(database.GetTicketBuddyConnectionString());
+        redis = new RedisBuilder().WithPortBinding(6379, true).Build();
+        redis.StartAsync().Await();
     }
     
     protected override void before_each()
@@ -54,7 +57,7 @@ public partial class TicketControllerSpecs : TruncateDbSpecification
         ticket_ids = [];
         event_id = Guid.NewGuid();
         user_id = Guid.NewGuid();
-        factory = new IntegrationWebApplicationFactory<Program>(database.GetTicketBuddyConnectionString());
+        factory = new IntegrationWebApplicationFactory<Program>(database.GetTicketBuddyConnectionString(), redis.GetConnectionString());
         client = factory.CreateClient();
         testHarness = factory.Services.GetRequiredService<ITestHarness>();
         testHarness.Start().Await();
@@ -72,6 +75,8 @@ public partial class TicketControllerSpecs : TruncateDbSpecification
     {
         database.StopAsync().Await();
         database.DisposeAsync().GetAwaiter().GetResult();
+        redis.StopAsync().Await();
+        redis.DisposeAsync().GetAwaiter().GetResult();
     }
 
     private void an_event_exists()
@@ -128,6 +133,17 @@ public partial class TicketControllerSpecs : TruncateDbSpecification
     private void purchasing_two_tickets_again()
     {
         purchasing_two_tickets();
+    }
+    
+    private void reserving_a_ticket()
+    {
+        content = new StringContent(
+            JsonSerialization.Serialize(new TicketReservationPayload(user_id, [ticket_ids[2]])),
+            Encoding.UTF8,
+            application_json);
+        var response = client.PostAsync(EventTickets(event_id) + "/reserve", content).GetAwaiter().GetResult();
+        response_code = response.StatusCode;
+        content = response.Content;
     }
 
     private void purchasing_two_non_existent_tickets()
@@ -222,5 +238,41 @@ public partial class TicketControllerSpecs : TruncateDbSpecification
         {
             ticket.Price.ShouldBe(price);
         }
+    }
+
+    private void the_ticket_is_reserved()
+    {
+        response_code.ShouldBe(HttpStatusCode.NoContent);
+        var response = client.GetAsync(EventTickets(event_id)).GetAwaiter().GetResult();
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
+        var tickets = JsonSerialization.Deserialize<IList<Ticket>>(response.Content.ReadAsStringAsync().Await());
+        tickets.Count.ShouldBe(17);
+        var reservedTicket = tickets.Single(t => t.Id == ticket_ids[2]);
+        reservedTicket.Reserved.ShouldBeTrue();
+    }
+
+    private void the_reservation_expires_in_15_minutes()
+    {
+        var cache = factory.Services.GetRequiredService<StackExchange.Redis.IConnectionMultiplexer>();
+        var db = cache.GetDatabase();
+        var reservationKey = $"event:{event_id}:ticket:{ticket_ids[2]}:reservation";
+        var ttl = db.KeyTimeToLive(reservationKey);
+        ttl.HasValue.ShouldBeTrue();
+        ttl!.Value.TotalMinutes.ShouldBeLessThanOrEqualTo(15);
+        ttl.Value.TotalMinutes.ShouldBeGreaterThan(14);
+        var keyValue = db.StringGet(reservationKey);
+        keyValue.HasValue.ShouldBeTrue();
+        keyValue.ToString().ShouldBe(user_id.ToString());
+    }
+    
+    // [NotMapped] property in read model class affects serialization, so using a private class here for testing
+    private class Ticket
+    {
+        public Guid Id { get; init; }
+        public Guid EventId { get; init; }
+        public decimal Price { get; init; }
+        public uint SeatNumber { get; init; }
+        public bool Purchased { get; init; }
+        public bool Reserved { get; init; }
     }
 }

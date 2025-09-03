@@ -25,6 +25,7 @@
         <PackageReference Include="NUnit" Version="4.3.2" />
         <PackageReference Include="Testcontainers" Version="4.6.0" />
         <PackageReference Include="Testcontainers.MsSql" Version="4.6.0" />
+        <PackageReference Include="Testcontainers.Redis" Version="4.6.0" />
         <PackageReference Include="Testing.Bdd" Version="1.0.4" />
     </ItemGroup>
     
