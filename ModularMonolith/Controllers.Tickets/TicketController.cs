@@ -7,7 +7,7 @@ using Persistence.Tickets.Queries;
 namespace Controllers.Tickets;
 
 [ApiController]
-public class TicketController(TicketRepository TicketRepository, ReadOnlyTicketRepository ReadOnlyTicketRepository) : ControllerBase
+public class TicketController(WriteOnlyTicketRepository WriteOnlyTicketRepository, ReadOnlyTicketRepository ReadOnlyTicketRepository) : ControllerBase
 {
     [HttpGet(Routes.Tickets)]
     public async Task<IList<Ticket>> GetTickets([FromRoute] Guid id)
@@ -18,7 +18,7 @@ public class TicketController(TicketRepository TicketRepository, ReadOnlyTicketR
     [HttpPost(Routes.TicketsPurchase)]
     public async Task<ActionResult> PurchaseTickets([FromRoute] Guid id, [FromBody] TicketPurchasePayload payload)
     {
-        await TicketRepository.PurchaseTickets(id, payload.userId, payload.ticketIds);
+        await WriteOnlyTicketRepository.PurchaseTickets(id, payload.userId, payload.ticketIds);
         return NoContent();
     }
     

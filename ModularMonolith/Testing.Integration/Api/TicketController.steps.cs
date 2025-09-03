@@ -37,6 +37,7 @@ public partial class TicketControllerSpecs : TruncateDbSpecification
     private ITestHarness testHarness = null!;
     private Guid[] ticket_ids = null!;
     private static string EventTicketsForUser(Guid eventId, Guid userId) => $"{Routes.Events}/{eventId}/tickets/user/{userId}";
+    private static string EventTickets(Guid id) => $"{Routes.Events}/{id}/tickets";
 
     protected override void before_all()
     {
@@ -101,7 +102,7 @@ public partial class TicketControllerSpecs : TruncateDbSpecification
 
     private void requesting_the_tickets()
     {
-        var response = client.GetAsync(Routes.EventTickets(event_id)).GetAwaiter().GetResult();
+        var response = client.GetAsync(EventTickets(event_id)).GetAwaiter().GetResult();
         response_code = response.StatusCode;
         content = response.Content;
         var tickets = JsonSerialization.Deserialize<IList<Domain.Tickets.Entities.Ticket>>(content.ReadAsStringAsync().GetAwaiter().GetResult());
@@ -114,7 +115,7 @@ public partial class TicketControllerSpecs : TruncateDbSpecification
             JsonSerialization.Serialize(new TicketPurchasePayload(user_id, ticket_ids.Take(2).ToArray())),
             Encoding.UTF8,
             application_json);
-        var response = client.PostAsync(Routes.EventTickets(event_id) + "/purchase", content).GetAwaiter().GetResult();
+        var response = client.PostAsync(EventTickets(event_id) + "/purchase", content).GetAwaiter().GetResult();
         response_code = response.StatusCode;
         content = response.Content;
     }
@@ -135,7 +136,7 @@ public partial class TicketControllerSpecs : TruncateDbSpecification
             JsonSerialization.Serialize(new TicketPurchasePayload(user_id, [Guid.NewGuid(), Guid.NewGuid()])),
             Encoding.UTF8,
             application_json);
-        var response = client.PostAsync(Routes.EventTickets(event_id) + "/purchase", content).GetAwaiter().GetResult();
+        var response = client.PostAsync(EventTickets(event_id) + "/purchase", content).GetAwaiter().GetResult();
         response_code = response.StatusCode;
         content = response.Content;
     }
@@ -174,7 +175,7 @@ public partial class TicketControllerSpecs : TruncateDbSpecification
     private void the_tickets_are_purchased()
     {
         response_code.ShouldBe(HttpStatusCode.NoContent);
-        var response = client.GetAsync(Routes.EventTickets(event_id)).GetAwaiter().GetResult();
+        var response = client.GetAsync(EventTickets(event_id)).GetAwaiter().GetResult();
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
         var tickets = JsonSerialization.Deserialize<IList<Ticket>>(response.Content.ReadAsStringAsync().GetAwaiter().GetResult());
         tickets.Count.ShouldBe(17);
@@ -201,7 +202,7 @@ public partial class TicketControllerSpecs : TruncateDbSpecification
     private void the_ticket_prices_are_updated()
     {
         response_code.ShouldBe(HttpStatusCode.NoContent);
-        var response = client.GetAsync(Routes.EventTickets(event_id)).GetAwaiter().GetResult();
+        var response = client.GetAsync(EventTickets(event_id)).GetAwaiter().GetResult();
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
         var tickets = JsonSerialization.Deserialize<IList<Ticket>>(response.Content.ReadAsStringAsync().GetAwaiter().GetResult());
         tickets.Count.ShouldBe(17);

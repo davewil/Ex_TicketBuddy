@@ -38,7 +38,7 @@ public class EventRepository(TicketDbContext ticketDbContext, IPublishEndpoint p
         return await ticketDbContext.Venues.FirstAsync(v => v.Id == venue);
     }
 
-    public async Task<Event?> Get(Guid id)
+    private async Task<Event?> Get(Guid id)
     {
         return await ticketDbContext.Events.FindAsync(id);
     }

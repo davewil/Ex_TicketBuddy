@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Persistence.Tickets.Commands;
 
-public class TicketRepository(TicketDbContext context)
+public class WriteOnlyTicketRepository(TicketDbContext context)
 {
     public async Task ReleaseTicketsForEvent(Guid eventId, int numberOfTickets, decimal pricePerTicket)
     {

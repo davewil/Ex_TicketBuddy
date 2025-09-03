@@ -15,7 +15,7 @@ public static class Services
         services.AddScoped<UserRepository>();
         services.AddScoped<Persistence.Tickets.Commands.EventRepository>();
         services.AddScoped<Persistence.Tickets.Commands.UserRepository>();
-        services.AddScoped<TicketRepository>();
+        services.AddScoped<WriteOnlyTicketRepository>();
         services.AddScoped<ReadOnlyTicketRepository>();
         services.AddCorsAllowAll();
     }
