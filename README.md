@@ -27,8 +27,8 @@ These microservices are in one repo and one dotnet solution, but they can be spl
 ## Key technologies/choices:
 - ASP.NET Core
 - Docker
-- RabbitMQ (Microservices)
-- MassTransit (Microservices)
+- RabbitMQ
+- MassTransit
 - OpenTelemetry
 - .NET Aspire
 - YARP (Microservices)
