@@ -10,6 +10,11 @@ export const HeaderBar = styled.div`
     padding: 10px 20px;
     background-color: #282c34;
     font-size: 1.5em;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
     
     > h1 {
         margin: 0;

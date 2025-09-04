@@ -13,8 +13,17 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+html, body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden; /* Prevent page-level scrolling */
+}
+
 #root {
     width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 a {
