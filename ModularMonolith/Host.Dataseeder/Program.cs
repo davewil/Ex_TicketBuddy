@@ -30,8 +30,17 @@ public static class Program
 
         var httpClientFactory = serviceProvider.GetRequiredService<IHttpClientFactory>();
         var httpClient = httpClientFactory.CreateClient("ApiClient");
+
+        try
+        {
+            await CreateAdministratorUser(httpClient);
+        }
+        catch (HttpRequestException)
+        {
+            // assume already seeded
+            return;
+        }
         
-        await CreateAdministratorUser(httpClient);
         await CreateCustomerUsers(httpClient);
         await CreateFutureEvents(httpClient);
     }
