@@ -23,14 +23,15 @@ public partial class EventControllerSpecs : TruncateDbSpecification
 
     private Guid returned_id;
     private Guid another_id;
+    private Guid third_id;
     private HttpStatusCode response_code;
     private const string application_json = "application/json";
     private const string name = "wibble";
     private const string new_name = "wobble";
-    private readonly DateTimeOffset event_start_date = DateTimeOffset.Now.AddDays(1);
-    private readonly DateTimeOffset event_end_date = DateTimeOffset.Now.AddDays(1).AddHours(2);
-    private readonly DateTimeOffset new_event_start_date = DateTimeOffset.Now.AddDays(2);
-    private readonly DateTimeOffset new_event_end_date = DateTimeOffset.Now.AddDays(2).AddHours(2);
+    private readonly DateTimeOffset event_start_date = DateTimeOffset.Now.AddDays(3);
+    private readonly DateTimeOffset event_end_date = DateTimeOffset.Now.AddDays(3).AddHours(2);
+    private readonly DateTimeOffset new_event_start_date = DateTimeOffset.Now.AddDays(1);
+    private readonly DateTimeOffset new_event_end_date = DateTimeOffset.Now.AddDays(1).AddHours(2);
     private readonly DateTimeOffset past_event_start_date = DateTimeOffset.Now.AddDays(-1);
     private const decimal price = 12.34m;
     private const decimal new_price = 23.45m;
@@ -113,7 +114,12 @@ public partial class EventControllerSpecs : TruncateDbSpecification
 
     private void a_request_to_create_another_event()
     {
-        create_content(new_name, event_start_date, event_end_date, Venue.EmiratesOldTraffordManchester, new_price);
+        create_content(new_name, event_start_date.AddDays(1), event_end_date.AddDays(1), Venue.EmiratesOldTraffordManchester, new_price);
+    }
+
+    private void a_request_to_create_third_event()
+    {
+        create_content("third event", event_start_date.AddDays(-1), event_end_date.AddDays(-1), Venue.PrincipalityStadiumCardiff, 34.56m);
     }
     
     private void a_request_to_update_the_event()
@@ -147,7 +153,14 @@ public partial class EventControllerSpecs : TruncateDbSpecification
         var response = client.PostAsync(Routes.Events, content).GetAwaiter().GetResult();
         response_code = response.StatusCode;
         another_id = JsonSerialization.Deserialize<Guid>(response.Content.ReadAsStringAsync().GetAwaiter().GetResult());
-    }      
+    }
+    
+    private void creating_third_event()
+    {
+        var response = client.PostAsync(Routes.Events, content).GetAwaiter().GetResult();
+        response_code = response.StatusCode;
+        third_id = JsonSerialization.Deserialize<Guid>(response.Content.ReadAsStringAsync().GetAwaiter().GetResult());
+    }
     
     private void updating_the_event()
     {
@@ -184,6 +197,12 @@ public partial class EventControllerSpecs : TruncateDbSpecification
     {
         a_request_to_create_another_event();
         creating_another_event();
+    }
+
+    private void a_third_event_exists()
+    {
+        a_request_to_create_third_event();
+        creating_third_event();
     }
 
     private void another_event_at_same_venue_exists()
@@ -257,13 +276,16 @@ public partial class EventControllerSpecs : TruncateDbSpecification
         theEvent.Price.ShouldBe(new_price);
     }    
     
-    private void the_events_are_listed()
+    private void the_events_are_listed_earliest_first()
     {
-        var theEvent = JsonSerialization.Deserialize<IReadOnlyList<Event>>(content.ReadAsStringAsync().GetAwaiter().GetResult());
+        var theEvents = JsonSerialization.Deserialize<IReadOnlyList<Event>>(content.ReadAsStringAsync().GetAwaiter().GetResult());
         response_code.ShouldBe(HttpStatusCode.OK);
-        theEvent.Count.ShouldBe(2);
-        theEvent.Single(e => e.Id == returned_id).EventName.ToString().ShouldBe(name);
-        theEvent.Single(e => e.Id == another_id).EventName.ToString().ShouldBe(new_name);
+        theEvents.Count.ShouldBe(3);
+        theEvents.Single(e => e.Id == returned_id).EventName.ToString().ShouldBe(name);
+        theEvents.Single(e => e.Id == another_id).EventName.ToString().ShouldBe(new_name);
+        theEvents[0].Id.ShouldBe(third_id);
+        theEvents[1].Id.ShouldBe(returned_id);
+        theEvents[2].Id.ShouldBe(another_id);
     }
 
     private void the_events_are_listed_without_the_past_event()

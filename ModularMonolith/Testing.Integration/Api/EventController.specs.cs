@@ -66,8 +66,9 @@ public partial class EventControllerSpecs
     {
         Given(an_event_exists);
         And(another_event_exists);
+        And(a_third_event_exists);
         When(listing_the_events);
-        Then(the_events_are_listed);
+        Then(the_events_are_listed_earliest_first);
     }
     
     [Test]
