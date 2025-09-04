@@ -25,8 +25,13 @@ export const TicketStubImage = () => (
     </Link>
 );
 
-export const UserIconContainer = styled.div`
+export const Container = styled.div`
     margin-left: auto;
+    display: flex;
+    align-items: center;
+`;
+
+export const UserIconContainer = styled.div`
     font-size: 1.5em;
     cursor: pointer;
     &:hover {
@@ -89,7 +94,7 @@ export const UserDetails = styled.div`
 `;
 
 export const EventsManagementLink = styled(Link)`
-    margin-left: 20px;
+    margin-right: 10px;
     color: #61dafb;
     text-decoration: none;
     &:hover {

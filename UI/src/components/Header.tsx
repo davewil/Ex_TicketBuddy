@@ -1,4 +1,5 @@
 ﻿import {
+    Container,
     EventsManagementLink,
     HeaderBar,
     TicketStubImage,
@@ -39,27 +40,29 @@ export const Header = () => {
         <HeaderBar>
             <TicketStubImage/>
             <h1>TicketBuddy</h1>
-            {user &&
-                <>
-                    {user.UserType === UserType.Administrator && <EventsManagementLink to="/events-management">Events Management</EventsManagementLink>}
-                    <UserIconContainer onClick={onUserIconClick} data-testid="user-icon">
-                        <UserIcon />
-                    </UserIconContainer>
-                    {showUserDetails && (
-                        <UserDetails>
-                            <p>{user.FullName}</p>
-                            <p>{user.Email}</p>
-                        </UserDetails>
-                    )}
-                </>
-            }
-            {users?.length > 0 && <UsersDropdown data-testid="users-dropdown" onClick={onUsersDropdownChange}>
-                {users.map(user => (
-                    <option key={user.Id} value={user.Id}>
-                        {user.FullName}
-                    </option>
-                ))}
-            </UsersDropdown>}
+            <Container>
+                {user &&
+                    <>
+                        {user.UserType === UserType.Administrator && <EventsManagementLink to="/events-management">Events Management</EventsManagementLink>}
+                        <UserIconContainer onClick={onUserIconClick} data-testid="user-icon">
+                            <UserIcon />
+                        </UserIconContainer>
+                        {showUserDetails && (
+                            <UserDetails>
+                                <p>{user.FullName}</p>
+                                <p>{user.Email}</p>
+                            </UserDetails>
+                        )}
+                    </>
+                }
+                {users?.length > 0 && <UsersDropdown data-testid="users-dropdown" onClick={onUsersDropdownChange}>
+                    {users.map(user => (
+                        <option key={user.Id} value={user.Id}>
+                            {user.FullName}
+                        </option>
+                    ))}
+                </UsersDropdown>}
+            </Container>
         </HeaderBar>
     );
 }
