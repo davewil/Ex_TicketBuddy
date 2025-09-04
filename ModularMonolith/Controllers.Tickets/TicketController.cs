@@ -55,10 +55,7 @@ public class TicketController(
         foreach (var ticket in tickets)
         {
             var value = db.StringGet(GetReservationKey(id, ticket.Id));
-            if (value.HasValue)
-            {
-                ticket.MarkTicketAsReserved();
-            }
+            if (value.HasValue) ticket.MarkTicketAsReserved();
         }
     }
 }
