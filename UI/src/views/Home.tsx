@@ -1,7 +1,7 @@
 ﻿import {useEffect, useState} from "react";
 import {getEvents} from "../api/events.api";
 import {ConvertVenueToString, type Event} from "../domain/event";
-import {EventItem, EventList} from "./Home.styles.tsx";
+import {EventItem, EventList} from "./Common.styles.tsx";
 import moment from "moment";
 import {Button} from "../components/Button.styles.tsx";
 import {useNavigate} from "react-router-dom";

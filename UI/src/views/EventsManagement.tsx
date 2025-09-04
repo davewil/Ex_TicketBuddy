@@ -2,8 +2,6 @@
 import {
     AddIcon,
     BackIcon,
-    EventItem,
-    EventList,
     EventContent,
     EventActions,
     FormContainer,
@@ -19,6 +17,7 @@ import {Link, Outlet, Route, Routes, useNavigate, useParams} from "react-router-
 import {Button} from "../components/Button.styles.tsx";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import {EventItem, EventList} from "./Common.styles.tsx";
 
 type EventFormData = {
     eventName: string;
