@@ -85,10 +85,10 @@ export const Tickets = () => {
                     }
                 });
             })
-                .catch(handleError)
-                .finally(() => {
-                    setProceeding(true);
-                })
+            .catch(handleError)
+            .finally(() => {
+                setProceeding(false);
+            })
         }
     };
 
