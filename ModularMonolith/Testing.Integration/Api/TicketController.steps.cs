@@ -24,13 +24,16 @@ public partial class TicketControllerSpecs : TruncateDbSpecification
 
     private Guid event_id = Guid.NewGuid();
     private Guid user_id = Guid.NewGuid();
+    private Guid another_user_id = Guid.NewGuid();
     private const decimal price = 25.00m;
     private const decimal new_price = 26.00m;
     private HttpStatusCode response_code;
     private const string application_json = "application/json";
     private const string name = "wibble";
     private const string full_name = "John Smith";
+    private const string another_full_name = "Johnny Smith";
     private const string email = "john.smith@gmail.com";
+    private const string another_email = "johnny.smith@gmail.com";
     private readonly DateTimeOffset event_start_date = DateTimeOffset.Now.AddDays(1);
     private readonly DateTimeOffset event_end_date = DateTimeOffset.Now.AddDays(1).AddHours(2);
     private static MsSqlContainer database = null!;
@@ -66,9 +69,15 @@ public partial class TicketControllerSpecs : TruncateDbSpecification
     protected override void after_each()
     {
         Truncate(database.GetTicketBuddyConnectionString());
+        ClearRedisCache();
         testHarness.Stop().Await();
         client.Dispose();
         factory.Dispose();
+    }
+
+    private void ClearRedisCache()
+    {
+        redis.ExecScriptAsync("return redis.call('FLUSHALL')").Await();
     }
 
     protected override void after_all()
@@ -103,6 +112,17 @@ public partial class TicketControllerSpecs : TruncateDbSpecification
             Email = email
         });
         testHarness.Consumed.Any<UserUpserted>(x => x.Context.Message.Id == user_id).Await();
+    }
+
+    private void another_user_exists()
+    {
+        testHarness.Bus.Publish(new UserUpserted
+        {
+            Id = another_user_id,
+            FullName = another_full_name,
+            Email = another_email
+        });
+        testHarness.Consumed.Any<UserUpserted>(x => x.Context.Message.Id == another_user_id).Await();
     }
 
     private void requesting_the_tickets()
@@ -153,6 +173,17 @@ public partial class TicketControllerSpecs : TruncateDbSpecification
             Encoding.UTF8,
             application_json);
         var response = client.PostAsync(EventTickets(event_id) + "/reserve", content).GetAwaiter().GetResult();
+        response_code = response.StatusCode;
+        content = response.Content;
+    }
+
+    private void another_user_purchasing_the_reserved_ticket()
+    {
+        content = new StringContent(
+            JsonSerialization.Serialize(new TicketPurchasePayload(another_user_id, ticket_ids.Take(1).ToArray())),
+            Encoding.UTF8,
+            application_json);
+        var response = client.PostAsync(EventTickets(event_id) + "/purchase", content).GetAwaiter().GetResult();
         response_code = response.StatusCode;
         content = response.Content;
     }
@@ -277,6 +308,13 @@ public partial class TicketControllerSpecs : TruncateDbSpecification
     }
 
     private void user_informed_they_cannot_reserve_an_already_reserved_ticket()
+    {
+        response_code.ShouldBe(HttpStatusCode.BadRequest);
+        var theError = JsonSerialization.Deserialize<ApiError>(content.ReadAsStringAsync().GetAwaiter().GetResult());
+        theError.Errors.ShouldContain("Tickets already reserved");
+    }
+
+    private void another_user_informed_they_cannot_purchase_a_reserved_ticket()
     {
         response_code.ShouldBe(HttpStatusCode.BadRequest);
         var theError = JsonSerialization.Deserialize<ApiError>(content.ReadAsStringAsync().GetAwaiter().GetResult());

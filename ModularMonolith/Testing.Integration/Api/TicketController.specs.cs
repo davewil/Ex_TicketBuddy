@@ -75,4 +75,16 @@ public partial class TicketControllerSpecs
         When(reserving_a_purchased_ticket);
         Then(user_informed_they_cannot_reserve_an_already_reserved_ticket);
     }
+    
+    [Test]
+    public void different_user_cannot_purchase_a_reserved_ticket()
+    {
+        Given(an_event_exists);
+        And(a_user_exists);
+        And(another_user_exists);
+        And(requesting_the_tickets);
+        And(reserving_a_ticket);
+        When(another_user_purchasing_the_reserved_ticket);
+        Then(another_user_informed_they_cannot_purchase_a_reserved_ticket);
+    }
 }

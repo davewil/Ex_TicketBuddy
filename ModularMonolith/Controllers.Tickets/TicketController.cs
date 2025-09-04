@@ -26,6 +26,10 @@ public class TicketController(
     [HttpPost(Routes.TicketsPurchase)]
     public async Task<ActionResult> PurchaseTickets([FromRoute] Guid id, [FromBody] TicketPurchasePayload payload)
     {
+        foreach (var ticketId in payload.ticketIds)
+        {
+            CheckIfTicketReservedForDifferentUser(id, ticketId, payload.userId);
+        }
         await WriteOnlyTicketRepository.PurchaseTickets(id, payload.userId, payload.ticketIds);
         return NoContent();
     }
@@ -43,7 +47,7 @@ public class TicketController(
         foreach (var ticketId in payload.ticketIds)
         {
             var reserved = await db.StringSetAsync(GetReservationKey(id, ticketId), payload.userId.ToString(), TimeSpan.FromMinutes(15), When.NotExists);
-            if (!reserved) throw new ValidationException($"Tickets already reserved");
+            if (!reserved) throw new ValidationException("Tickets already reserved");
         }
         return NoContent();
     }
@@ -58,5 +62,12 @@ public class TicketController(
             var value = db.StringGet(GetReservationKey(id, ticket.Id));
             if (value.HasValue) ticket.MarkTicketAsReserved();
         }
+    }
+    
+    private void CheckIfTicketReservedForDifferentUser(Guid eventId, Guid ticketId, Guid userId)
+    {
+        var db = connectionMultiplexer.GetDatabase();
+        var value = db.StringGet(GetReservationKey(eventId, ticketId));
+        if (value.HasValue && value != userId.ToString()) throw new ValidationException("Tickets already reserved");
     }
 }
