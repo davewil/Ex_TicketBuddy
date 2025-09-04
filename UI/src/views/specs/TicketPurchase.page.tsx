@@ -2,8 +2,7 @@
 import { MemoryRouter } from "react-router-dom";
 import { vi } from "vitest";
 import { userEvent } from "@testing-library/user-event";
-import { AppRoutes } from "../../App.tsx";
-import {Users} from "../../testing/data.ts";
+import { Main } from "../../App.tsx";
 
 vi.mock("../Tickets", () => {
   return {
@@ -13,16 +12,6 @@ vi.mock("../Tickets", () => {
   }
 });
 
-vi.mock("../../stores/users.store", () => {
-  return {
-    useUsersStore: () => {
-      return {
-        user: Users[0],
-      }
-    }
-  }
-})
-
 let renderedComponent: RenderResult;
 
 export function renderTicketPurchase(eventId: string, selectedTickets: any[] = [], eventData: any = null) {
@@ -30,7 +19,7 @@ export function renderTicketPurchase(eventId: string, selectedTickets: any[] = [
 
   renderedComponent = render(
     <MemoryRouter initialEntries={initialEntries}>
-      <AppRoutes />
+      <Main />
     </MemoryRouter>
   );
 

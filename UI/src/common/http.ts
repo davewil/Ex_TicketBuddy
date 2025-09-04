@@ -1,4 +1,6 @@
-﻿const api = import.meta.env.VITE_API_URL || '';
+﻿import {toast} from "react-toastify";
+
+const api = import.meta.env.VITE_API_URL || '';
 
 export async function get<T>(url: string): Promise<T> {
     return fetch(api + url, {})
@@ -16,7 +18,7 @@ export async function get<T>(url: string): Promise<T> {
 export async function post(url: string, body: unknown): Promise<unknown> {
     return fetch(api + url, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {"Content-Type": "application/json"},
         body: JSON.stringify(body)
     }).then(handleResponse())
 }
@@ -24,7 +26,7 @@ export async function post(url: string, body: unknown): Promise<unknown> {
 export async function put(url: string, body: unknown): Promise<unknown> {
     return fetch(api + url, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: {"Content-Type": "application/json"},
         body: JSON.stringify(body)
     }).then(handleResponse())
 }
@@ -40,6 +42,21 @@ export async function deleteCall(url: string): Promise<unknown> {
                 status: 0
             }
         })
+}
+
+export function handleError(error: ApiResponseError) {
+    if (error.errors && Array.isArray(error.errors)) {
+        error.errors.forEach((errorMessage: string) => {
+            toast.error(errorMessage);
+        });
+    } else {
+        toast.error('Failed to complete purchase. Please try again.');
+    }
+}
+
+export type ApiResponseError = {
+    errors: string[];
+    code: number;
 }
 
 function handleResponse(): ((value: Response) => unknown) | null | undefined {

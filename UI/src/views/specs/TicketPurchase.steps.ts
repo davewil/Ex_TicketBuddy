@@ -14,6 +14,7 @@ import {
 import { MockServer } from "../../testing/mock-server.ts";
 import { waitUntil } from "../../testing/utilities.ts";
 import {Events, TicketsForFirstEvent, Users} from "../../testing/data.ts";
+import { vi } from "vitest";
 
 const mockServer = MockServer.New();
 const event = Events[0];
@@ -22,6 +23,16 @@ const mockTickets = [
     TicketsForFirstEvent[1],
     TicketsForFirstEvent[2],
 ];
+
+vi.mock("../../stores/users.store", () => {
+    return {
+        useUsersStore: () => {
+            return {
+                user: Users[0],
+            }
+        }
+    }
+})
 
 let wait_for_post_purchase: () => boolean;
 

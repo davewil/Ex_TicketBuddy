@@ -2,7 +2,7 @@
 import {MemoryRouter} from "react-router-dom";
 import {vi} from "vitest";
 import {userEvent} from "@testing-library/user-event";
-import {AppRoutes} from "../../App.tsx";
+import {Main} from "../../App.tsx";
 
 vi.mock("../Home", () => {
     return {
@@ -29,7 +29,7 @@ let renderedComponent: RenderResult;
 export function renderTickets(eventId: string) {
     renderedComponent = render(
         <MemoryRouter initialEntries={[`/tickets/${eventId}`]}>
-            <AppRoutes/>
+            <Main/>
         </MemoryRouter>);
     return renderedComponent;
 }
@@ -74,6 +74,10 @@ export function purchasePageIsRendered() {
     return elements.purchasePageIsRendered() !== null;
 }
 
+export function errorToastIsDisplayed(errorMessage: string): boolean {
+    const toastElement = elements.toastElement(errorMessage);
+    return !!toastElement;
+}
 export const elements = {
     title: (eventName: string) => renderedComponent.getByRole('heading', {name: `Tickets for Event: ${eventName}`}),
     getSeatElement: (seatNumber: number)=> renderedComponent.container.querySelector(`[data-seat="${seatNumber}"]`),
@@ -83,4 +87,5 @@ export const elements = {
     proceedToPurchaseButton: () => renderedComponent.getByText('Proceed to Purchase'),
     getSelectedSeats: () => renderedComponent.container.querySelectorAll('.selected'),
     purchasePageIsRendered: () => renderedComponent.queryByTestId('purchase-page'),
+    toastElement: (errorMessage: string) => renderedComponent.queryByText(errorMessage),
 };

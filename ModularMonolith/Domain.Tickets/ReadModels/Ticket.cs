@@ -9,6 +9,7 @@ public class Ticket(Guid Id, Guid eventId, decimal price, uint SeatNumber, bool 
     public decimal Price { get; private set; } = price;
     public uint SeatNumber { get; private set; } = SeatNumber;
     public bool Purchased { get; private set; } = Purchased;
+    
     [NotMapped]
     public bool Reserved { get; private set; }
     public void MarkTicketAsReserved() => Reserved = true;

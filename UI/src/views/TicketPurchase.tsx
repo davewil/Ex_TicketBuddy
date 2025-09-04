@@ -3,7 +3,6 @@ import { useLocation, useNavigate, Link, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Button } from '../components/Button.styles';
 import { BackIcon } from './EventsManagement.styles';
-import { purchaseTickets } from '../api/events.api';
 import { type Ticket } from '../domain/ticket';
 import { type Event } from '../domain/event';
 import { useUsersStore } from '../stores/users.store';
@@ -23,6 +22,8 @@ import {
     ActionBar,
     SuccessMessage, CenteredButtonContainer
 } from './TicketPurchase.styles';
+import {purchaseTickets} from "../api/tickets.api.ts";
+import {handleError} from "../common/http.ts";
 
 interface LocationState {
   selectedTickets: Ticket[];
@@ -74,16 +75,7 @@ export const TicketPurchase = () => {
       }).then(() => {
               setPurchaseComplete(true);
           }
-      ).catch((error) => {
-          if (error.errors && Array.isArray(error.errors)) {
-                error.errors.forEach((errorMessage: string) => {
-                    toast.error(errorMessage);
-                });
-          }
-          else {
-              toast.error('Failed to complete purchase. Please try again.');
-          }
-      }).finally(() => {
+      ).catch(handleError).finally(() => {
           setPurchasing(false);
       });
   };

@@ -66,13 +66,13 @@ public partial class TicketControllerSpecs
     }
     
     [Test]
-    public void user_cannot_reserve_a_ticket_that_is_already_reserved()
+    public void another_user_cannot_reserve_a_ticket_that_is_already_reserved()
     {
         Given(an_event_exists);
         And(a_user_exists);
         And(requesting_the_tickets);
-        And(reserving_a_purchased_ticket);
-        When(reserving_a_purchased_ticket);
+        And(reserving_a_ticket);
+        When(another_user_reserving_a_ticket);
         Then(user_informed_they_cannot_reserve_an_already_reserved_ticket);
     }
     
@@ -97,5 +97,16 @@ public partial class TicketControllerSpecs
         And(reserving_a_ticket);
         When(the_user_purchases_their_reserved_ticket);
         Then(the_tickets_are_purchased);
+    }
+    
+    [Test]
+    public void same_user_can_extend_their_own_reservation()
+    {
+        Given(an_event_exists);
+        And(a_user_exists);
+        And(requesting_the_tickets);
+        And(reserving_a_ticket);
+        When(the_user_extends_their_reservation);
+        Then(the_ticket_is_reserved);
     }
 }

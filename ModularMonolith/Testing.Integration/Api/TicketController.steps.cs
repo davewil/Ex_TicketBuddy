@@ -166,20 +166,25 @@ public partial class TicketControllerSpecs : TruncateDbSpecification
         content = response.Content;
     }
 
-    private void the_user_purchases_their_reserved_ticket()
+    private void the_user_extends_their_reservation()
     {
-        purchasing_two_tickets();
+        reserving_a_ticket();
     }
 
-    private void reserving_a_purchased_ticket()
+    private void another_user_reserving_a_ticket()
     {
         content = new StringContent(
-            JsonSerialization.Serialize(new TicketReservationPayload(user_id, ticket_ids.Take(2).ToArray())),
+            JsonSerialization.Serialize(new TicketReservationPayload(another_user_id, ticket_ids.Take(1).ToArray())),
             Encoding.UTF8,
             application_json);
         var response = client.PostAsync(EventTickets(event_id) + "/reserve", content).GetAwaiter().GetResult();
         response_code = response.StatusCode;
         content = response.Content;
+    }
+
+    private void the_user_purchases_their_reserved_ticket()
+    {
+        purchasing_two_tickets();
     }
 
     private void another_user_purchasing_the_reserved_ticket()

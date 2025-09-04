@@ -43,10 +43,6 @@ export function venueFieldIsDisabled() {
     return venueSelect ? venueSelect.disabled : false;
 }
 
-export function getFormField(fieldName: string) {
-    return elements.theFormField(fieldName);
-}
-
 export async function fillEventForm(eventData: {
     eventName: string,
     startDate: string,

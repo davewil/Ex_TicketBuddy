@@ -11,20 +11,32 @@ import {
     clickSeat,
     getSelectedSeats,
     clickProceedToPurchaseButton,
-    purchasePageIsRendered
+    purchasePageIsRendered, errorToastIsDisplayed
 } from "./Tickets.page.tsx";
 import {waitUntil} from "../../testing/utilities.ts";
-import {Events, TicketsForFirstEvent} from "../../testing/data.ts";
+import {Events, TicketsForFirstEvent, Users} from "../../testing/data.ts";
+import { vi } from "vitest";
 
 const mockServer = MockServer.New();
 let wait_for_get_event: () => boolean;
 let wait_for_get_tickets: () => boolean;
+let wait_for_reserve_tickets: () => boolean;
 
+vi.mock("../../stores/users.store", () => {
+    return {
+        useUsersStore: () => {
+            return {
+                user: Users[0],
+            }
+        }
+    }
+})
 
 beforeEach(() => {
     mockServer.reset();
     wait_for_get_event = mockServer.get(`events/${Events[0].Id}`, Events[0]);
     wait_for_get_tickets = mockServer.get(`events/${Events[0].Id}/tickets`, TicketsForFirstEvent);
+    wait_for_reserve_tickets = mockServer.post(`/events/${Events[0].Id}/tickets/reserve`, {}, true);
     mockServer.start();
 });
 
@@ -67,7 +79,29 @@ export async function should_allow_selecting_multiple_seats_and_proceed_to_purch
     expect(getSelectedSeats().length).toBe(3);
 
     await clickProceedToPurchaseButton();
+    await waitUntil(wait_for_reserve_tickets);
     expect(purchasePageIsRendered()).toBeTruthy();
+}
+
+export async function should_show_error_if_fail_to_reserve_ticket() {
+    renderTickets(Events[0].Id);
+    await waitUntil(wait_for_get_event);
+    await waitUntil(wait_for_get_tickets);
+
+    mockServer.reset();
+    wait_for_reserve_tickets = mockServer.post(`/events/${Events[0].Id}/tickets/reserve`, { Errors: ["Tickets already reserved"] }, false);
+    mockServer.start();
+
+    await clickSeat(1);
+    await clickSeat(3);
+    await clickSeat(5);
+
+    expect(getSelectedSeats().length).toBe(3);
+
+    await clickProceedToPurchaseButton();
+    await waitUntil(wait_for_reserve_tickets);
+    await waitUntil(() => errorToastIsDisplayed("Tickets already reserved"));
+    expect(purchasePageIsRendered()).toBeFalsy();
 }
 
 export async function should_not_allow_selecting_a_purchased_ticket() {

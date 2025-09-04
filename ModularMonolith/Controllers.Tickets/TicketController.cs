@@ -19,7 +19,7 @@ public class TicketController(
     public async Task<IList<Ticket>> GetTickets([FromRoute] Guid id)
     {
         var tickets = await ReadOnlyTicketRepository.GetTicketsForEvent(id);
-        MarkTicketsWithReservationStatus(id, tickets);
+        await MarkTicketsWithReservationStatus(id, tickets);
         return tickets;
     }
 
@@ -28,7 +28,7 @@ public class TicketController(
     {
         foreach (var ticketId in payload.ticketIds)
         {
-            CheckIfTicketReservedForDifferentUser(id, ticketId, payload.userId);
+            await CheckIfTicketReservedForDifferentUser(id, ticketId, payload.userId);
         }
         await WriteOnlyTicketRepository.PurchaseTickets(id, payload.userId, payload.ticketIds);
         return NoContent();
@@ -43,31 +43,44 @@ public class TicketController(
     [HttpPost(Routes.TicketsReservation)]
     public async Task<ActionResult> ReserveTickets([FromRoute] Guid id, [FromBody] TicketReservationPayload payload)
     {
-        var db = connectionMultiplexer.GetDatabase();
         foreach (var ticketId in payload.ticketIds)
         {
-            var reserved = await db.StringSetAsync(GetReservationKey(id, ticketId), payload.userId.ToString(), TimeSpan.FromMinutes(15), When.NotExists);
-            if (!reserved) throw new ValidationException("Tickets already reserved");
+            await CheckIfTicketReservedForDifferentUser(id, ticketId, payload.userId);
+            await ExtendReservation(id, ticketId, payload.userId);
         }
         return NoContent();
     }
     
     private static string GetReservationKey(Guid eventId, Guid ticketId) => $"event:{eventId}:ticket:{ticketId}:reservation";
     
-    private void MarkTicketsWithReservationStatus(Guid id, IList<Ticket> tickets)
+    private async Task MarkTicketsWithReservationStatus(Guid id, IList<Ticket> tickets)
     {
         var db = connectionMultiplexer.GetDatabase();
         foreach (var ticket in tickets)
         {
-            var value = db.StringGet(GetReservationKey(id, ticket.Id));
+            var value = await db.StringGetAsync(GetReservationKey(id, ticket.Id));
             if (value.HasValue) ticket.MarkTicketAsReserved();
         }
     }
     
-    private void CheckIfTicketReservedForDifferentUser(Guid eventId, Guid ticketId, Guid userId)
+    private async Task CheckIfTicketReservedForDifferentUser(Guid eventId, Guid ticketId, Guid userId)
     {
         var db = connectionMultiplexer.GetDatabase();
-        var value = db.StringGet(GetReservationKey(eventId, ticketId));
+        var value = await db.StringGetAsync(GetReservationKey(eventId, ticketId));
         if (value.HasValue && value != userId.ToString()) throw new ValidationException("Tickets already reserved");
+    }
+    
+    private async Task ExtendReservation(Guid eventId, Guid ticketId, Guid userId)
+    {
+        var db = connectionMultiplexer.GetDatabase();
+        var value = await db.StringGetAsync(GetReservationKey(eventId, ticketId));
+        if (value.HasValue && value == userId.ToString())
+        {
+            await db.KeyExpireAsync(GetReservationKey(eventId, ticketId), TimeSpan.FromMinutes(15));
+        }
+        else
+        {
+            await db.StringSetAsync(GetReservationKey(eventId, ticketId), userId.ToString(), TimeSpan.FromMinutes(15));
+        }
     }
 }
