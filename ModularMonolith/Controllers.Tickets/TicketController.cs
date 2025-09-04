@@ -19,7 +19,7 @@ public class TicketController(
     public async Task<IList<Ticket>> GetTickets([FromRoute] Guid id)
     {
         var tickets = await ReadOnlyTicketRepository.GetTicketsForEvent(id);
-        DecorateTicketsWithReservationStatus(id, tickets);
+        MarkTicketsWithReservationStatus(id, tickets);
         return tickets;
     }
 
@@ -54,7 +54,7 @@ public class TicketController(
     
     private static string GetReservationKey(Guid eventId, Guid ticketId) => $"event:{eventId}:ticket:{ticketId}:reservation";
     
-    private void DecorateTicketsWithReservationStatus(Guid id, IList<Ticket> tickets)
+    private void MarkTicketsWithReservationStatus(Guid id, IList<Ticket> tickets)
     {
         var db = connectionMultiplexer.GetDatabase();
         foreach (var ticket in tickets)

@@ -289,7 +289,7 @@ public partial class TicketControllerSpecs : TruncateDbSpecification
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
         var tickets = JsonSerialization.Deserialize<IList<Ticket>>(response.Content.ReadAsStringAsync().Await());
         tickets.Count.ShouldBe(17);
-        var reservedTicket = tickets.Single(t => t.Id == ticket_ids[2]);
+        var reservedTicket = tickets.Single(t => t.Id == ticket_ids.Take(1).First());
         reservedTicket.Reserved.ShouldBeTrue();
     }
 
@@ -297,7 +297,7 @@ public partial class TicketControllerSpecs : TruncateDbSpecification
     {
         var cache = factory.Services.GetRequiredService<StackExchange.Redis.IConnectionMultiplexer>();
         var db = cache.GetDatabase();
-        var reservationKey = $"event:{event_id}:ticket:{ticket_ids[2]}:reservation";
+        var reservationKey = $"event:{event_id}:ticket:{ticket_ids.Take(1).First()}:reservation";
         var ttl = db.KeyTimeToLive(reservationKey);
         ttl.HasValue.ShouldBeTrue();
         ttl!.Value.TotalMinutes.ShouldBeLessThanOrEqualTo(15);
