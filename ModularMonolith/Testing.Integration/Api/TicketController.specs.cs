@@ -64,4 +64,15 @@ public partial class TicketControllerSpecs
         Then(the_ticket_is_reserved);
         And(the_reservation_expires_in_15_minutes);
     }
+    
+    [Test]
+    public void user_cannot_reserve_a_ticket_that_is_already_reserved()
+    {
+        Given(an_event_exists);
+        And(a_user_exists);
+        And(requesting_the_tickets);
+        And(reserving_a_purchased_ticket);
+        When(reserving_a_purchased_ticket);
+        Then(user_informed_they_cannot_reserve_an_already_reserved_ticket);
+    }
 }

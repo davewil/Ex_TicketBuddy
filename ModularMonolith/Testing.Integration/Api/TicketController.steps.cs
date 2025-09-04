@@ -138,7 +138,18 @@ public partial class TicketControllerSpecs : TruncateDbSpecification
     private void reserving_a_ticket()
     {
         content = new StringContent(
-            JsonSerialization.Serialize(new TicketReservationPayload(user_id, [ticket_ids[2]])),
+            JsonSerialization.Serialize(new TicketReservationPayload(user_id, ticket_ids.Take(1).ToArray())),
+            Encoding.UTF8,
+            application_json);
+        var response = client.PostAsync(EventTickets(event_id) + "/reserve", content).GetAwaiter().GetResult();
+        response_code = response.StatusCode;
+        content = response.Content;
+    }
+
+    private void reserving_a_purchased_ticket()
+    {
+        content = new StringContent(
+            JsonSerialization.Serialize(new TicketReservationPayload(user_id, ticket_ids.Take(2).ToArray())),
             Encoding.UTF8,
             application_json);
         var response = client.PostAsync(EventTickets(event_id) + "/reserve", content).GetAwaiter().GetResult();
@@ -263,6 +274,13 @@ public partial class TicketControllerSpecs : TruncateDbSpecification
         var keyValue = db.StringGet(reservationKey);
         keyValue.HasValue.ShouldBeTrue();
         keyValue.ToString().ShouldBe(user_id.ToString());
+    }
+
+    private void user_informed_they_cannot_reserve_an_already_reserved_ticket()
+    {
+        response_code.ShouldBe(HttpStatusCode.BadRequest);
+        var theError = JsonSerialization.Deserialize<ApiError>(content.ReadAsStringAsync().GetAwaiter().GetResult());
+        theError.Errors.ShouldContain("Tickets already reserved");
     }
     
     // [NotMapped] property in read model class affects serialization, so using a private class here for testing

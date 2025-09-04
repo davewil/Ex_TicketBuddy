@@ -1,4 +1,5 @@
-﻿using Controllers.Tickets.Requests;
+﻿using System.ComponentModel.DataAnnotations;
+using Controllers.Tickets.Requests;
 using Domain.Tickets.ReadModels;
 using Microsoft.AspNetCore.Mvc;
 using Persistence.Tickets.Commands;
@@ -42,7 +43,7 @@ public class TicketController(
         foreach (var ticketId in payload.ticketIds)
         {
             var reserved = await db.StringSetAsync(GetReservationKey(id, ticketId), payload.userId.ToString(), TimeSpan.FromMinutes(15), When.NotExists);
-            if (!reserved) return Conflict($"Ticket {ticketId} is already reserved.");
+            if (!reserved) throw new ValidationException($"Tickets already reserved");
         }
         return NoContent();
     }
