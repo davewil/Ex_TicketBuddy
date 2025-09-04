@@ -80,6 +80,7 @@ export async function should_allow_selecting_multiple_seats_and_proceed_to_purch
 
     await clickProceedToPurchaseButton();
     await waitUntil(wait_for_reserve_tickets);
+    await waitUntil(() => purchasePageIsRendered());
     expect(purchasePageIsRendered()).toBeTruthy();
 }
 
