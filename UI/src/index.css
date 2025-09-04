@@ -103,7 +103,7 @@ a:hover {
   color: var(--primary-300);
 }
 
-a::after {
+a:not(:has(button))::after {
   content: '';
   position: absolute;
   bottom: -2px;
@@ -114,7 +114,7 @@ a::after {
   transition: width var(--transition-normal);
 }
 
-a:hover::after {
+a:not(:has(button)):hover::after {
   width: 100%;
 }
 
