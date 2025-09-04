@@ -87,4 +87,15 @@ public partial class TicketControllerSpecs
         When(another_user_purchasing_the_reserved_ticket);
         Then(another_user_informed_they_cannot_purchase_a_reserved_ticket);
     }
+    
+    [Test]
+    public void a_user_can_purchase_their_own_reserved_ticket()
+    {
+        Given(an_event_exists);
+        And(a_user_exists);
+        And(requesting_the_tickets);
+        And(reserving_a_ticket);
+        When(the_user_purchases_their_reserved_ticket);
+        Then(the_tickets_are_purchased);
+    }
 }

@@ -166,6 +166,11 @@ public partial class TicketControllerSpecs : TruncateDbSpecification
         content = response.Content;
     }
 
+    private void the_user_purchases_their_reserved_ticket()
+    {
+        purchasing_two_tickets();
+    }
+
     private void reserving_a_purchased_ticket()
     {
         content = new StringContent(
