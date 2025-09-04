@@ -13,7 +13,6 @@ import {
     Legend,
     LegendItem,
     LegendColor,
-    EventTitle,
     SelectionInfo, CenteredButtonContainer
 } from './Tickets.styles';
 import {Button} from '../components/Button.styles';
@@ -22,6 +21,7 @@ import {getTicketsForEvent, reserveTickets} from "../api/tickets.api.ts";
 import {useUsersStore} from "../stores/users.store.ts";
 import {useShallow} from "zustand/react/shallow";
 import {handleError} from "../common/http.ts";
+import {PageTitle} from "./Common.styles.tsx";
 
 const SEATS_PER_ROW = 5;
 
@@ -143,13 +143,13 @@ export const Tickets = () => {
 
     return (
         <TicketsContainer>
+            <PageTitle>Tickets for Event: {event?.EventName}</PageTitle>
+
             <Link to="/">
                 <Button data-testid="back-button">
                     <BackIcon/> Back to Events
                 </Button>
             </Link>
-
-            <EventTitle>Tickets for Event: {event?.EventName}</EventTitle>
 
             <Legend>
                 <LegendItem>

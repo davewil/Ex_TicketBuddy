@@ -24,6 +24,7 @@ import {
 } from './TicketPurchase.styles';
 import {purchaseTickets} from "../api/tickets.api.ts";
 import {handleError} from "../common/http.ts";
+import {PageTitle} from "./Common.styles.tsx";
 
 interface LocationState {
   selectedTickets: Ticket[];
@@ -98,15 +99,15 @@ export const TicketPurchase = () => {
 
   return (
     <PurchaseContainer>
-      <ActionBar>
-        <Link to={`/tickets/${eventId}`}>
-          <Button>
-            <BackIcon /> Back to Seat Selection
-          </Button>
-        </Link>
-      </ActionBar>
+      <PageTitle>Ticket Purchase</PageTitle>
 
-      <PurchaseTitle>Ticket Purchase</PurchaseTitle>
+        <ActionBar>
+            <Link to={`/tickets/${eventId}`}>
+                <Button>
+                    <BackIcon /> Back to Seat Selection
+                </Button>
+            </Link>
+        </ActionBar>
 
       {purchaseComplete ? (
         <SuccessMessage>

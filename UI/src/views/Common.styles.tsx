@@ -126,26 +126,6 @@ export const PageTitle = styled.h1`
     }
 `;
 
-export const EmptyState = styled.div`
-    text-align: center;
-    padding: 80px 32px;
-    
-    h3 {
-        font-size: 1.5rem;
-        color: var(--gray-400);
-        margin: 0 0 16px 0;
-        font-weight: 600;
-    }
-    
-    p {
-        color: var(--gray-500);
-        font-size: 1rem;
-        max-width: 400px;
-        margin: 0 auto;
-        line-height: 1.6;
-    }
-`;
-
 export const LoadingSpinner = styled.div`
     display: flex;
     justify-content: center;
@@ -166,5 +146,21 @@ export const LoadingSpinner = styled.div`
         to {
             transform: rotate(360deg);
         }
+    }
+`;
+
+export const PageContainer = styled.div`
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+`;
+
+export const ActionBar = styled.div`
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 24px;
+    
+    @media (max-width: 768px) {
+        justify-content: center;
     }
 `;

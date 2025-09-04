@@ -90,11 +90,6 @@ export const LegendColor = styled.div<{ color: string }>`
   border-radius: 3px;
 `;
 
-export const EventTitle = styled.h1`
-  text-align: center;
-  margin-bottom: 2rem;
-`;
-
 export const SelectionInfo = styled.div`
   text-align: center;
   margin: 1.5rem 0;

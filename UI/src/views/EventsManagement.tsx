@@ -17,7 +17,7 @@ import {Link, Outlet, Route, Routes, useNavigate, useParams} from "react-router-
 import {Button} from "../components/Button.styles.tsx";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import {EventItem, EventList, PageTitle} from "./Common.styles.tsx";
+import {EventItem, EventList, PageTitle, PageContainer, ActionBar} from "./Common.styles.tsx";
 
 type EventFormData = {
     eventName: string;
@@ -60,29 +60,33 @@ export const ListEvents = () => {
     return (
         <>
             <PageTitle>Events Management</PageTitle>
-            <Link to="add">
-                <Button>
-                    Add Event <AddIcon/>
-                </Button>
-            </Link>
-            <EventList>
-                {events.map((event, index) => (
-                    <EventItem key={index} className="event-item">
-                        <EventContent>
-                            <h2>{event.EventName}</h2>
-                            <p>{moment(event.StartDate).format('MMMM Do YYYY, h:mm A')} to {moment(event.EndDate).format('MMMM Do YYYY, h:mm A')}</p>
-                            <p>Venue: {ConvertVenueToString(event.Venue)}</p>
-                        </EventContent>
-                        <EventActions>
-                            <Link to={`edit/${event.Id}`}>
-                                <Button data-testid={`edit-event-${event.EventName}`}>
-                                    Edit Event
-                                </Button>
-                            </Link>
-                        </EventActions>
-                    </EventItem>
-                ))}
-            </EventList>
+            <PageContainer>
+                <ActionBar>
+                    <Link to="add">
+                        <Button>
+                            Add Event <AddIcon/>
+                        </Button>
+                    </Link>
+                </ActionBar>
+                <EventList>
+                    {events.map((event, index) => (
+                        <EventItem key={index} className="event-item">
+                            <EventContent>
+                                <h2>{event.EventName}</h2>
+                                <p>{moment(event.StartDate).format('MMMM Do YYYY, h:mm A')} to {moment(event.EndDate).format('MMMM Do YYYY, h:mm A')}</p>
+                                <p>Venue: {ConvertVenueToString(event.Venue)}</p>
+                            </EventContent>
+                            <EventActions>
+                                <Link to={`edit/${event.Id}`}>
+                                    <Button data-testid={`edit-event-${event.EventName}`}>
+                                        Edit Event
+                                    </Button>
+                                </Link>
+                            </EventActions>
+                        </EventItem>
+                    ))}
+                </EventList>
+            </PageContainer>
         </>
     );
 }

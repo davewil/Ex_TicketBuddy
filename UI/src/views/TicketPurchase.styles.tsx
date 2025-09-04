@@ -57,29 +57,6 @@ export const TotalSection = styled.div`
   padding-top: 1rem;
 `;
 
-export const PurchaseButton = styled.button`
-  display: block;
-  width: 100%;
-  padding: 1rem;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  font-size: 1.2rem;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s;
-
-  &:hover {
-    background-color: #45a049;
-  }
-
-  &:disabled {
-    background-color: #cccccc;
-    cursor: not-allowed;
-  }
-`;
-
 export const ActionBar = styled.div`
   margin-bottom: 2rem;
 `;
