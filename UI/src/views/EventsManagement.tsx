@@ -17,7 +17,7 @@ import {Link, Outlet, Route, Routes, useNavigate, useParams} from "react-router-
 import {Button} from "../components/Button.styles.tsx";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import {EventItem, EventList} from "./Common.styles.tsx";
+import {EventItem, EventList, PageTitle} from "./Common.styles.tsx";
 
 type EventFormData = {
     eventName: string;
@@ -59,7 +59,7 @@ export const ListEvents = () => {
 
     return (
         <>
-            <h1>Events Management</h1>
+            <PageTitle>Events Management</PageTitle>
             <Link to="add">
                 <Button>
                     Add Event <AddIcon/>
@@ -160,7 +160,7 @@ export const EventForm = ({ mode }: EventFormProps) => {
 
     return (
         <>
-            <h1>Events Management</h1>
+            <PageTitle>Events Management</PageTitle>
             <Link to="/events-management">
                 <Button data-testid="back-button">
                     <BackIcon /> Back to Events
