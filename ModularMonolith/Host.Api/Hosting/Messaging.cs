@@ -1,7 +1,7 @@
-﻿using Domain.Events.Messaging;
+﻿using Application.Tickets;
+using Domain.Events.Messaging;
 using Integration.Tickets.Messaging.Inbound;
 using MassTransit;
-using Persistence.Tickets;
 using Users.Persistence;
 
 namespace Api.Hosting;

@@ -3,7 +3,7 @@ using Domain.Users.Entities;
 using Domain.Users.Primitives;
 using Shouldly;
 
-namespace Unit.Domain;
+namespace Unit;
 
 public partial class UserSpecs : Specification
 {

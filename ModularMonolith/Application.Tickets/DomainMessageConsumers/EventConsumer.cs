@@ -1,8 +1,8 @@
+using Domain.Tickets.Messages;
 using MassTransit;
 using Persistence.Tickets.Commands;
-using Persistence.Tickets.Messages;
 
-namespace Persistence.Tickets.Consumers
+namespace Application.Tickets.DomainMessageConsumers
 {
     public class EventConsumer(WriteOnlyTicketRepository writeOnlyTicketRepository, EventRepository eventRepository) : IConsumer<EventUpserted>
     {

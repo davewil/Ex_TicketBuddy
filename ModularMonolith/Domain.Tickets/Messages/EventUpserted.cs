@@ -1,6 +1,6 @@
 using Domain.Events.Primitives;
 
-namespace Persistence.Tickets.Messages;
+namespace Domain.Tickets.Messages;
 
 public record EventUpserted
 {

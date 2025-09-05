@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 
-namespace Unit.Domain;
+namespace Unit;
 
 public partial class EventSpecs
 {

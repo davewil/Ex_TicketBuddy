@@ -1,7 +1,7 @@
 using Domain.Tickets.Entities;
+using Domain.Tickets.Messages;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
-using Persistence.Tickets.Messages;
 using Event = Domain.Tickets.Entities.Event;
 
 namespace Persistence.Tickets.Commands;

@@ -3,7 +3,7 @@ using Domain.Events.Entities;
 using Domain.Events.Primitives;
 using FluentAssertions;
 
-namespace Unit.Domain;
+namespace Unit;
 
 public partial class EventSpecs : Specification
 {

@@ -1,11 +1,11 @@
 ﻿using Api.Hosting;
+using Application.Tickets;
 using Domain.Events.Messaging;
 using Integration.Tickets.Messaging.Inbound;
 using MassTransit;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
-using Persistence.Tickets;
 using Users.Persistence;
 
 namespace Integration;

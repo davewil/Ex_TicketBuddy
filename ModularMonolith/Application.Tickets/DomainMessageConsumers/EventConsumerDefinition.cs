@@ -1,7 +1,6 @@
 using MassTransit;
-using Persistence.Tickets.Consumers;
 
-namespace Domain.Events.Messaging.Consumers
+namespace Application.Tickets.DomainMessageConsumers
 {
     public class EventConsumerDefinition : ConsumerDefinition<EventConsumer>
     {

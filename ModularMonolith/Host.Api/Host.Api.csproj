@@ -41,6 +41,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Application.Tickets\Application.Tickets.csproj" />
       <ProjectReference Include="..\Controllers.Events\Controllers.Events.csproj" />
       <ProjectReference Include="..\Controllers.Tickets\Controllers.Tickets.csproj" />
       <ProjectReference Include="..\Controllers.Users\Controllers.Users.csproj" />

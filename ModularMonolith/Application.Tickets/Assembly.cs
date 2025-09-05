@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace Persistence.Tickets;
+namespace Application.Tickets;
 
 public static class TicketsDomainMessaging
 {
