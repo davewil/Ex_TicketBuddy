@@ -12,8 +12,9 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Application.Tickets\Application.Tickets.csproj" />
       <ProjectReference Include="..\Infrastructure.Tickets\Infrastructure.Tickets.csproj" />
-      <ProjectReference Include="..\Persistence.Tickets\Persistence.Tickets.csproj" />
+      <ProjectReference Include="..\Infrastructure.Tickets\Infrastructure.Tickets.csproj" />
     </ItemGroup>
 
 </Project>

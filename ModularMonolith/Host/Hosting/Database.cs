@@ -1,6 +1,7 @@
 ﻿using Events.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Infrastructure.Tickets.Commands;
+using Infrastructure.Tickets.Configuration;
 using Infrastructure.Tickets.Queries;
 using Users.Persistence;
 
@@ -30,25 +31,6 @@ internal static class Database
                     errorNumbersToAdd: null);
             });
         });
-        services.AddDbContext<TicketDbContext>(options =>
-        {
-            options.UseSqlServer(connectionString, sqlOptions =>
-            {
-                sqlOptions.EnableRetryOnFailure(
-                    maxRetryCount: 5,
-                    maxRetryDelay: TimeSpan.FromSeconds(30),
-                    errorNumbersToAdd: null);
-            });
-        });
-        services.AddDbContext<ReadOnlyTicketDbContext>(options =>
-        {
-            options.UseSqlServer(connectionString, sqlOptions =>
-            {
-                sqlOptions.EnableRetryOnFailure(
-                    maxRetryCount: 5,
-                    maxRetryDelay: TimeSpan.FromSeconds(30),
-                    errorNumbersToAdd: null);
-            });
-        });
+        services.ConfigureTicketsDatabase(connectionString);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 using Domain.Events;
 using Domain.Users;
+using Infrastructure.Tickets.Configuration;
 using OpenTelemetry;
 using WebHost;
 

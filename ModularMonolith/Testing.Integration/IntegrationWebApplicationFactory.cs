@@ -1,7 +1,7 @@
 ﻿using Api.Hosting;
 using Application.Tickets;
 using Domain.Events.Messaging;
-using Integration.Tickets.Messaging.Inbound;
+using Infrastructure.Tickets.Configuration;
 using MassTransit;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;

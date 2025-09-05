@@ -34,7 +34,7 @@ var migrations = builder.AddProject<Projects.Host_Migrations>("Migrations")
     .WaitFor(database)
     .WithEnvironment(Environment, CommonEnvironment.LocalDevelopment.ToString);
 
-var api = builder.AddProject<Projects.Host_Api>("Api")
+var api = builder.AddProject<Projects.Host>("Api")
     .WithReference(database)
     .WaitFor(database)
     .WithReference(migrations)

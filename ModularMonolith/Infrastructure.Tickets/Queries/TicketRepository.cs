@@ -1,9 +1,10 @@
-﻿using Domain.Tickets.ReadModels;
+﻿using Domain.Tickets.Contracts;
+using Domain.Tickets.ReadModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Tickets.Queries;
 
-public class ReadOnlyTicketRepository(ReadOnlyTicketDbContext context)
+public class QueryTicketRepository(ReadOnlyTicketDbContext context) : IAmATicketRepositoryForQueries
 {
     public async Task<IList<Ticket>> GetTicketsForEvent(Guid eventId)
     {

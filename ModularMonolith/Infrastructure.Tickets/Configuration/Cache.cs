@@ -1,6 +1,7 @@
-﻿using StackExchange.Redis;
+﻿using Microsoft.Extensions.DependencyInjection;
+using StackExchange.Redis;
 
-namespace Api.Hosting;
+namespace Infrastructure.Tickets.Configuration;
 
 public static class Cache
 {

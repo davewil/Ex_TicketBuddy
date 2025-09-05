@@ -1,86 +1,37 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Application.Tickets;
 using Controllers.Tickets.Requests;
 using Domain.Tickets.ReadModels;
 using Microsoft.AspNetCore.Mvc;
-using Infrastructure.Tickets.Commands;
-using Infrastructure.Tickets.Queries;
-using StackExchange.Redis;
 
 namespace Controllers.Tickets;
 
 [ApiController]
-public class TicketController(
-    WriteOnlyTicketRepository WriteOnlyTicketRepository,
-    ReadOnlyTicketRepository ReadOnlyTicketRepository,
-    IConnectionMultiplexer connectionMultiplexer)
+public class TicketController(ApplicationService ApplicationService)
     : ControllerBase
 {
     [HttpGet(Routes.Tickets)]
     public async Task<IList<Ticket>> GetTickets([FromRoute] Guid id)
     {
-        var tickets = await ReadOnlyTicketRepository.GetTicketsForEvent(id);
-        await MarkTicketsWithReservationStatus(id, tickets);
-        return tickets;
+        return await ApplicationService.GetTickets(id);
     }
 
     [HttpPost(Routes.TicketsPurchase)]
     public async Task<ActionResult> PurchaseTickets([FromRoute] Guid id, [FromBody] TicketPurchasePayload payload)
     {
-        foreach (var ticketId in payload.ticketIds)
-        {
-            await CheckIfTicketReservedForDifferentUser(id, ticketId, payload.userId);
-        }
-        await WriteOnlyTicketRepository.PurchaseTickets(id, payload.userId, payload.ticketIds);
+        await ApplicationService.PurchaseTickets(id, payload.userId, payload.ticketIds);
         return NoContent();
     }
 
     [HttpGet(Routes.TicketsPurchased)]
     public async Task<IList<Ticket>> GetTicketsForUser([FromRoute] Guid id, [FromRoute] Guid userId)
     {
-        return await ReadOnlyTicketRepository.GetTicketsForEventByUser(id, userId);
+        return await ApplicationService.GetTicketsForUser(id, userId);
     }
     
     [HttpPost(Routes.TicketsReservation)]
     public async Task<ActionResult> ReserveTickets([FromRoute] Guid id, [FromBody] TicketReservationPayload payload)
     {
-        foreach (var ticketId in payload.ticketIds)
-        {
-            await CheckIfTicketReservedForDifferentUser(id, ticketId, payload.userId);
-            await ExtendReservation(id, ticketId, payload.userId);
-        }
+        await ApplicationService.ReserveTickets(id, payload.userId, payload.ticketIds);
         return NoContent();
-    }
-    
-    private static string GetReservationKey(Guid eventId, Guid ticketId) => $"event:{eventId}:ticket:{ticketId}:reservation";
-    
-    private async Task MarkTicketsWithReservationStatus(Guid id, IList<Ticket> tickets)
-    {
-        var db = connectionMultiplexer.GetDatabase();
-        foreach (var ticket in tickets)
-        {
-            var value = await db.StringGetAsync(GetReservationKey(id, ticket.Id));
-            if (value.HasValue) ticket.MarkTicketAsReserved();
-        }
-    }
-    
-    private async Task CheckIfTicketReservedForDifferentUser(Guid eventId, Guid ticketId, Guid userId)
-    {
-        var db = connectionMultiplexer.GetDatabase();
-        var value = await db.StringGetAsync(GetReservationKey(eventId, ticketId));
-        if (value.HasValue && value != userId.ToString()) throw new ValidationException("Tickets already reserved");
-    }
-    
-    private async Task ExtendReservation(Guid eventId, Guid ticketId, Guid userId)
-    {
-        var db = connectionMultiplexer.GetDatabase();
-        var value = await db.StringGetAsync(GetReservationKey(eventId, ticketId));
-        if (value.HasValue && value == userId.ToString())
-        {
-            await db.KeyExpireAsync(GetReservationKey(eventId, ticketId), TimeSpan.FromMinutes(15));
-        }
-        else
-        {
-            await db.StringSetAsync(GetReservationKey(eventId, ticketId), userId.ToString(), TimeSpan.FromMinutes(15));
-        }
     }
 }

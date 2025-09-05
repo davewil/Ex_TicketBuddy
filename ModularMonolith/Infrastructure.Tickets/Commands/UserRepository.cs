@@ -1,8 +1,9 @@
-﻿using Domain.Tickets.Entities;
+﻿using Domain.Tickets.Contracts;
+using Domain.Tickets.Entities;
 
 namespace Infrastructure.Tickets.Commands;
 
-public class UserRepository(TicketDbContext ticketDbContext)
+public class UserRepository(TicketDbContext ticketDbContext) : IAmAUserRepository
 {
     public async Task Save(User theUser)
     {

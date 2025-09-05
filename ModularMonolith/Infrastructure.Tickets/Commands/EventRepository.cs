@@ -1,3 +1,4 @@
+using Domain.Tickets.Contracts;
 using Domain.Tickets.Entities;
 using Domain.Tickets.Messages;
 using MassTransit;
@@ -6,7 +7,7 @@ using Event = Domain.Tickets.Entities.Event;
 
 namespace Infrastructure.Tickets.Commands;
 
-public class EventRepository(TicketDbContext ticketDbContext, IPublishEndpoint publisher)
+public class EventRepository(TicketDbContext ticketDbContext, IPublishEndpoint publisher) : IAmAnEventRepository
 {
     public async Task Save(Event theEvent)
     {
