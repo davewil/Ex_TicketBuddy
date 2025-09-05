@@ -2,8 +2,8 @@
 using Controllers.Tickets.Requests;
 using Domain.Tickets.ReadModels;
 using Microsoft.AspNetCore.Mvc;
-using Persistence.Tickets.Commands;
-using Persistence.Tickets.Queries;
+using Infrastructure.Tickets.Commands;
+using Infrastructure.Tickets.Queries;
 using StackExchange.Redis;
 
 namespace Controllers.Tickets;

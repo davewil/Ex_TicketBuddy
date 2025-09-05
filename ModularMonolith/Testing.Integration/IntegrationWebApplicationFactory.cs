@@ -25,10 +25,7 @@ public class IntegrationWebApplicationFactory<TProgram>(string connectionString,
                 var applicationAssembly = EventsDomainMessaging.Assembly;
                 x.AddConsumers(applicationAssembly);
                 
-                var ticketsIntegrationInboundAssembly = TicketsIntegrationMessagingInbound.Assembly;
-                x.AddConsumers(ticketsIntegrationInboundAssembly);
-                
-                var ticketsDomainMessagingAssembly = TicketsDomainMessaging.Assembly;
+                var ticketsDomainMessagingAssembly = TicketsMessaging.Assembly;
                 x.AddConsumers(ticketsDomainMessagingAssembly);
 
                 var usersApplicationAssembly = UsersDomainMessaging.Assembly;

@@ -5,7 +5,7 @@ using Controllers.Events;
 using Controllers.Events.Requests;
 using Domain.Events.Entities;
 using Domain.Events.Primitives;
-using Integration.Events.Messaging.Outbound;
+using Integration.Events.Messaging;
 using MassTransit.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Migrations;

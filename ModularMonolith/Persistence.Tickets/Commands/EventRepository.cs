@@ -4,7 +4,7 @@ using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Event = Domain.Tickets.Entities.Event;
 
-namespace Persistence.Tickets.Commands;
+namespace Infrastructure.Tickets.Commands;
 
 public class EventRepository(TicketDbContext ticketDbContext, IPublishEndpoint publisher)
 {

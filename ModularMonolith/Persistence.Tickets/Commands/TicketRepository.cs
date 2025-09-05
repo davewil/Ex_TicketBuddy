@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 
-namespace Persistence.Tickets.Commands;
+namespace Infrastructure.Tickets.Commands;
 
 public class WriteOnlyTicketRepository(TicketDbContext context)
 {

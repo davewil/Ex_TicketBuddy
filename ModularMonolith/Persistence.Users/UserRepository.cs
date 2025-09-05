@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Domain.Users.Entities;
 using Domain.Users.Primitives;
+using Integration.Users.Messaging.Messages;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,7 +22,7 @@ public class UserRepository(UserDbContext userDbContext, IPublishEndpoint publis
         userDbContext.Add(theUser);
         await userDbContext.SaveChangesAsync();
 
-        await publishEndpoint.Publish(new Integration.Users.Messaging.Outbound.Messages.UserUpserted
+        await publishEndpoint.Publish(new UserUpserted
         {
             Id = theUser.Id,
             FullName = theUser.FullName,
@@ -42,7 +43,7 @@ public class UserRepository(UserDbContext userDbContext, IPublishEndpoint publis
 
         await userDbContext.SaveChangesAsync();
 
-        await publishEndpoint.Publish(new Integration.Users.Messaging.Outbound.Messages.UserUpserted
+        await publishEndpoint.Publish(new UserUpserted
         {
             Id = existingUser.Id,
             FullName = existingUser.FullName,

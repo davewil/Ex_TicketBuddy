@@ -1,6 +1,6 @@
 using Domain.Tickets.Messages;
 using MassTransit;
-using Persistence.Tickets.Commands;
+using Infrastructure.Tickets.Commands;
 
 namespace Application.Tickets.DomainMessageConsumers
 {

@@ -1,7 +1,7 @@
-using Integration.Tickets.Messaging.Inbound.Consumers;
+using Application.Tickets.IntegrationMessageConsumers;
 using MassTransit;
 
-namespace Tickets.Integration.Messaging.Inbound.Consumers
+namespace Integration.Tickets.Messaging.Inbound.Consumers
 {
     public class UserConsumerDefinition : ConsumerDefinition<UserConsumer>
     {

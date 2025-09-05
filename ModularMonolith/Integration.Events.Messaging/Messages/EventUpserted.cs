@@ -1,6 +1,6 @@
 using Domain.Events.Primitives;
 
-namespace Integration.Events.Messaging.Outbound;
+namespace Integration.Events.Messaging;
 
 public record EventUpserted
 {

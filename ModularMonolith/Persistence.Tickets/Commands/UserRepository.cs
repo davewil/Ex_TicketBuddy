@@ -1,6 +1,6 @@
 ﻿using Domain.Tickets.Entities;
 
-namespace Persistence.Tickets.Commands;
+namespace Infrastructure.Tickets.Commands;
 
 public class UserRepository(TicketDbContext ticketDbContext)
 {

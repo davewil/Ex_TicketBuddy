@@ -1,7 +1,7 @@
 ﻿using Events.Persistence;
 using Microsoft.EntityFrameworkCore;
-using Persistence.Tickets.Commands;
-using Persistence.Tickets.Queries;
+using Infrastructure.Tickets.Commands;
+using Infrastructure.Tickets.Queries;
 using Users.Persistence;
 
 namespace Api.Hosting;

@@ -3,7 +3,7 @@ using Domain.Tickets.Primitives;
 using Microsoft.EntityFrameworkCore;
 using Event = Domain.Tickets.Entities.Event;
 
-namespace Persistence.Tickets.Commands;
+namespace Infrastructure.Tickets.Commands;
 
 public class TicketDbContext(DbContextOptions<TicketDbContext> options) : DbContext(options)
 {

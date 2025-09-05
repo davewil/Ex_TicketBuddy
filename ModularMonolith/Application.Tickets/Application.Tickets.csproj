@@ -7,6 +7,9 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Infrastructure.Tickets\Infrastructure.Tickets.csproj" />
+      <ProjectReference Include="..\Integration.Events.Messaging\Integration.Events.Messaging.csproj" />
+      <ProjectReference Include="..\Integration.Users.Messaging\Integration.Users.Messaging.csproj" />
       <ProjectReference Include="..\Persistence.Tickets\Persistence.Tickets.csproj" />
     </ItemGroup>
 

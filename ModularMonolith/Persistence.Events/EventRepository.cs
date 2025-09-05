@@ -19,7 +19,7 @@ public class EventRepository(EventDbContext eventDbContext, IPublishEndpoint pub
 
         await eventDbContext.SaveChangesAsync();
         
-        await publishEndpoint.Publish(new Integration.Events.Messaging.Outbound.EventUpserted
+        await publishEndpoint.Publish(new Integration.Events.Messaging.EventUpserted
         {
             Id = theEvent.Id, 
             EventName = theEvent.EventName,
@@ -44,7 +44,7 @@ public class EventRepository(EventDbContext eventDbContext, IPublishEndpoint pub
         eventDbContext.Update(@event);
         await eventDbContext.SaveChangesAsync();
         
-        await publishEndpoint.Publish(new Integration.Events.Messaging.Outbound.EventUpserted
+        await publishEndpoint.Publish(new Integration.Events.Messaging.EventUpserted
         {
             Id = @event.Id, 
             EventName = @event.EventName,

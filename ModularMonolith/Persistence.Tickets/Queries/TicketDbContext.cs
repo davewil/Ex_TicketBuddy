@@ -1,7 +1,7 @@
 ﻿using Domain.Tickets.ReadModels;
 using Microsoft.EntityFrameworkCore;
 
-namespace Persistence.Tickets.Queries;
+namespace Infrastructure.Tickets.Queries;
 
 public class ReadOnlyTicketDbContext(DbContextOptions<ReadOnlyTicketDbContext> options) : DbContext(options)
 {
