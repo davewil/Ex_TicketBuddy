@@ -129,7 +129,7 @@ public partial class EventControllerSpecs : TruncateDbSpecification
 
     private void a_request_to_update_the_event_with_a_venue_and_time_that_will_double_book()
     {
-        create_update_content(new_name, event_start_date, event_end_date, new_price);
+        create_update_content(new_name, new_event_start_date, new_event_end_date, new_price);
     }
 
     private void creating_the_event()
