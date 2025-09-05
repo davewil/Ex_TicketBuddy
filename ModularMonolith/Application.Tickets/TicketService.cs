@@ -5,7 +5,7 @@ using StackExchange.Redis;
 
 namespace Application.Tickets;
 
-public class ApplicationService(
+public class TicketService(
     IAmATicketRepositoryForCommands CommandTicketRepository,
     IAmATicketRepositoryForQueries QueryTicketRepository,
     IConnectionMultiplexer connectionMultiplexer)

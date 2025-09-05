@@ -7,13 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Application.Events\Application.Events.csproj" />
       <ProjectReference Include="..\Domain.Events\Domain.Events.csproj" />
-      <ProjectReference Include="..\Infrastructure.Events\Infrastructure.Events.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.3.0" />
     </ItemGroup>
 
 </Project>

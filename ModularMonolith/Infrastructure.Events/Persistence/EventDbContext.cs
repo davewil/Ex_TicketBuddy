@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Event = Domain.Events.Entities.Event;
 
-namespace Events.Persistence;
+namespace Infrastructure.Events.Persistence;
 
 public class EventDbContext(DbContextOptions<EventDbContext> options) : DbContext(options)
 {

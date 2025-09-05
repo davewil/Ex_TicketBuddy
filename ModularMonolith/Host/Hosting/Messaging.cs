@@ -1,8 +1,6 @@
 ﻿using Application.Tickets;
-using Domain.Events.Messaging;
 using Integration.Users.Messaging.Messages;
 using MassTransit;
-using Users.Persistence;
 
 namespace Api.Hosting;
 
@@ -13,15 +11,10 @@ internal static class Messaging
         services.AddMassTransit(x =>
         {
             x.SetKebabCaseEndpointNameFormatter();
-            var eventsDomainAssembly = EventsDomainMessaging.Assembly;
-            x.AddConsumers(eventsDomainAssembly);
             
             var ticketsMessagingAssembly = TicketsMessaging.Assembly;
             x.AddConsumers(ticketsMessagingAssembly);
             
-            var usersDomainAssembly = UsersDomainMessaging.Assembly;
-            x.AddConsumers(usersDomainAssembly);
-
             x.UsingRabbitMq((context, cfg) =>
             {
                 cfg.Host(settings.RabbitMq.ConnectionString);

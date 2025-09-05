@@ -11,6 +11,6 @@ public static class Services
         services.AddScoped<IAmAnEventRepository, Commands.EventRepository>();
         services.AddScoped<IAmATicketRepositoryForCommands, Commands.CommandTicketRepository>();
         services.AddScoped<IAmATicketRepositoryForQueries, Queries.QueryTicketRepository>();
-        services.AddScoped<ApplicationService>();
+        services.AddScoped<TicketService>();
     }
 }
