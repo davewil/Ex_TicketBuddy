@@ -1,5 +1,4 @@
-﻿using Application.Tickets;
-using Infrastructure.Tickets.Configuration;
+﻿using Infrastructure.Tickets.Configuration;
 using MassTransit;
 
 namespace Api.Hosting;
@@ -11,10 +10,7 @@ internal static class Messaging
         services.AddMassTransit(x =>
         {
             x.SetKebabCaseEndpointNameFormatter();
-            
-            var ticketsMessagingAssembly = TicketsMessaging.Assembly;
-            x.AddConsumers(ticketsMessagingAssembly);
-            
+            x.AddTicketsConsumers();
             x.UsingRabbitMq((context, cfg) =>
             {
                 cfg.Host(settings.RabbitMq.ConnectionString);

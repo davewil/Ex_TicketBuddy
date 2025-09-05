@@ -3,7 +3,7 @@ using Domain.Tickets.Entities;
 using Domain.Tickets.Messages;
 using MassTransit;
 
-namespace Application.Tickets.DomainMessageConsumers
+namespace Domain.Tickets.DomainMessageConsumers
 {
     public class EventConsumer(IAmATicketRepositoryForCommands commandTicketRepository, IAmAnEventRepository eventRepository) : IConsumer<EventUpserted>
     {

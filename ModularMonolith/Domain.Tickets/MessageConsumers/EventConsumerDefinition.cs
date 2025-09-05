@@ -1,6 +1,7 @@
+using Domain.Tickets.DomainMessageConsumers;
 using MassTransit;
 
-namespace Application.Tickets.DomainMessageConsumers
+namespace Domain.Tickets.MessageConsumers
 {
     public class EventConsumerDefinition : ConsumerDefinition<EventConsumer>
     {

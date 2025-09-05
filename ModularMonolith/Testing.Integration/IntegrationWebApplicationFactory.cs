@@ -1,5 +1,4 @@
 ﻿using Api.Hosting;
-using Application.Tickets;
 using Infrastructure.Tickets.Configuration;
 using MassTransit;
 using Microsoft.AspNetCore.Hosting;
@@ -20,8 +19,7 @@ public class IntegrationWebApplicationFactory<TProgram>(string connectionString,
             services.ConfigureServices();
             services.AddMassTransitTestHarness(x =>
             {
-                var ticketsDomainMessagingAssembly = TicketsMessaging.Assembly;
-                x.AddConsumers(ticketsDomainMessagingAssembly);
+                x.AddTicketsConsumers();
             });
         });
 
