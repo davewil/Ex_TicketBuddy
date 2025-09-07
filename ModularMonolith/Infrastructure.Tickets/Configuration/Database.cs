@@ -1,5 +1,4 @@
 ﻿using Infrastructure.Tickets.Commands;
-using Infrastructure.Tickets.Queries;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -19,15 +18,6 @@ public static class Database
                     errorNumbersToAdd: null);
             });
         });
-        services.AddDbContext<ReadOnlyTicketDbContext>(options =>
-        {
-            options.UseSqlServer(connectionString, sqlOptions =>
-            {
-                sqlOptions.EnableRetryOnFailure(
-                    maxRetryCount: 5,
-                    maxRetryDelay: TimeSpan.FromSeconds(30),
-                    errorNumbersToAdd: null);
-            });
-        });
+        services.AddScoped<Queries.Database>(_ => new Queries.Database(connectionString));
     }
 }
