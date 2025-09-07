@@ -80,6 +80,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Tickets", "I
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Events", "Application.Events\Application.Events.csproj", "{D8D92C00-2B1D-4D27-94FD-1B62199C019F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{1A4726D8-B822-4B08-9C71-BB82C14A589F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -182,6 +184,10 @@ Global
 		{D8D92C00-2B1D-4D27-94FD-1B62199C019F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D8D92C00-2B1D-4D27-94FD-1B62199C019F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D8D92C00-2B1D-4D27-94FD-1B62199C019F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A4726D8-B822-4B08-9C71-BB82C14A589F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A4726D8-B822-4B08-9C71-BB82C14A589F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A4726D8-B822-4B08-9C71-BB82C14A589F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A4726D8-B822-4B08-9C71-BB82C14A589F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -213,5 +219,6 @@ Global
 		{D9A0303E-7D66-4C6C-A220-5181A3C7257E} = {BFAD1DFA-E07E-4062-98FB-54AC88B5EA9D}
 		{A03C1592-C3C9-40AE-933B-07ACBC2399D6} = {CCE57025-2696-4882-A2CA-DEB5F8413740}
 		{D8D92C00-2B1D-4D27-94FD-1B62199C019F} = {DC0A904F-65DE-46AF-AA71-CF63E2803A64}
+		{1A4726D8-B822-4B08-9C71-BB82C14A589F} = {B27BEC3F-9630-4040-83C5-60B309ADC70A}
 	EndGlobalSection
 EndGlobal

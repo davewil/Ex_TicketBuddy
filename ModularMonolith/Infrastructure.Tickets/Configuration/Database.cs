@@ -1,6 +1,7 @@
 ﻿using Infrastructure.Tickets.Commands;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using TheDatabase = Infrastructure.Queries.Database;
 
 namespace Infrastructure.Tickets.Configuration;
 
@@ -18,6 +19,6 @@ public static class Database
                     errorNumbersToAdd: null);
             });
         });
-        services.AddScoped<Queries.Database>(_ => new Queries.Database(connectionString));
+        services.AddScoped<TheDatabase>(_ => new TheDatabase(connectionString));
     }
 }

@@ -7,9 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Dapper" Version="2.1.66" />
         <PackageReference Include="MassTransit.RabbitMQ" Version="8.5.1" />
-        <PackageReference Include="Microsoft.Data.SqlClient" Version="6.1.1" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.7" />
         <PackageReference Include="StackExchange.Redis" Version="2.9.11" />
     </ItemGroup>
@@ -17,6 +15,7 @@
     <ItemGroup>
       <ProjectReference Include="..\Application.Tickets\Application.Tickets.csproj" />
       <ProjectReference Include="..\Domain.Tickets\Domain.Tickets.csproj" />
+      <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>

@@ -3,7 +3,7 @@ using Dapper;
 using Domain;
 using Microsoft.Data.SqlClient;
 
-namespace Infrastructure.Tickets.Queries
+namespace Infrastructure.Queries
 {
     public class Database
     {
