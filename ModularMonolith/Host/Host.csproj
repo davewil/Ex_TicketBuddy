@@ -46,5 +46,6 @@
       <ProjectReference Include="..\Controllers.Tickets\Controllers.Tickets.csproj" />
       <ProjectReference Include="..\Controllers.Users\Controllers.Users.csproj" />
       <ProjectReference Include="..\Infrastructure.Tickets\Infrastructure.Tickets.csproj" />
+      <ProjectReference Include="..\Infrastructure.Users\Infrastructure.Users.csproj" />
     </ItemGroup>
 </Project>

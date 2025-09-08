@@ -1,0 +1,46 @@
+﻿using System.ComponentModel.DataAnnotations;
+using Domain.Users.Contracts;
+using Domain.Users.Entities;
+using Domain.Users.Primitives;
+
+namespace Application.Users;
+
+public class UserService(IAmAUserRepository UserRepository)
+{
+    public async Task<IList<User>> GetUsers()
+    {
+        return await UserRepository.GetAll();
+    }
+
+    public async Task<User?> Get(Guid id)
+    {
+        return await UserRepository.Get(id);
+    }
+    
+    public async Task<Guid> CreateUser(FullName fullName, Email email, UserType userType)
+    {
+        var id = Guid.NewGuid();
+        var user = new User(id, fullName, email, userType);
+        if (await IsEmailAlreadyUsedByOtherUser(user.Id, user.Email)) throw new ValidationException("Email already exists");
+
+        await UserRepository.Add(user);
+        return user.Id;
+    }
+
+    public async Task UpdateUser(Guid id, FullName fullName, Email email)
+    {
+        if (await IsEmailAlreadyUsedByOtherUser(id, email)) throw new ValidationException("Email already exists");
+        var existingUser = await Get(id);
+
+        if (existingUser is null) throw new ValidationException("User does not exist");
+        
+        existingUser.UpdateName(fullName);
+        existingUser.UpdateEmail(email);
+        await UserRepository.Update(existingUser);
+    }
+    
+    private async Task<bool> IsEmailAlreadyUsedByOtherUser(Guid userId, string email)
+    {
+        return (await UserRepository.GetAll()).Any(u => u.Email == email && u.Id != userId);
+    }
+}
