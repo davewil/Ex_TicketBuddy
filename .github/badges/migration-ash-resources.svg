@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="154" height="20" role="img" aria-label="migration: 63% (5/8)">
+<svg xmlns="http://www.w3.org/2000/svg" width="154" height="20" role="img" aria-label="migration: 75% (6/8)">
   <linearGradient id="s" x2="0" y2="100%">
     <stop offset="0" stop-color="#bbb" stop-opacity=".1"/>
     <stop offset="1" stop-opacity=".1"/>
@@ -9,11 +9,11 @@
   </mask>
   <g mask="url(#m)">
     <rect width="74" height="20" fill="#555"/>
-    <rect x="74" width="80" height="20" fill="#dfb317"/>
+    <rect x="74" width="80" height="20" fill="#97CA00"/>
     <rect width="154" height="20" fill="url(#s)"/>
   </g>
   <g fill="#fff" text-anchor="middle" font-family="Verdana,Geneva,DejaVu Sans,sans-serif" font-size="11">
     <text x="37" y="15">migration</text>
-    <text x="114" y="15">63% (5/8)</text>
+    <text x="114" y="15">75% (6/8)</text>
   </g>
 </svg>
