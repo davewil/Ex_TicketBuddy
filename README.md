@@ -48,11 +48,30 @@ Docs: [Modular Monolith](./ModularMonolith/README.md)
 
 Docs: [Microservices](./Microservices/README.md)
 
+### Elixir/BEAM Target (In Progress)
+
+- Phoenix umbrella with Ash framework and AshPostgres
+- Broadway for RabbitMQ messaging, Oban for background jobs
+- OpenTelemetry integration for observability continuity
+
+Docs: [Elixir Setup](./Elixir/README.md)
+
 ### Target Elixir/BEAM backend
 
-- Phoenix umbrella with bounded contexts (Events, Users, Tickets)
-- Ash resources + AshPostgres, Broadway (RabbitMQ), Oban, OpenTelemetry
+- Phoenix umbrella with bounded contexts (Events, Users, Tickets) ✅
+- Ash resources + AshPostgres, Broadway (RabbitMQ), Oban, OpenTelemetry 🔄
 - Gradual cutover while keeping APIs and message contracts stable
+
+**Current Status**: Foundation complete with Ash framework integrated. Core Ash resources created for all three bounded contexts (Events, Users, Tickets) with proper domain modeling. Phoenix server runs successfully with health endpoint operational.
+
+**Recent Progress**:
+
+- ✅ Phoenix umbrella scaffolding with 6 apps
+- ✅ All core dependencies (Phoenix, Ash, Broadway, Oban, OpenTelemetry)
+- ✅ Ecto repositories and Postgres connectivity
+- ✅ Ash.Domain pattern implementation for modern Ash architecture
+- ✅ Working health API endpoint
+- 🔄 Ash resources (Events, Users, Tickets domains created)
 
 Plan: see `plans/concise_elixir_migration.md`
 
@@ -60,6 +79,7 @@ Plan: see `plans/concise_elixir_migration.md`
 
 - `ModularMonolith/` – .NET modular monolith solution
 - `Microservices/` – .NET microservices solution
+- `Elixir/` – Phoenix umbrella with Ash framework (migration target)
 - `UI/` – React + Vite client
 - `plans/` – Migration plan, checklist, and automation scripts
 - `.github/workflows/` – CI and migration badge automation

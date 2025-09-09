@@ -1,4 +1,5 @@
 # Applies a minimal fix to rabbit_common for OTP 28 by replacing an undefined macro in rabbit_cert_info.erl
+# rabbit_common is not currently supported for OTP 28. This is an AI generated patch. That probably doesn't work.
 param(
     [string]$UmbrellaPath = "$PSScriptRoot\..\ticket_buddy_umbrella"
 )
