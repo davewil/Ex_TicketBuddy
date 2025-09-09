@@ -31,14 +31,15 @@ defmodule CoreEvents.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-  {:ecto_sql, "~> 3.13"},
-  {:postgrex, ">= 0.0.0"},
-  {:shared_telemetry, in_umbrella: true},
-  {:ash, "~> 3.5"},
-  {:ash_postgres, "~> 2.6"},
-  {:spark, "~> 2.2", runtime: false},
-  {:ash_json_api, "~> 1.4"},
-  {:picosat_elixir, "~> 0.2"}
+      {:ecto_sql, "~> 3.13"},
+      {:postgrex, ">= 0.0.0"},
+      {:shared_telemetry, in_umbrella: true},
+      {:ash, "~> 3.5"},
+      {:ash_postgres, "~> 2.6"},
+      {:spark, "~> 2.2", runtime: false},
+      {:ash_json_api, "~> 1.4"},
+      {:picosat_elixir, "~> 0.2"},
+      {:ash_oban, "~> 0.4.12"}
     ]
   end
 end

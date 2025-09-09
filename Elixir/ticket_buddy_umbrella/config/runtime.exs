@@ -67,6 +67,7 @@ if config_env() == :prod do
     url: tickets_db_url,
     pool_size: String.to_integer(System.get_env("CORE_TICKETS_POOL_SIZE") || "10")
 
+  config :tidewave, :root, File.cwd!()
   # ## SSL Support
   #
   # To get SSL working, you will need to add the `https` key

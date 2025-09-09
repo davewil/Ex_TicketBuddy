@@ -14,10 +14,11 @@ defmodule CoreUsers.SimpleTest do
   end
 
   test "reads user with Ash.get" do
-    {:ok, user} = Ash.create(CoreUsers.UserResource, %{
-      name: "Test User",
-      email: "test@example.com"
-    })
+    {:ok, user} =
+      Ash.create(CoreUsers.UserResource, %{
+        name: "Test User",
+        email: "test@example.com"
+      })
 
     assert {:ok, fetched_user} = Ash.get(CoreUsers.UserResource, user.id)
     assert fetched_user.id == user.id

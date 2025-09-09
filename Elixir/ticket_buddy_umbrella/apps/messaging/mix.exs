@@ -18,19 +18,20 @@ defmodule Messaging.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      extra_applications: [:logger]
+      extra_applications: [:logger],
+      mod: {Messaging.Application, []}
     ]
   end
 
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-  {:broadway, "~> 1.0"},
-  {:broadway_rabbitmq, "~> 0.7"},
-  {:oban, "~> 2.17"},
-  {:ecto_sql, "~> 3.11"},
-  {:postgrex, ">= 0.0.0"},
-  {:shared_telemetry, in_umbrella: true}
+      {:broadway, "~> 1.0"},
+      {:broadway_rabbitmq, "~> 0.7"},
+      {:oban, "~> 2.17"},
+      {:ecto_sql, "~> 3.11"},
+      {:postgrex, ">= 0.0.0"},
+      {:shared_telemetry, in_umbrella: true}
     ]
   end
 end

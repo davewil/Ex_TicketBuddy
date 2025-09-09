@@ -6,18 +6,20 @@ defmodule ApiGatewayWeb.AshJsonApiTest do
   describe "Users API" do
     setup do
       # Create test user
-  {:ok, user} = Ash.create(CoreUsers.UserResource, %{
-        name: "Test User",
-        email: "test@example.com"
-      })
+      {:ok, user} =
+        Ash.create(CoreUsers.UserResource, %{
+          name: "Test User",
+          email: "test@example.com"
+        })
 
       %{user: user}
     end
 
     test "GET /api/users returns list of users", %{conn: conn} do
-      conn = conn
-      |> put_req_header("accept", "application/vnd.api+json")
-      |> get("/api/users")
+      conn =
+        conn
+        |> put_req_header("accept", "application/vnd.api+json")
+        |> get("/api/users")
 
       assert json_response(conn, 200)
       response = json_response(conn, 200)
@@ -27,9 +29,10 @@ defmodule ApiGatewayWeb.AshJsonApiTest do
     end
 
     test "GET /api/users/:id returns a specific user", %{conn: conn, user: user} do
-      conn = conn
-      |> put_req_header("accept", "application/vnd.api+json")
-      |> get("/api/users/#{user.id}")
+      conn =
+        conn
+        |> put_req_header("accept", "application/vnd.api+json")
+        |> get("/api/users/#{user.id}")
 
       assert json_response(conn, 200)
       response = json_response(conn, 200)
@@ -49,10 +52,11 @@ defmodule ApiGatewayWeb.AshJsonApiTest do
         }
       }
 
-      conn = conn
-      |> put_req_header("accept", "application/vnd.api+json")
-      |> put_req_header("content-type", "application/vnd.api+json")
-      |> post("/api/users", user_data)
+      conn =
+        conn
+        |> put_req_header("accept", "application/vnd.api+json")
+        |> put_req_header("content-type", "application/vnd.api+json")
+        |> post("/api/users", user_data)
 
       assert json_response(conn, 201)
       response = json_response(conn, 201)
@@ -71,10 +75,11 @@ defmodule ApiGatewayWeb.AshJsonApiTest do
         }
       }
 
-      conn = conn
-      |> put_req_header("accept", "application/vnd.api+json")
-      |> put_req_header("content-type", "application/vnd.api+json")
-      |> patch("/api/users/#{user.id}", update_data)
+      conn =
+        conn
+        |> put_req_header("accept", "application/vnd.api+json")
+        |> put_req_header("content-type", "application/vnd.api+json")
+        |> patch("/api/users/#{user.id}", update_data)
 
       assert json_response(conn, 200)
       response = json_response(conn, 200)
@@ -83,9 +88,10 @@ defmodule ApiGatewayWeb.AshJsonApiTest do
     end
 
     test "DELETE /api/users/:id deletes a user", %{conn: conn, user: user} do
-      conn = conn
-      |> put_req_header("accept", "application/vnd.api+json")
-      |> delete("/api/users/#{user.id}")
+      conn =
+        conn
+        |> put_req_header("accept", "application/vnd.api+json")
+        |> delete("/api/users/#{user.id}")
 
       assert json_response(conn, 200)
       # Optionally verify structure
@@ -97,20 +103,22 @@ defmodule ApiGatewayWeb.AshJsonApiTest do
   describe "Events API" do
     setup do
       # Create test event
-  {:ok, event} = Ash.create(CoreEvents.EventResource, %{
-        name: "Test Event",
-        starts_at: ~U[2025-12-01 10:00:00Z],
-        ends_at: ~U[2025-12-01 18:00:00Z],
-        venue: "Test Venue"
-      })
+      {:ok, event} =
+        Ash.create(CoreEvents.EventResource, %{
+          name: "Test Event",
+          starts_at: ~U[2025-12-01 10:00:00Z],
+          ends_at: ~U[2025-12-01 18:00:00Z],
+          venue: "Test Venue"
+        })
 
       %{event: event}
     end
 
     test "GET /api/events returns list of events", %{conn: conn} do
-      conn = conn
-      |> put_req_header("accept", "application/vnd.api+json")
-      |> get("/api/events")
+      conn =
+        conn
+        |> put_req_header("accept", "application/vnd.api+json")
+        |> get("/api/events")
 
       assert json_response(conn, 200)
       response = json_response(conn, 200)
@@ -120,9 +128,10 @@ defmodule ApiGatewayWeb.AshJsonApiTest do
     end
 
     test "GET /api/events/:id returns a specific event", %{conn: conn, event: event} do
-      conn = conn
-      |> put_req_header("accept", "application/vnd.api+json")
-      |> get("/api/events/#{event.id}")
+      conn =
+        conn
+        |> put_req_header("accept", "application/vnd.api+json")
+        |> get("/api/events/#{event.id}")
 
       assert json_response(conn, 200)
       response = json_response(conn, 200)
@@ -144,10 +153,11 @@ defmodule ApiGatewayWeb.AshJsonApiTest do
         }
       }
 
-      conn = conn
-      |> put_req_header("accept", "application/vnd.api+json")
-      |> put_req_header("content-type", "application/vnd.api+json")
-      |> post("/api/events", event_data)
+      conn =
+        conn
+        |> put_req_header("accept", "application/vnd.api+json")
+        |> put_req_header("content-type", "application/vnd.api+json")
+        |> post("/api/events", event_data)
 
       assert json_response(conn, 201)
       response = json_response(conn, 201)
@@ -159,33 +169,37 @@ defmodule ApiGatewayWeb.AshJsonApiTest do
   describe "Tickets API" do
     setup do
       # Create test user and event
-  {:ok, user} = Ash.create(CoreUsers.UserResource, %{
-        name: "Ticket User",
-        email: "ticket@example.com"
-      })
+      {:ok, user} =
+        Ash.create(CoreUsers.UserResource, %{
+          name: "Ticket User",
+          email: "ticket@example.com"
+        })
 
-  {:ok, event} = Ash.create(CoreEvents.EventResource, %{
-        name: "Ticket Event",
-        starts_at: ~U[2025-12-01 10:00:00Z],
-        ends_at: ~U[2025-12-01 18:00:00Z],
-        venue: "Ticket Venue"
-      })
+      {:ok, event} =
+        Ash.create(CoreEvents.EventResource, %{
+          name: "Ticket Event",
+          starts_at: ~U[2025-12-01 10:00:00Z],
+          ends_at: ~U[2025-12-01 18:00:00Z],
+          venue: "Ticket Venue"
+        })
 
       # Create test ticket
-  {:ok, ticket} = Ash.create(CoreTickets.TicketResource, %{
-        user_id: user.id,
-        event_id: event.id,
-        price_cents: 5000,
-        status: :reserved
-      })
+      {:ok, ticket} =
+        Ash.create(CoreTickets.TicketResource, %{
+          user_id: user.id,
+          event_id: event.id,
+          price_cents: 5000,
+          status: :reserved
+        })
 
       %{user: user, event: event, ticket: ticket}
     end
 
     test "GET /api/tickets returns list of tickets", %{conn: conn} do
-      conn = conn
-      |> put_req_header("accept", "application/vnd.api+json")
-      |> get("/api/tickets")
+      conn =
+        conn
+        |> put_req_header("accept", "application/vnd.api+json")
+        |> get("/api/tickets")
 
       assert json_response(conn, 200)
       response = json_response(conn, 200)
@@ -195,9 +209,10 @@ defmodule ApiGatewayWeb.AshJsonApiTest do
     end
 
     test "GET /api/tickets/:id returns a specific ticket", %{conn: conn, ticket: ticket} do
-      conn = conn
-      |> put_req_header("accept", "application/vnd.api+json")
-      |> get("/api/tickets/#{ticket.id}")
+      conn =
+        conn
+        |> put_req_header("accept", "application/vnd.api+json")
+        |> get("/api/tickets/#{ticket.id}")
 
       assert json_response(conn, 200)
       response = json_response(conn, 200)
@@ -219,10 +234,11 @@ defmodule ApiGatewayWeb.AshJsonApiTest do
         }
       }
 
-      conn = conn
-      |> put_req_header("accept", "application/vnd.api+json")
-      |> put_req_header("content-type", "application/vnd.api+json")
-      |> post("/api/tickets", ticket_data)
+      conn =
+        conn
+        |> put_req_header("accept", "application/vnd.api+json")
+        |> put_req_header("content-type", "application/vnd.api+json")
+        |> post("/api/tickets", ticket_data)
 
       assert json_response(conn, 201)
       response = json_response(conn, 201)
@@ -241,10 +257,11 @@ defmodule ApiGatewayWeb.AshJsonApiTest do
         }
       }
 
-      conn = conn
-      |> put_req_header("accept", "application/vnd.api+json")
-      |> put_req_header("content-type", "application/vnd.api+json")
-      |> patch("/api/tickets/#{ticket.id}", update_data)
+      conn =
+        conn
+        |> put_req_header("accept", "application/vnd.api+json")
+        |> put_req_header("content-type", "application/vnd.api+json")
+        |> patch("/api/tickets/#{ticket.id}", update_data)
 
       assert json_response(conn, 200)
       response = json_response(conn, 200)
@@ -254,39 +271,44 @@ defmodule ApiGatewayWeb.AshJsonApiTest do
 
   describe "Error handling" do
     test "GET /api/users/999999 returns 404 for non-existent user", %{conn: conn} do
-      conn = conn
-      |> put_req_header("accept", "application/vnd.api+json")
-      |> get("/api/users/999999")
+      conn =
+        conn
+        |> put_req_header("accept", "application/vnd.api+json")
+        |> get("/api/users/999999")
 
       assert json_response(conn, 404)
       response = json_response(conn, 404)
       assert Map.has_key?(response, "errors")
     end
 
-  test "POST /api/users with invalid data returns 400", %{conn: conn} do
+    test "POST /api/users with invalid data returns 400", %{conn: conn} do
       invalid_data = %{
         "data" => %{
           "type" => "users",
           "attributes" => %{
-            "name" => "",  # Invalid: empty name
-            "email" => "not-an-email"  # Invalid: bad email format
+            # Invalid: empty name
+            "name" => "",
+            # Invalid: bad email format
+            "email" => "not-an-email"
           }
         }
       }
 
-      conn = conn
-      |> put_req_header("accept", "application/vnd.api+json")
-      |> put_req_header("content-type", "application/vnd.api+json")
-      |> post("/api/users", invalid_data)
+      conn =
+        conn
+        |> put_req_header("accept", "application/vnd.api+json")
+        |> put_req_header("content-type", "application/vnd.api+json")
+        |> post("/api/users", invalid_data)
 
-  assert json_response(conn, 400)
-  response = json_response(conn, 400)
+      assert json_response(conn, 400)
+      response = json_response(conn, 400)
       assert Map.has_key?(response, "errors")
     end
 
     test "requests without proper headers return 200", %{conn: conn} do
-      conn = conn
-      |> get("/api/users")
+      conn =
+        conn
+        |> get("/api/users")
 
       assert response(conn, 200)
     end
@@ -295,14 +317,16 @@ defmodule ApiGatewayWeb.AshJsonApiTest do
   describe "JSON:API compliance" do
     test "responses have correct JSON:API structure", %{conn: conn} do
       # Create a test user first
-  {:ok, _user} = Ash.create(CoreUsers.UserResource, %{
-        name: "JSON API User",
-        email: "jsonapi@example.com"
-      })
+      {:ok, _user} =
+        Ash.create(CoreUsers.UserResource, %{
+          name: "JSON API User",
+          email: "jsonapi@example.com"
+        })
 
-      conn = conn
-      |> put_req_header("accept", "application/vnd.api+json")
-      |> get("/api/users")
+      conn =
+        conn
+        |> put_req_header("accept", "application/vnd.api+json")
+        |> get("/api/users")
 
       response = json_response(conn, 200)
 
@@ -320,9 +344,10 @@ defmodule ApiGatewayWeb.AshJsonApiTest do
     end
 
     test "content-type header is set correctly", %{conn: conn} do
-      conn = conn
-      |> put_req_header("accept", "application/vnd.api+json")
-      |> get("/api/users")
+      conn =
+        conn
+        |> put_req_header("accept", "application/vnd.api+json")
+        |> get("/api/users")
 
       assert response(conn, 200)
       content_type = conn |> get_resp_header("content-type") |> hd()

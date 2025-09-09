@@ -38,7 +38,9 @@ defmodule CoreUsers.MixProject do
       {:ash_postgres, "~> 2.6"},
       {:spark, "~> 2.2", runtime: false},
       {:ash_json_api, "~> 1.4"},
-      {:picosat_elixir, "~> 0.2"}
+      {:picosat_elixir, "~> 0.2"},
+      {:oban, "~> 2.17", runtime: false},
+      {:ash_oban, "~> 0.4.12"}
     ]
   end
 end

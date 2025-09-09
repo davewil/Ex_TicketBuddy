@@ -3,6 +3,6 @@ defmodule CoreUsers.Domain do
     extensions: [AshJsonApi.Domain]
 
   resources do
-    resource CoreUsers.UserResource
+    resource(CoreUsers.UserResource)
   end
 end

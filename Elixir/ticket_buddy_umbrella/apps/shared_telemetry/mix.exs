@@ -25,8 +25,8 @@ defmodule SharedTelemetry.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-  {:opentelemetry, "~> 1.3"},
-  {:opentelemetry_exporter, "~> 1.7"}
+      {:opentelemetry, "~> 1.3"},
+      {:opentelemetry_exporter, "~> 1.7"}
     ]
   end
 end

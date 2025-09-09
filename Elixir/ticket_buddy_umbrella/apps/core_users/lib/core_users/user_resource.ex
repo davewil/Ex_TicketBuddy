@@ -31,18 +31,18 @@ defmodule CoreUsers.UserResource do
   end
 
   actions do
-    defaults [:read, :destroy]
+    defaults([:read, :destroy])
 
     create :create do
-      primary? true
-      accept [:name, :email]
-  validate present(:name)
-  validate match(:email, "@")
+      primary?(true)
+      accept([:name, :email])
+      validate(present(:name))
+      validate(match(:email, "@"))
     end
 
     update :update do
-      primary? true
-      accept [:name, :email]
+      primary?(true)
+      accept([:name, :email])
     end
   end
 

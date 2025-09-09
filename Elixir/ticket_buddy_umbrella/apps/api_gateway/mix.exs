@@ -46,7 +46,8 @@ defmodule ApiGateway.MixProject do
       {:dns_cluster, "~> 0.1.1"},
       {:bandit, "~> 1.5"},
       {:ash_json_api, "~> 1.4"},
-  {:open_api_spex, "~> 3.18"},
+      {:open_api_spex, "~> 3.18"},
+      {:tidewave, "~> 0.5", only: :dev},
       # Internal umbrella dependencies
       {:core_events, in_umbrella: true},
       {:core_users, in_umbrella: true},

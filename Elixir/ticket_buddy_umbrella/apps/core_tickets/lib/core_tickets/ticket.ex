@@ -3,10 +3,10 @@ defmodule CoreTickets.Ticket do
   import Ecto.Changeset
 
   schema "tickets" do
-    field :event_id, :id
-    field :user_id, :id
-    field :price_cents, :integer
-    field :status, Ecto.Enum, values: [:reserved, :purchased, :refunded]
+    field(:event_id, :id)
+    field(:user_id, :id)
+    field(:price_cents, :integer)
+    field(:status, Ecto.Enum, values: [:reserved, :purchased, :refunded])
     timestamps(type: :utc_datetime)
   end
 

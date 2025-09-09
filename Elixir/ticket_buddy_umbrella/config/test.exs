@@ -21,13 +21,25 @@ config :phoenix, :plug_init_mode, :runtime
 
 # Test database configs (sql_sandbox pool)
 config :core_events, CoreEvents.Repo,
-  url: System.get_env("CORE_EVENTS_DATABASE_URL") || "ecto://postgres:postgres@localhost:5432/core_events_test",
+  url:
+    System.get_env("CORE_EVENTS_DATABASE_URL") ||
+      "ecto://postgres:postgres@localhost:5432/core_events_test",
   pool: Ecto.Adapters.SQL.Sandbox
 
 config :core_users, CoreUsers.Repo,
-  url: System.get_env("CORE_USERS_DATABASE_URL") || "ecto://postgres:postgres@localhost:5432/core_users_test",
+  url:
+    System.get_env("CORE_USERS_DATABASE_URL") ||
+      "ecto://postgres:postgres@localhost:5432/core_users_test",
   pool: Ecto.Adapters.SQL.Sandbox
 
 config :core_tickets, CoreTickets.Repo,
-  url: System.get_env("CORE_TICKETS_DATABASE_URL") || "ecto://postgres:postgres@localhost:5432/core_tickets_test",
+  url:
+    System.get_env("CORE_TICKETS_DATABASE_URL") ||
+      "ecto://postgres:postgres@localhost:5432/core_tickets_test",
   pool: Ecto.Adapters.SQL.Sandbox
+
+# Use one repo for Oban during tests; pick users repo as shared test DB
+config :messaging, Oban,
+  repo: CoreUsers.Repo,
+  queues: [default: 5],
+  plugins: false

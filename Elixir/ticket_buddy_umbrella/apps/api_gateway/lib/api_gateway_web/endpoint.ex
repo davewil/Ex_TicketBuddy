@@ -11,47 +11,56 @@ defmodule ApiGatewayWeb.Endpoint do
     same_site: "Lax"
   ]
 
-  socket "/live", Phoenix.LiveView.Socket,
+  socket("/live", Phoenix.LiveView.Socket,
     websocket: [connect_info: [session: @session_options]],
     longpoll: [connect_info: [session: @session_options]]
+  )
 
   # Serve at "/" the static files from "priv/static" directory.
   #
   # You should set gzip to true if you are running phx.digest
   # when deploying your static files in production.
-  plug Plug.Static,
+  plug(Plug.Static,
     at: "/",
     from: :api_gateway,
     gzip: false,
     only: ApiGatewayWeb.static_paths()
+  )
+
+  if Code.ensure_loaded?(Tidewave) do
+    plug(Tidewave)
+  end
 
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.
   if code_reloading? do
-    plug Phoenix.CodeReloader
+    plug(Phoenix.CodeReloader)
   end
 
-  plug Phoenix.LiveDashboard.RequestLogger,
+  plug(Phoenix.LiveDashboard.RequestLogger,
     param_key: "request_logger",
     cookie_key: "request_logger"
+  )
 
-  plug Plug.RequestId
-  plug Plug.Telemetry, event_prefix: [:phoenix, :endpoint]
+  plug(Plug.RequestId)
+  plug(Plug.Telemetry, event_prefix: [:phoenix, :endpoint])
 
   # Allow requests to use the SQL sandbox during tests (multi-repo)
   if Code.ensure_loaded?(Phoenix.Ecto.SQL.Sandbox) and
        Application.compile_env(:api_gateway, :sql_sandbox, Mix.env() == :test) do
-    plug Phoenix.Ecto.SQL.Sandbox,
+    plug(Phoenix.Ecto.SQL.Sandbox,
       repos: [CoreUsers.Repo, CoreEvents.Repo, CoreTickets.Repo]
+    )
   end
 
-  plug Plug.Parsers,
+  plug(Plug.Parsers,
     parsers: [:urlencoded, :multipart, :json],
     pass: ["*/*"],
     json_decoder: Phoenix.json_library()
+  )
 
-  plug Plug.MethodOverride
-  plug Plug.Head
-  plug Plug.Session, @session_options
-  plug ApiGatewayWeb.Router
+  plug(Plug.MethodOverride)
+  plug(Plug.Head)
+  plug(Plug.Session, @session_options)
+  plug(ApiGatewayWeb.Router)
 end

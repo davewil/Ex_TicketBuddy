@@ -67,6 +67,22 @@ config :mime, :types, %{
   "application/json" => ["json"]
 }
 
+# Oban base config (overridden per env)
+config :messaging, Oban,
+  queues: [default: 10],
+  plugins: [
+    {Oban.Plugins.Pruner, max_age: 60 * 60 * 24}
+  ]
+
+# AshOban global config (optional)
+# Configure how actors are persisted with jobs or disable auth in triggers if needed.
+# config :ash_oban, actor_persister: MyApp.AshObanActorPersister
+# config :ash_oban, authorize?: true
+
+# Note for AshOban trigger queues:
+# When enabling the TicketResource :process trigger, consider adding the queue below.
+# Example: queues: [default: 10, ticket_resource_process: 5]
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"

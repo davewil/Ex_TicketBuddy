@@ -3,6 +3,6 @@ defmodule CoreTickets.Domain do
     extensions: [AshJsonApi.Domain]
 
   resources do
-    resource CoreTickets.TicketResource
+    resource(CoreTickets.TicketResource)
   end
 end

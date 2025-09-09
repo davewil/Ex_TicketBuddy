@@ -8,7 +8,7 @@ defmodule CoreUsers.UserResourceTest do
         email: "john@example.com"
       }
 
-  assert {:ok, user} = Ash.create(CoreUsers.UserResource, user_attrs)
+      assert {:ok, user} = Ash.create(CoreUsers.UserResource, user_attrs)
       assert user.name == "John Doe"
       assert user.email == "john@example.com"
       assert user.id != nil
@@ -19,7 +19,7 @@ defmodule CoreUsers.UserResourceTest do
         email: "john@example.com"
       }
 
-  assert {:error, %Ash.Error.Invalid{}} = Ash.create(CoreUsers.UserResource, user_attrs)
+      assert {:error, %Ash.Error.Invalid{}} = Ash.create(CoreUsers.UserResource, user_attrs)
     end
 
     test "fails to create user with missing email" do
@@ -27,28 +27,30 @@ defmodule CoreUsers.UserResourceTest do
         name: "John Doe"
       }
 
-  assert {:error, %Ash.Error.Invalid{}} = Ash.create(CoreUsers.UserResource, user_attrs)
+      assert {:error, %Ash.Error.Invalid{}} = Ash.create(CoreUsers.UserResource, user_attrs)
     end
   end
 
   describe "user reading" do
     setup do
-  {:ok, user} = Ash.create(CoreUsers.UserResource, %{
-        name: "Jane Doe",
-        email: "jane@example.com"
-      })
+      {:ok, user} =
+        Ash.create(CoreUsers.UserResource, %{
+          name: "Jane Doe",
+          email: "jane@example.com"
+        })
+
       %{user: user}
     end
 
     test "reads user by id", %{user: user} do
-  assert {:ok, fetched_user} = Ash.get(CoreUsers.UserResource, user.id)
+      assert {:ok, fetched_user} = Ash.get(CoreUsers.UserResource, user.id)
       assert fetched_user.id == user.id
       assert fetched_user.name == user.name
       assert fetched_user.email == user.email
     end
 
     test "lists all users", %{user: user} do
-  assert {:ok, users} = Ash.read(CoreUsers.UserResource)
+      assert {:ok, users} = Ash.read(CoreUsers.UserResource)
       assert is_list(users)
       assert length(users) >= 1
       assert Enum.any?(users, fn u -> u.id == user.id end)
@@ -62,22 +64,24 @@ defmodule CoreUsers.UserResourceTest do
 
   describe "user updating" do
     setup do
-  {:ok, user} = Ash.create(CoreUsers.UserResource, %{
-        name: "Original Name",
-        email: "original@example.com"
-      })
+      {:ok, user} =
+        Ash.create(CoreUsers.UserResource, %{
+          name: "Original Name",
+          email: "original@example.com"
+        })
+
       %{user: user}
     end
 
     test "updates user name", %{user: user} do
-  assert {:ok, updated_user} = Ash.update(user, %{name: "Updated Name"})
+      assert {:ok, updated_user} = Ash.update(user, %{name: "Updated Name"})
       assert updated_user.name == "Updated Name"
       assert updated_user.email == user.email
       assert updated_user.id == user.id
     end
 
     test "updates user email", %{user: user} do
-  assert {:ok, updated_user} = Ash.update(user, %{email: "updated@example.com"})
+      assert {:ok, updated_user} = Ash.update(user, %{email: "updated@example.com"})
       assert updated_user.email == "updated@example.com"
       assert updated_user.name == user.name
     end
@@ -85,10 +89,12 @@ defmodule CoreUsers.UserResourceTest do
 
   describe "user deletion" do
     setup do
-  {:ok, user} = Ash.create(CoreUsers.UserResource, %{
-        name: "To Delete",
-        email: "delete@example.com"
-      })
+      {:ok, user} =
+        Ash.create(CoreUsers.UserResource, %{
+          name: "To Delete",
+          email: "delete@example.com"
+        })
+
       %{user: user}
     end
 

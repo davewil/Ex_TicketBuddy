@@ -3,6 +3,6 @@ defmodule CoreEvents.Domain do
     extensions: [AshJsonApi.Domain]
 
   resources do
-    resource CoreEvents.EventResource
+    resource(CoreEvents.EventResource)
   end
 end
