@@ -41,5 +41,8 @@ config :core_tickets, CoreTickets.Repo,
 # Use one repo for Oban during tests; pick users repo as shared test DB
 config :messaging, Oban,
   repo: CoreUsers.Repo,
-  queues: [default: 5],
-  plugins: false
+  # Disable queue producers during tests to avoid sandbox ownership errors
+  queues: false,
+  plugins: false,
+  # Use Oban testing mode to control jobs explicitly in tests if needed
+  testing: :manual

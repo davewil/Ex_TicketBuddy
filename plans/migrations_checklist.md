@@ -8,14 +8,16 @@ Legend: [ ] = Todo, [~] = In progress, [x] = Done
 
 Owner: ______  |  Target start: ______  |  Target finish: ______
 
-## Status update (2025-09-09)
+## Status update (2025-09-10)
 
 - AshPostgres migrations generated and applied for core_users, core_events, and core_tickets (dev/test); legacy Ecto migrations removed and DBs rebuilt.
 - JSON:API endpoints wired via AshJsonApi in api_gateway; MIME/Accepts configured; OpenApiSpex added for schema support.
 - Baseline allow-all Ash.Policy authorizer in place on core resources.
 - Seed data implemented for smoke tests.
-- Tests passing: core_users, core_tickets, api_gateway; core_events pending confirmation.
+- Tests passing: core_users, core_tickets, core_events, messaging, api_gateway.
 - mix compile --warnings-as-errors: PASS.
+- Background processing: Oban configured (dev/test) with base queues/pruner; Oban migration applied under core_users; ash_oban integrated on Tickets with an enabled :process trigger and Cron; E2E demo verified scheduled jobs executed on queue ticket_resource_process; Broadway RabbitMQ consumer scaffolded and opt-in (disabled by default; connectivity test pending).
+- Test stability: Oban disabled in test with testing: :manual to avoid SQL sandbox ownership issues; all suites passing.
 
 ## 1) Foundations (Phoenix + Ash + Core deps)
 
@@ -34,8 +36,8 @@ Owner: ______  |  Target start: ______  |  Target finish: ______
   - [x] opentelemetry, opentelemetry_exporter
   - [x] ash, ash_postgres, ash_json_api
 - [x] Repo configuration and Postgres connection (dev/test) ([#5](https://github.com/davewil/Ex_TicketBuddy_ModularMonolith_To_Microservices/issues/5)) (dev/test/prod configured; DBs created; schemas and migrations added; migrations applied)
-- [ ] Oban configured (queues, pruning) and migrations generated ([#6](https://github.com/davewil/Ex_TicketBuddy_ModularMonolith_To_Microservices/issues/6))
-- [ ] Broadway base project scaffolding (RabbitMQ connectivity tested) ([#7](https://github.com/davewil/Ex_TicketBuddy_ModularMonolith_To_Microservices/issues/7))
+- [x] Oban configured (queues, pruning) and migrations applied ([#6](https://github.com/davewil/Ex_TicketBuddy_ModularMonolith_To_Microservices/issues/6)) — config in place; migration applied; ash_oban :process trigger enabled with Cron; E2E scheduling verified
+- [~] Broadway base project scaffolding (RabbitMQ connectivity tested) ([#7](https://github.com/davewil/Ex_TicketBuddy_ModularMonolith_To_Microservices/issues/7)) — consumer scaffold in messaging (disabled); connectivity test pending
 - [ ] OpenTelemetry configured with OTLP exporter and basic spans visible in collector ([#8](https://github.com/davewil/Ex_TicketBuddy_ModularMonolith_To_Microservices/issues/8))
 
 ## 2) Dev environment & Docker
@@ -52,7 +54,7 @@ Owner: ______  |  Target start: ______  |  Target finish: ______
 
 ![Ash Resources](https://raw.githubusercontent.com/davewil/Ex_TicketBuddy_ModularMonolith_To_Microservices/main/.github/badges/migration-ash-resources.svg)
 
-- [~] Events: resources modeled and grouped under an Ash API ([#14](https://github.com/davewil/Ex_TicketBuddy_ModularMonolith_To_Microservices/issues/14))
+- [x] Events: resources modeled and grouped under an Ash API ([#14](https://github.com/davewil/Ex_TicketBuddy_ModularMonolith_To_Microservices/issues/14))
 - [x] Users: resources modeled and grouped under an Ash API ([#15](https://github.com/davewil/Ex_TicketBuddy_ModularMonolith_To_Microservices/issues/15))
 - [x] Tickets: resources modeled and grouped under an Ash API ([#16](https://github.com/davewil/Ex_TicketBuddy_ModularMonolith_To_Microservices/issues/16))
 - [x] AshPostgres migrations generated and applied (dev/test) ([#17](https://github.com/davewil/Ex_TicketBuddy_ModularMonolith_To_Microservices/issues/17))
@@ -143,3 +145,24 @@ Notes:
 - Keep the .NET and Elixir stacks running side-by-side until cutover completes.
 - Prefer AshJsonApi for fast CRUD; use Phoenix controllers to match bespoke responses.
 - Keep contracts stable across HTTP and messaging; use contract tests for safety.
+
+## How to validate locally
+
+- Prereqs: Postgres running; dev DBs created; Oban migration applied (CoreUsers.Repo).
+- From `Elixir/ticket_buddy_umbrella`:
+
+```powershell
+# End-to-end: starts core apps, inserts a reserved ticket, waits ~70s, then lists jobs
+mix run priv/demo/oban_e2e_demo.exs
+
+# Or manual: insert, wait ~70s, then list recent jobs
+mix run priv/demo/oban_demo.exs
+mix run priv/demo/list_oban_jobs.exs
+```
+
+Expected:
+
+- Completed Oban jobs on queue `ticket_resource_process` with worker
+  `CoreTickets.Oban.Workers.TicketResourceProcess` and a scheduler job for
+  `CoreTickets.Oban.Schedulers.TicketResourceProcess`.
+- Note: In `test` env, Oban queues are disabled (`testing: :manual`); run these in `dev`.

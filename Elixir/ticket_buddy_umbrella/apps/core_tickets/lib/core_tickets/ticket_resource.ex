@@ -24,6 +24,11 @@ defmodule CoreTickets.TicketResource do
   end
 
   policies do
+    # Allow AshOban to perform scheduled/triggered actions
+    bypass AshOban.Checks.AshObanInteraction do
+      authorize_if(always())
+    end
+
     # Basic authorization - in a real app you'd check user ownership
     policy always() do
       authorize_if(always())
@@ -41,6 +46,12 @@ defmodule CoreTickets.TicketResource do
     update :update do
       primary?(true)
       accept([:price_cents, :status])
+    end
+
+    # Used by ash_oban on_error to mark a ticket as failed/cancelled
+    update :errored do
+      accept([])
+      change set_attribute(:status, :cancelled)
     end
   end
 
@@ -69,10 +80,11 @@ defmodule CoreTickets.TicketResource do
       trigger :process do
         # No-op placeholder: re-run the primary update to demonstrate wiring
         action(:update)
+  on_error(:errored)
         # Only consider tickets that are still reserved
         where(expr(status == :reserved))
-        # Disabled until explicitly enabled in a follow-up change
-        scheduler_cron(false)
+  # Enabled to run every minute
+  scheduler_cron("* * * * *")
         # Provide stable module names to avoid dangling jobs upon renames
         worker_module_name(CoreTickets.Oban.Workers.TicketResourceProcess)
         scheduler_module_name(CoreTickets.Oban.Schedulers.TicketResourceProcess)

@@ -99,5 +99,11 @@ config :core_tickets, CoreTickets.Repo,
 # Oban in dev uses the users repo for now (can switch to dedicated repo later)
 config :messaging, Oban,
   repo: CoreUsers.Repo,
-  queues: [default: 10],
-  plugins: [Oban.Plugins.Pruner]
+  queues: [default: 10, ticket_resource_process: 5],
+  plugins: [
+    Oban.Plugins.Pruner,
+    {Oban.Plugins.Cron, crontab: [
+      # AshOban scheduler for TicketResource :process trigger (every minute)
+      {"* * * * *", CoreTickets.Oban.Schedulers.TicketResourceProcess}
+    ]}
+  ]

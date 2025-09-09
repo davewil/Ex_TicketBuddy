@@ -10,8 +10,8 @@ defmodule Messaging.Consumers.RabbitConsumer do
     if Application.get_env(:messaging, :enable_broadway, false) do
       Broadway.start_link(__MODULE__, pipeline_options())
     else
-      # Start a dummy process that does nothing when disabled
-      Task.start_link(fn -> :ok end)
+  # Disabled: tell the supervisor to ignore this child
+  :ignore
     end
   end
 
