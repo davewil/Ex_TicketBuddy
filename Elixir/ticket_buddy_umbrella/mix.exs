@@ -6,6 +6,7 @@ defmodule TicketBuddyUmbrella.MixProject do
       apps_path: "apps",
       version: "0.1.0",
       start_permanent: Mix.env() == :prod,
+      consolidate_protocols: Mix.env() != :dev,
       deps: deps(),
       listeners: [Phoenix.CodeReloader]
     ]
@@ -17,6 +18,9 @@ defmodule TicketBuddyUmbrella.MixProject do
   #
   # Run "mix help deps" for examples and options.
   defp deps do
-    []
+    [
+      {:usage_rules, "~> 0.1", only: [:dev]},
+      {:igniter, "~> 0.5", only: [:dev, :test]}
+    ]
   end
 end
