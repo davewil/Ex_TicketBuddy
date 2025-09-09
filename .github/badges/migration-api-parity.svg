@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="154" height="20" role="img" aria-label="migration: 0% (0/6)">
+<svg xmlns="http://www.w3.org/2000/svg" width="154" height="20" role="img" aria-label="migration: 17% (1/6)">
   <linearGradient id="s" x2="0" y2="100%">
     <stop offset="0" stop-color="#bbb" stop-opacity=".1"/>
     <stop offset="1" stop-opacity=".1"/>
@@ -14,6 +14,6 @@
   </g>
   <g fill="#fff" text-anchor="middle" font-family="Verdana,Geneva,DejaVu Sans,sans-serif" font-size="11">
     <text x="37" y="15">migration</text>
-    <text x="114" y="15">0% (0/6)</text>
+    <text x="114" y="15">17% (1/6)</text>
   </g>
 </svg>
