@@ -1,0 +1,49 @@
+name: Update migration progress badge
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 * * * *' # hourly
+  push:
+    branches: [ main ]
+    paths:
+      - '.github/workflows/update-migration-progress.yml'
+      - 'plans/github_issues.ps1'
+      - 'plans/migrations_checklist.md'
+      - '.github/badges/**'
+  issues:
+    types: [opened, closed, edited, labeled, unlabeled, reopened]
+
+permissions:
+  contents: write
+  issues: read
+
+jobs:
+  update-badge:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Generate migration badge
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          node scripts/update-migration-badge.js
+
+      - name: Commit badge if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .github/badges/*.svg || true
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: update migration progress badge"
+            git push
+          else
+            echo "No changes to commit"
+          fi
