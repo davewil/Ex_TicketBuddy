@@ -12,19 +12,19 @@ Owner: ______  |  Target start: ______  |  Target finish: ______
 
 ![Foundations](https://raw.githubusercontent.com/davewil/Ex_TicketBuddy_ModularMonolith_To_Microservices/main/.github/badges/migration-foundations.svg)
 
-- [ ] Phoenix umbrella scaffold created with apps: ([#3](https://github.com/davewil/Ex_TicketBuddy_ModularMonolith_To_Microservices/issues/3))
-  - [ ] core_events
-  - [ ] core_users
-  - [ ] core_tickets
-  - [ ] messaging (Broadway/Oban integration)
-  - [ ] shared_telemetry (OTel setup)
-  - [ ] api_gateway (Phoenix HTTP) or per-context Phoenix apps
-- [ ] Dependencies added and compiled: ([#4](https://github.com/davewil/Ex_TicketBuddy_ModularMonolith_To_Microservices/issues/4))
-  - [ ] phoenix, phoenix_ecto, ecto_sql, postgrex
-  - [ ] broadway, broadway_rabbitmq, oban
-  - [ ] opentelemetry, opentelemetry_exporter
+- [x] Phoenix umbrella scaffold created with apps: ([#3](https://github.com/davewil/Ex_TicketBuddy_ModularMonolith_To_Microservices/issues/3))
+  - [x] core_events
+  - [x] core_users
+  - [x] core_tickets
+  - [x] messaging (Broadway/Oban integration)
+  - [x] shared_telemetry (OTel setup)
+  - [x] api_gateway (Phoenix HTTP) or per-context Phoenix apps
+- [~] Dependencies added and compiled: ([#4](https://github.com/davewil/Ex_TicketBuddy_ModularMonolith_To_Microservices/issues/4))
+  - [~] phoenix, phoenix_ecto, ecto_sql, postgrex (phoenix/ecto_sql/postgrex added; phoenix_ecto pending)
+  - [x] broadway, broadway_rabbitmq, oban
+  - [x] opentelemetry, opentelemetry_exporter
   - [ ] ash, ash_postgres, ash_json_api
-- [ ] Repo configuration and Postgres connection (dev/test) ([#5](https://github.com/davewil/Ex_TicketBuddy_ModularMonolith_To_Microservices/issues/5))
+- [~] Repo configuration and Postgres connection (dev/test) ([#5](https://github.com/davewil/Ex_TicketBuddy_ModularMonolith_To_Microservices/issues/5)) (test/prod configured; dev pending)
 - [ ] Oban configured (queues, pruning) and migrations generated ([#6](https://github.com/davewil/Ex_TicketBuddy_ModularMonolith_To_Microservices/issues/6))
 - [ ] Broadway base project scaffolding (RabbitMQ connectivity tested) ([#7](https://github.com/davewil/Ex_TicketBuddy_ModularMonolith_To_Microservices/issues/7))
 - [ ] OpenTelemetry configured with OTLP exporter and basic spans visible in collector ([#8](https://github.com/davewil/Ex_TicketBuddy_ModularMonolith_To_Microservices/issues/8))
@@ -124,9 +124,9 @@ Owner: ______  |  Target start: ______  |  Target finish: ______
 
 ![Governance](https://raw.githubusercontent.com/davewil/Ex_TicketBuddy_ModularMonolith_To_Microservices/main/.github/badges/migration-governance.svg)
 
-- [ ] Create GitHub labels for migration categories ([#55](https://github.com/davewil/Ex_TicketBuddy_ModularMonolith_To_Microservices/issues/55))
-- [ ] Create milestones per migration phase ([#1](https://github.com/davewil/Ex_TicketBuddy_ModularMonolith_To_Microservices/issues/1))
-- [ ] Create issues for each task (see plans/github_issues.ps1)
+- [x] Create GitHub labels for migration categories ([#55](https://github.com/davewil/Ex_TicketBuddy_ModularMonolith_To_Microservices/issues/55))
+- [x] Create milestones per migration phase ([#1](https://github.com/davewil/Ex_TicketBuddy_ModularMonolith_To_Microservices/issues/1))
+- [x] Create issues for each task (see plans/github_issues.ps1)
 - [ ] Weekly progress review and status update ([#2](https://github.com/davewil/Ex_TicketBuddy_ModularMonolith_To_Microservices/issues/2))
 
 Notes:

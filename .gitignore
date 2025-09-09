@@ -6,3 +6,13 @@ riderModule.iml
 **/.idea/**
 /.vs/
 **.DotSettings.user
+
+# Elixir / BEAM
+/_build/
+/deps/
+erl_crash.dump
+.elixir_ls/
+.elixir-tools/
+cover/
+*.ez
+.tool-versions
