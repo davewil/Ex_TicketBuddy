@@ -38,6 +38,13 @@ defmodule ApiGatewayWeb.Endpoint do
   plug Plug.RequestId
   plug Plug.Telemetry, event_prefix: [:phoenix, :endpoint]
 
+  # Allow requests to use the SQL sandbox during tests (multi-repo)
+  if Code.ensure_loaded?(Phoenix.Ecto.SQL.Sandbox) and
+       Application.compile_env(:api_gateway, :sql_sandbox, Mix.env() == :test) do
+    plug Phoenix.Ecto.SQL.Sandbox,
+      repos: [CoreUsers.Repo, CoreEvents.Repo, CoreTickets.Repo]
+  end
+
   plug Plug.Parsers,
     parsers: [:urlencoded, :multipart, :json],
     pass: ["*/*"],

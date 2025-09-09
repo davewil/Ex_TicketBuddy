@@ -8,6 +8,15 @@ Legend: [ ] = Todo, [~] = In progress, [x] = Done
 
 Owner: ______  |  Target start: ______  |  Target finish: ______
 
+## Status update (2025-09-09)
+
+- AshPostgres migrations generated and applied for core_users, core_events, and core_tickets (dev/test); legacy Ecto migrations removed and DBs rebuilt.
+- JSON:API endpoints wired via AshJsonApi in api_gateway; MIME/Accepts configured; OpenApiSpex added for schema support.
+- Baseline allow-all Ash.Policy authorizer in place on core resources.
+- Seed data implemented for smoke tests.
+- Tests passing: core_users, core_tickets, api_gateway; core_events pending confirmation.
+- mix compile --warnings-as-errors: PASS.
+
 ## 1) Foundations (Phoenix + Ash + Core deps)
 
 ![Foundations](https://raw.githubusercontent.com/davewil/Ex_TicketBuddy_ModularMonolith_To_Microservices/main/.github/badges/migration-foundations.svg)
@@ -44,11 +53,11 @@ Owner: ______  |  Target start: ______  |  Target finish: ______
 ![Ash Resources](https://raw.githubusercontent.com/davewil/Ex_TicketBuddy_ModularMonolith_To_Microservices/main/.github/badges/migration-ash-resources.svg)
 
 - [~] Events: resources modeled and grouped under an Ash API ([#14](https://github.com/davewil/Ex_TicketBuddy_ModularMonolith_To_Microservices/issues/14))
-- [~] Users: resources modeled and grouped under an Ash API ([#15](https://github.com/davewil/Ex_TicketBuddy_ModularMonolith_To_Microservices/issues/15))
-- [~] Tickets: resources modeled and grouped under an Ash API ([#16](https://github.com/davewil/Ex_TicketBuddy_ModularMonolith_To_Microservices/issues/16))
-- [ ] AshPostgres migrations generated and applied (dev/test) ([#17](https://github.com/davewil/Ex_TicketBuddy_ModularMonolith_To_Microservices/issues/17))
-- [ ] Seed scripts and sample data for smoke tests ([#18](https://github.com/davewil/Ex_TicketBuddy_ModularMonolith_To_Microservices/issues/18))
-- [ ] Ash.Policy authorization baseline for Users/Tickets ([#19](https://github.com/davewil/Ex_TicketBuddy_ModularMonolith_To_Microservices/issues/19))
+- [x] Users: resources modeled and grouped under an Ash API ([#15](https://github.com/davewil/Ex_TicketBuddy_ModularMonolith_To_Microservices/issues/15))
+- [x] Tickets: resources modeled and grouped under an Ash API ([#16](https://github.com/davewil/Ex_TicketBuddy_ModularMonolith_To_Microservices/issues/16))
+- [x] AshPostgres migrations generated and applied (dev/test) ([#17](https://github.com/davewil/Ex_TicketBuddy_ModularMonolith_To_Microservices/issues/17))
+- [x] Seed scripts and sample data for smoke tests ([#18](https://github.com/davewil/Ex_TicketBuddy_ModularMonolith_To_Microservices/issues/18))
+- [x] Ash.Policy authorization baseline for Users/Tickets ([#19](https://github.com/davewil/Ex_TicketBuddy_ModularMonolith_To_Microservices/issues/19))
 
 ## 4) Data migration (SQL Server -> Postgres)
 
@@ -66,7 +75,7 @@ Owner: ______  |  Target start: ______  |  Target finish: ______
 ![API Parity](https://raw.githubusercontent.com/davewil/Ex_TicketBuddy_ModularMonolith_To_Microservices/main/.github/badges/migration-api-parity.svg)
 
 - [ ] Inventory .NET endpoints to replicate, per context (Events, Users, Tickets) ([#26](https://github.com/davewil/Ex_TicketBuddy_ModularMonolith_To_Microservices/issues/26))
-- [ ] Implement initial Phoenix controllers or AshJsonApi for CRUD parity ([#27](https://github.com/davewil/Ex_TicketBuddy_ModularMonolith_To_Microservices/issues/27))
+- [x] Implement initial Phoenix controllers or AshJsonApi for CRUD parity ([#27](https://github.com/davewil/Ex_TicketBuddy_ModularMonolith_To_Microservices/issues/27))
 - [ ] Shadow GET traffic to Elixir (compare responses/log diffs) ([#28](https://github.com/davewil/Ex_TicketBuddy_ModularMonolith_To_Microservices/issues/28))
 - [ ] Shared JSON schemas and contract tests added ([#29](https://github.com/davewil/Ex_TicketBuddy_ModularMonolith_To_Microservices/issues/29))
 - [ ] UI gradually pointed to Elixir routes for selected endpoints ([#30](https://github.com/davewil/Ex_TicketBuddy_ModularMonolith_To_Microservices/issues/30))

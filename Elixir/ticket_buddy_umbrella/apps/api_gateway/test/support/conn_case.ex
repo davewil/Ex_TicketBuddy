@@ -31,7 +31,19 @@ defmodule ApiGatewayWeb.ConnCase do
     end
   end
 
-  setup _tags do
+  setup tags do
+    # Checkout sandbox connections for all repos used by the API
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(CoreUsers.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(CoreEvents.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(CoreTickets.Repo)
+
+    # Run in shared mode so the request process can use the same connection when tests are not async
+    unless tags[:async] do
+      Ecto.Adapters.SQL.Sandbox.mode(CoreUsers.Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(CoreEvents.Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(CoreTickets.Repo, {:shared, self()})
+    end
+
     {:ok, conn: Phoenix.ConnTest.build_conn()}
   end
 end

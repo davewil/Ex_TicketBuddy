@@ -61,6 +61,12 @@ config :logger, :console,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
+# Register JSON:API mime type for tests and runtime
+config :mime, :types, %{
+  "application/vnd.api+json" => ["json-api"],
+  "application/json" => ["json"]
+}
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"

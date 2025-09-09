@@ -10,6 +10,7 @@ defmodule CoreTickets.MixProject do
       deps_path: "../../deps",
       lockfile: "../../mix.lock",
       elixir: "~> 1.18",
+      elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       deps: deps()
     ]
@@ -18,20 +19,26 @@ defmodule CoreTickets.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-  extra_applications: [:logger],
-  mod: {CoreTickets.Application, []}
+      extra_applications: [:logger],
+      mod: {CoreTickets.Application, []}
     ]
   end
+
+  # Specifies which paths to compile per environment.
+  defp elixirc_paths(:test), do: ["lib", "test/support"]
+  defp elixirc_paths(_), do: ["lib"]
 
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-  {:ecto_sql, "~> 3.11"},
-  {:postgrex, ">= 0.0.0"},
-  {:shared_telemetry, in_umbrella: true},
-  {:ash, "~> 3.5"},
-  {:ash_postgres, "~> 2.6"},
-  {:spark, "~> 2.2", runtime: false}
+      {:ecto_sql, "~> 3.11"},
+      {:postgrex, ">= 0.0.0"},
+      {:shared_telemetry, in_umbrella: true},
+      {:ash, "~> 3.5"},
+      {:ash_postgres, "~> 2.6"},
+      {:spark, "~> 2.2", runtime: false},
+      {:ash_json_api, "~> 1.4"},
+      {:picosat_elixir, "~> 0.2"}
     ]
   end
 end

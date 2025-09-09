@@ -2,12 +2,15 @@ defmodule ApiGatewayWeb.Router do
   use ApiGatewayWeb, :router
 
   pipeline :api do
-    plug :accepts, ["json"]
+  plug :accepts, ["json", "json-api"]
   end
 
   scope "/api", ApiGatewayWeb do
     pipe_through :api
   get "/health", HealthController, :show
+
+    # Mount AshJsonApi routes
+    forward "/", AshJsonApiRouter
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
