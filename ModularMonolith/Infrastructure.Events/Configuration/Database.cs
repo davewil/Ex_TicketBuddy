@@ -10,12 +10,9 @@ public static class Database
     {
         services.AddDbContext<EventDbContext>(options =>
         {
-            options.UseSqlServer(connectionString, sqlOptions =>
+            options.UseNpgsql(connectionString, sqlOptions =>
             {
-                sqlOptions.EnableRetryOnFailure(
-                    maxRetryCount: 5,
-                    maxRetryDelay: TimeSpan.FromSeconds(30),
-                    errorNumbersToAdd: null);
+                sqlOptions.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
             });
         });
     }

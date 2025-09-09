@@ -1,15 +1,16 @@
 services:
-  sqlserver:
-    container_name: monolith-sql-server
-    image: mcr.microsoft.com/mssql/server:2022-latest
+  postgresql:
+    container_name: monolith-postgresql
+    image: postgres:latest
     environment:
-      - ACCEPT_EULA=Y
-      - MSSQL_SA_PASSWORD=YourStrong@Passw0rd
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=YourStrong@Passw0rd
+      - POSTGRES_DB=TicketBuddy
     ports:
-      - "1450:1433"
+      - "5432:5432"
     restart: always
     volumes:
-      - ticket_buddy_monolith_sql_server:/var/opt/mssql
+      - postgresql_data:/var/lib/postgresql/data
     networks:
       - ticketbuddy-monolith-network
   aspire-dashboard:
@@ -21,7 +22,7 @@ services:
       - "18888:18888"
       - "4317:18889"
     depends_on:
-      - sqlserver
+      - postgresql
     networks:
       - ticketbuddy-monolith-network
   rabbitmq:
@@ -61,7 +62,7 @@ services:
       context: .
       dockerfile: Host.Migrations/Dockerfile
     depends_on:
-      sqlserver:
+      postgresql:
         condition: service_started
     environment:
       - ENVIRONMENT=Development
@@ -103,7 +104,7 @@ services:
     restart: "no"
 
 volumes:
-  ticket_buddy_monolith_sql_server:
+  postgresql_data:
   rabbitmq_data:
   
 networks:

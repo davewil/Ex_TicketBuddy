@@ -60,6 +60,6 @@ public class EventService(IAmAnEventRepository EventRepository)
     
     private static void ValidateDate(DateTimeOffset startDate)
     {
-        if (startDate < DateTimeOffset.Now) throw new ValidationException("Event date cannot be in the past");
+        if (startDate < DateTimeOffset.UtcNow) throw new ValidationException("Event date cannot be in the past");
     }
 }

@@ -1,7 +1,7 @@
 ﻿using Application.Users;
 using Domain.Users.Contracts;
+using Infrastructure.Users.Persistence;
 using Microsoft.Extensions.DependencyInjection;
-using Users.Persistence;
 
 namespace Infrastructure.Users.Configuration;
 

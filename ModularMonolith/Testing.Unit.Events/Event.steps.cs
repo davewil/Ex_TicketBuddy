@@ -9,8 +9,8 @@ public partial class EventSpecs : Specification
 {
     private Guid id;
     private string name = null!;
-    private DateTimeOffset start_date = DateTimeOffset.Now.AddDays(1);
-    private DateTimeOffset end_date = DateTimeOffset.Now.AddDays(1).AddHours(2);
+    private DateTimeOffset start_date = DateTimeOffset.UtcNow.AddDays(1);
+    private DateTimeOffset end_date = DateTimeOffset.UtcNow.AddDays(1).AddHours(2);
     private Event user = null!;
 
     private const string invalid_name = "Jackie Chan 123!";
@@ -22,13 +22,13 @@ public partial class EventSpecs : Specification
         id = Guid.NewGuid();
         name = null!;
         user = null!;
-        start_date = DateTimeOffset.Now.AddDays(1);
+        start_date = DateTimeOffset.UtcNow.AddDays(1);
     }
 
     private void valid_inputs()
     {
         name = valid_name;
-        start_date = DateTimeOffset.Now.AddDays(1);
+        start_date = DateTimeOffset.UtcNow.AddDays(1);
     }
 
     private void a_null_user_name()
@@ -48,8 +48,8 @@ public partial class EventSpecs : Specification
     
     private void an_event_with_end_date_before_start_date()
     {
-        start_date = DateTimeOffset.Now.AddDays(2);
-        end_date = DateTimeOffset.Now.AddDays(1);
+        start_date = DateTimeOffset.UtcNow.AddDays(2);
+        end_date = DateTimeOffset.UtcNow.AddDays(1);
     }
     
     private void creating_an_event()

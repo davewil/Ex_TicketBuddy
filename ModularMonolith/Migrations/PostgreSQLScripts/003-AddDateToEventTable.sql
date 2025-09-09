@@ -1,0 +1,3 @@
+ALTER TABLE "Event"."Events"
+    ADD COLUMN "Date" timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP;
+

@@ -12,6 +12,13 @@ public class TicketDbContext(DbContextOptions<TicketDbContext> options) : DbCont
     public DbSet<Ticket> Tickets => Set<Ticket>();
     public DbSet<Venue> Venues => Set<Venue>();
     public DbSet<User> Users => Set<User>();
+    
+    protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
+    {
+        configurationBuilder
+            .Properties<DateTimeOffset>()
+            .HaveConversion<DateTimeOffsetConverter>();
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

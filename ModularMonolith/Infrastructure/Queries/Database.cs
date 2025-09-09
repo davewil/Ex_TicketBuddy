@@ -1,7 +1,7 @@
 ﻿using System.Data;
 using Dapper;
 using Domain;
-using Microsoft.Data.SqlClient;
+using Npgsql;
 
 namespace Infrastructure.Queries
 {
@@ -19,9 +19,9 @@ namespace Infrastructure.Queries
             ConnectionString = connectionString;
         }
 
-        private static SqlConnection CreateConnection(string connectionString)
+        private static NpgsqlConnection CreateConnection(string connectionString)
         {
-            return new SqlConnection(connectionString);
+            return new NpgsqlConnection(connectionString);
         }
 
         public async Task<IEnumerable<T>> Query<T>(string sql, object? param = null, CommandType commandType = CommandType.Text)
