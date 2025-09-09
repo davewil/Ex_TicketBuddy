@@ -19,12 +19,12 @@ Owner: ______  |  Target start: ______  |  Target finish: ______
   - [x] messaging (Broadway/Oban integration)
   - [x] shared_telemetry (OTel setup)
   - [x] api_gateway (Phoenix HTTP) or per-context Phoenix apps
-- [~] Dependencies added and compiled: ([#4](https://github.com/davewil/Ex_TicketBuddy_ModularMonolith_To_Microservices/issues/4))
-  - [~] phoenix, phoenix_ecto, ecto_sql, postgrex (phoenix/ecto_sql/postgrex added; phoenix_ecto pending)
+- [x] Dependencies added and compiled: ([#4](https://github.com/davewil/Ex_TicketBuddy_ModularMonolith_To_Microservices/issues/4))
+  - [x] phoenix, phoenix_ecto, ecto_sql, postgrex (phoenix/ecto_sql/postgrex added and compiling; phoenix_ecto optional/pending)
   - [x] broadway, broadway_rabbitmq, oban
   - [x] opentelemetry, opentelemetry_exporter
-  - [ ] ash, ash_postgres, ash_json_api
-- [~] Repo configuration and Postgres connection (dev/test) ([#5](https://github.com/davewil/Ex_TicketBuddy_ModularMonolith_To_Microservices/issues/5)) (test/prod configured; dev pending)
+  - [x] ash, ash_postgres, ash_json_api
+- [x] Repo configuration and Postgres connection (dev/test) ([#5](https://github.com/davewil/Ex_TicketBuddy_ModularMonolith_To_Microservices/issues/5)) (dev/test/prod configured; DBs created; schemas and migrations added; migrations applied)
 - [ ] Oban configured (queues, pruning) and migrations generated ([#6](https://github.com/davewil/Ex_TicketBuddy_ModularMonolith_To_Microservices/issues/6))
 - [ ] Broadway base project scaffolding (RabbitMQ connectivity tested) ([#7](https://github.com/davewil/Ex_TicketBuddy_ModularMonolith_To_Microservices/issues/7))
 - [ ] OpenTelemetry configured with OTLP exporter and basic spans visible in collector ([#8](https://github.com/davewil/Ex_TicketBuddy_ModularMonolith_To_Microservices/issues/8))
@@ -43,9 +43,9 @@ Owner: ______  |  Target start: ______  |  Target finish: ______
 
 ![Ash Resources](https://raw.githubusercontent.com/davewil/Ex_TicketBuddy_ModularMonolith_To_Microservices/main/.github/badges/migration-ash-resources.svg)
 
-- [ ] Events: resources modeled and grouped under an Ash API ([#14](https://github.com/davewil/Ex_TicketBuddy_ModularMonolith_To_Microservices/issues/14))
-- [ ] Users: resources modeled and grouped under an Ash API ([#15](https://github.com/davewil/Ex_TicketBuddy_ModularMonolith_To_Microservices/issues/15))
-- [ ] Tickets: resources modeled and grouped under an Ash API ([#16](https://github.com/davewil/Ex_TicketBuddy_ModularMonolith_To_Microservices/issues/16))
+- [~] Events: resources modeled and grouped under an Ash API ([#14](https://github.com/davewil/Ex_TicketBuddy_ModularMonolith_To_Microservices/issues/14))
+- [~] Users: resources modeled and grouped under an Ash API ([#15](https://github.com/davewil/Ex_TicketBuddy_ModularMonolith_To_Microservices/issues/15))
+- [~] Tickets: resources modeled and grouped under an Ash API ([#16](https://github.com/davewil/Ex_TicketBuddy_ModularMonolith_To_Microservices/issues/16))
 - [ ] AshPostgres migrations generated and applied (dev/test) ([#17](https://github.com/davewil/Ex_TicketBuddy_ModularMonolith_To_Microservices/issues/17))
 - [ ] Seed scripts and sample data for smoke tests ([#18](https://github.com/davewil/Ex_TicketBuddy_ModularMonolith_To_Microservices/issues/18))
 - [ ] Ash.Policy authorization baseline for Users/Tickets ([#19](https://github.com/davewil/Ex_TicketBuddy_ModularMonolith_To_Microservices/issues/19))

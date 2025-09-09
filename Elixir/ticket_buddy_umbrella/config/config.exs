@@ -24,6 +24,15 @@ config :core_events, ecto_repos: [CoreEvents.Repo]
 config :core_users, ecto_repos: [CoreUsers.Repo]
 config :core_tickets, ecto_repos: [CoreTickets.Repo]
 
+# Ash/AshPostgres configuration for CoreEvents
+config :core_events, ash_domains: [CoreEvents.Domain]
+
+# Ash/AshPostgres configuration for CoreUsers
+config :core_users, ash_domains: [CoreUsers.Domain]
+
+# Ash/AshPostgres configuration for CoreTickets
+config :core_tickets, ash_domains: [CoreTickets.Domain]
+
 # Configures the endpoint
 config :api_gateway, ApiGatewayWeb.Endpoint,
   url: [host: "localhost"],

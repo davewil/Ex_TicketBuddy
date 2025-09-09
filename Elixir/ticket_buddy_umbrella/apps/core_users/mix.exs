@@ -28,7 +28,10 @@ defmodule CoreUsers.MixProject do
     [
   {:ecto_sql, "~> 3.11"},
   {:postgrex, ">= 0.0.0"},
-  {:shared_telemetry, in_umbrella: true}
+  {:shared_telemetry, in_umbrella: true},
+  {:ash, "~> 3.5"},
+  {:ash_postgres, "~> 2.6"},
+  {:spark, "~> 2.2", runtime: false}
     ]
   end
 end
