@@ -134,4 +134,3 @@ Notes:
 - Keep the .NET and Elixir stacks running side-by-side until cutover completes.
 - Prefer AshJsonApi for fast CRUD; use Phoenix controllers to match bespoke responses.
 - Keep contracts stable across HTTP and messaging; use contract tests for safety.
-

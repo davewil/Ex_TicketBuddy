@@ -1,0 +1,6 @@
+# Testing
+
+## Behaviour Drive Testing
+
+- ALWAYS check the existing C# tests to see if there is a test that MUST ALSO BE in the elixir solution.
+- Tests MUST BE provided for all new Elixir behaviour.
