@@ -1,44 +1,77 @@
 # Ticket Buddy
-A simple ticket booking platform for events.
 
-Built as both a modular monolith and as microservices to compare and contrast.
+A practical reference repo that:
 
-## Modular Monolith
-Built in well-defined modules to be hosted as a single application. Modules communicate through asynchronous messages using MassTransit with RabbitMQ. 
+- Compares a Modular Monolith and a Microservices architecture for the same domain (Events, Users, Tickets) in .NET.
+- Tracks an incremental migration of the backend to Elixir/BEAM (Phoenix + Ash), keeping messaging and observability intact.
 
-You could also use synchronous network calls between modules if preferred though it will not scale as well.
-In-process calls between modules are monolithic and not recommended.
+## Migration status
 
-A modular monolith is where a team should start when building a new application.
+Overall migration progress:
 
-[Modular Monolith Architecture](./ModularMonolith/README.md)
+![Migration Progress](https://raw.githubusercontent.com/davewil/Ex_TicketBuddy_ModularMonolith_To_Microservices/main/.github/badges/migration-progress.svg)
 
-## Microservices
-Built with a distributed architecture designed to run locally. Services communicate through asynchronous messages using MassTransit with RabbitMQ.
-The aim is to demonstrate a fully observable and decoupled system.
-Admittedly, the transactional outbox pattern is overkill.
+Per-phase progress:
 
-Microservices are a good choice when the application is expected to grow significantly, or when different teams will work on different parts of the application.
+![Foundations](https://raw.githubusercontent.com/davewil/Ex_TicketBuddy_ModularMonolith_To_Microservices/main/.github/badges/migration-foundations.svg)
+![Dev Env](https://raw.githubusercontent.com/davewil/Ex_TicketBuddy_ModularMonolith_To_Microservices/main/.github/badges/migration-dev-env.svg)
+![Ash Resources](https://raw.githubusercontent.com/davewil/Ex_TicketBuddy_ModularMonolith_To_Microservices/main/.github/badges/migration-ash-resources.svg)
+![Data Migration](https://raw.githubusercontent.com/davewil/Ex_TicketBuddy_ModularMonolith_To_Microservices/main/.github/badges/migration-data-migration.svg)
+![API Parity](https://raw.githubusercontent.com/davewil/Ex_TicketBuddy_ModularMonolith_To_Microservices/main/.github/badges/migration-api-parity.svg)
+![Messaging](https://raw.githubusercontent.com/davewil/Ex_TicketBuddy_ModularMonolith_To_Microservices/main/.github/badges/migration-messaging.svg)
+![Observability](https://raw.githubusercontent.com/davewil/Ex_TicketBuddy_ModularMonolith_To_Microservices/main/.github/badges/migration-observability.svg)
+![CI/CD](https://raw.githubusercontent.com/davewil/Ex_TicketBuddy_ModularMonolith_To_Microservices/main/.github/badges/migration-ci-cd.svg)
+![Cutover](https://raw.githubusercontent.com/davewil/Ex_TicketBuddy_ModularMonolith_To_Microservices/main/.github/badges/migration-cutover.svg)
+![Governance](https://raw.githubusercontent.com/davewil/Ex_TicketBuddy_ModularMonolith_To_Microservices/main/.github/badges/migration-governance.svg)
 
-These microservices are in one repo and one dotnet solution, but they can be split into multiple repositories and solutions if needed and referenced as NuGet packages.
+Details:
 
-[Microservices Architecture](./Microservices/README.md)
+- Concise migration plan: `plans/concise_elixir_migration.md`
+- Execution checklist with links to issues: `plans/migrations_checklist.md`
+- Issues labeled `migration` track progress (see GitHub Issues tab)
 
-## Key technologies/choices:
-- ASP.NET Core
-- Docker
-- RabbitMQ
-- MassTransit
-- OpenTelemetry
-- .NET Aspire
-- Redis Distributed Cache
-- YARP (Microservices)
-- Transactional Outbox Pattern (Microservices)
-- React + Vite + Vitest
+## Architectures in this repo
+
+### Modular Monolith (.NET)
+
+- Well-defined, in-repo modules hosted as a single application
+- Asynchronous messaging between modules via MassTransit + RabbitMQ
+- Recommended starting point for new products
+
+Docs: [Modular Monolith](./ModularMonolith/README.md)
+
+### Microservices (.NET)
+
+- Distributed services communicating via RabbitMQ (MassTransit)
+- Fully observable with OpenTelemetry and .NET Aspire
+- Demonstrates patterns like YARP gateway and transactional outbox
+
+Docs: [Microservices](./Microservices/README.md)
+
+### Target Elixir/BEAM backend
+
+- Phoenix umbrella with bounded contexts (Events, Users, Tickets)
+- Ash resources + AshPostgres, Broadway (RabbitMQ), Oban, OpenTelemetry
+- Gradual cutover while keeping APIs and message contracts stable
+
+Plan: see `plans/concise_elixir_migration.md`
+
+## Repository structure
+
+- `ModularMonolith/` – .NET modular monolith solution
+- `Microservices/` – .NET microservices solution
+- `UI/` – React + Vite client
+- `plans/` – Migration plan, checklist, and automation scripts
+- `.github/workflows/` – CI and migration badge automation
+
+## Key technologies
+
+- .NET: ASP.NET Core, MassTransit, RabbitMQ, OpenTelemetry, .NET Aspire, YARP, Redis
+- Frontend: React + Vite + Vitest
+- Elixir (planned): Phoenix, Ash, AshPostgres, Broadway RabbitMQ, Oban, OpenTelemetry
 
 ## Observability
 
-Ticket Buddy uses OpenTelemetry to provide comprehensive observability across all services. 
-The monolithic and distributed telemetry data are visualized in the Aspire dashboard.
+OpenTelemetry is used across services. The .NET stacks surface telemetry in the Aspire dashboard; the Elixir stack will export OTLP to the same collector.
 
 ![Observability Architecture](./Observability.png)
