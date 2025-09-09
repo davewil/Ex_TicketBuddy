@@ -37,9 +37,21 @@ services:
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
     networks:
-      - ticketbuddy-network
+      - ticketbuddy-monolith-network
     healthcheck:
       test: [ "CMD", "rabbitmqctl", "status" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+  redis:
+    container_name: redis
+    image: "redis:latest"
+    ports:
+      - "6379:6379"
+    networks:
+      - ticketbuddy-monolith-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -60,7 +72,7 @@ services:
     container_name: monolith-api
     build:
       context: .
-      dockerfile: Host.Api/Dockerfile
+      dockerfile: Host/Dockerfile
     depends_on:
       migrations:
         condition: service_completed_successfully
@@ -71,8 +83,8 @@ services:
     environment:
       - ENVIRONMENT=Development
     ports:
-      - "8080:8080"
-      - "8081:8081"
+      - "5000:8080"
+      - "5001:8081"
     restart: on-failure
     networks:
       - ticketbuddy-monolith-network
@@ -92,7 +104,8 @@ services:
 
 volumes:
   ticket_buddy_monolith_sql_server:
-  
+  rabbitmq_data:
+
 networks:
   ticketbuddy-monolith-network:
     name: ticketbuddy-monolith-network
