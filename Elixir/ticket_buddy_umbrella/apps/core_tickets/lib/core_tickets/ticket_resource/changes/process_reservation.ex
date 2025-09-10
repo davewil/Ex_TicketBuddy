@@ -38,7 +38,21 @@ defmodule CoreTickets.TicketResource.Changes.ProcessReservation do
             %{count: 1},
             %{ticket_id: result.id}
           )
-          {:ok, result}
+          # Enqueue outbox message (best-effort; if it fails, surface error)
+          case CoreTickets.Domain.enqueue_outbox_message(%{
+                 topic: "tickets",
+                 event_type: "ticket.confirmed",
+                 payload: %{
+                   ticket_id: result.id,
+                   status: result.status,
+                   event_id: result.event_id,
+                   user_id: result.user_id,
+                   price_cents: result.price_cents
+                 }
+               }) do
+            {:ok, _msg} -> {:ok, result}
+            {:error, error} -> {:error, error}
+          end
         end)
     end
   end

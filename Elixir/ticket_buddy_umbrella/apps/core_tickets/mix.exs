@@ -34,6 +34,8 @@ defmodule CoreTickets.MixProject do
       {:ecto_sql, "~> 3.11"},
       {:postgrex, ">= 0.0.0"},
       {:shared_telemetry, in_umbrella: true},
+  {:core_users, in_umbrella: true},
+  {:core_events, in_umbrella: true},
       {:ash, "~> 3.5"},
       {:ash_postgres, "~> 2.6"},
       {:spark, "~> 2.2", runtime: false},

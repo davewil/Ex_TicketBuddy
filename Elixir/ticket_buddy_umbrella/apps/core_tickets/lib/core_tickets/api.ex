@@ -11,5 +11,11 @@ defmodule CoreTickets.Domain do
       define :process_reservation, action: :process_reservation
   define :list_confirmed_tickets, action: :list_confirmed
     end
+
+    resource CoreTickets.OutboxMessageResource do
+      define :enqueue_outbox_message, action: :enqueue
+      define :list_outbox_messages, action: :read
+      define :mark_outbox_published, action: :mark_published
+    end
   end
 end

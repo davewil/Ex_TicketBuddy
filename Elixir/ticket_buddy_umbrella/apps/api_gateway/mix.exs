@@ -23,7 +23,7 @@ defmodule ApiGateway.MixProject do
   def application do
     [
       mod: {ApiGateway.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :tls_certificate_check]
     ]
   end
 
@@ -48,6 +48,7 @@ defmodule ApiGateway.MixProject do
       {:ash_json_api, "~> 1.4"},
       {:open_api_spex, "~> 3.18"},
       {:tidewave, "~> 0.5", only: :dev},
+      {:tls_certificate_check, "~> 1.21"},
       # Internal umbrella dependencies
       {:core_events, in_umbrella: true},
       {:core_users, in_umbrella: true},
