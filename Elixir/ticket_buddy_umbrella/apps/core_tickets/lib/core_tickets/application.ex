@@ -9,6 +9,8 @@ defmodule CoreTickets.Application do
     ]
 
     opts = [strategy: :one_for_one, name: CoreTickets.Supervisor]
-    Supervisor.start_link(children, opts)
+  {:ok, pid} = Supervisor.start_link(children, opts)
+  CoreTickets.Telemetry.attach()
+  {:ok, pid}
   end
 end

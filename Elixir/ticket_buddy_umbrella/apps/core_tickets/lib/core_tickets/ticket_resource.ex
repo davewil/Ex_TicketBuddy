@@ -48,10 +48,23 @@ defmodule CoreTickets.TicketResource do
       accept([:price_cents, :status])
     end
 
+    # Domain-specific transition: move a reserved ticket to confirmed.
+    # Fails if current status isn't :reserved.
+    update :process_reservation do
+      accept([])
+  require_atomic?(false)
+      change CoreTickets.TicketResource.Changes.ProcessReservation
+    end
+
     # Used by ash_oban on_error to mark a ticket as failed/cancelled
     update :errored do
       accept([])
       change set_attribute(:status, :cancelled)
+    end
+
+    read :list_confirmed do
+      description "List only confirmed tickets"
+      filter expr(status == :confirmed)
     end
   end
 
@@ -78,8 +91,8 @@ defmodule CoreTickets.TicketResource do
   oban do
     triggers do
       trigger :process do
-        # No-op placeholder: re-run the primary update to demonstrate wiring
-        action(:update)
+  # Domain transition: process a reservation -> confirmed
+  action(:process_reservation)
   on_error(:errored)
         # Only consider tickets that are still reserved
         where(expr(status == :reserved))
