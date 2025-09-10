@@ -1,6 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Infrastructure.Users.Persistence;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Users.Persistence;
 
 namespace Infrastructure.Users.Configuration;
 
@@ -10,12 +10,9 @@ public static class Database
     {
         services.AddDbContext<UserDbContext>(options =>
         {
-            options.UseSqlServer(connectionString, sqlOptions =>
+            options.UseNpgsql(connectionString, sqlOptions =>
             {
-                sqlOptions.EnableRetryOnFailure(
-                    maxRetryCount: 5,
-                    maxRetryDelay: TimeSpan.FromSeconds(30),
-                    errorNumbersToAdd: null);
+                sqlOptions.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
             });
         });
     }

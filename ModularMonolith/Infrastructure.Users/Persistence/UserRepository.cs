@@ -4,7 +4,7 @@ using Integration.Users.Messaging.Messages;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 
-namespace Users.Persistence;
+namespace Infrastructure.Users.Persistence;
 
 public class UserRepository(UserDbContext userDbContext, IPublishEndpoint publishEndpoint) : IAmAUserRepository
 {

@@ -3,14 +3,14 @@
 const string Environment = "Environment";
 var builder = DistributedApplication.CreateBuilder(args);
 
-var sqlServer = builder
-    .AddSqlServer("SqlServerMonolith")
-    .WithPassword(builder.AddParameter("SQLPassword", "YourStrong@Passw0rd"))
-    .WithDataVolume("TicketBuddy.Monolith.SqlServer")
-    .WithHostPort(1450)
+var postgres = builder
+    .AddPostgres("Postgres")
+    .WithPassword(builder.AddParameter("PostgresPassword", "YourStrong@Passw0rd"))
+    .WithDataVolume("TicketBuddy.Monolith.Postgres")
+    .WithHostPort(5432)
     .WithLifetime(ContainerLifetime.Persistent);
 
-var database = sqlServer.AddDatabase("TicketBuddy");
+var database = postgres.AddDatabase("TicketBuddy");
 
 var rabbitmq = builder
     .AddRabbitMQ("Messaging",

@@ -11,12 +11,9 @@ public static class Database
     {
         services.AddDbContext<TicketDbContext>(options =>
         {
-            options.UseSqlServer(connectionString, sqlOptions =>
+            options.UseNpgsql(connectionString, sqlOptions =>
             {
-                sqlOptions.EnableRetryOnFailure(
-                    maxRetryCount: 5,
-                    maxRetryDelay: TimeSpan.FromSeconds(30),
-                    errorNumbersToAdd: null);
+                sqlOptions.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
             });
         });
         services.AddScoped<TheDatabase>(_ => new TheDatabase(connectionString));

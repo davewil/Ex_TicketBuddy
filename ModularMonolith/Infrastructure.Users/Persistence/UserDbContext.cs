@@ -2,11 +2,18 @@
 using Domain.Users.Primitives;
 using Microsoft.EntityFrameworkCore;
 
-namespace Users.Persistence;
+namespace Infrastructure.Users.Persistence;
 
 public class UserDbContext(DbContextOptions<UserDbContext> options) : DbContext(options)
 {
     public DbSet<User> Users => Set<User>();
+    
+    protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
+    {
+        configurationBuilder
+            .Properties<DateTimeOffset>()
+            .HaveConversion<DateTimeOffsetConverter>();
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

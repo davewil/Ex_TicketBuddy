@@ -7,6 +7,13 @@ namespace Infrastructure.Events.Persistence;
 public class EventDbContext(DbContextOptions<EventDbContext> options) : DbContext(options)
 {
     public DbSet<Event> Events => Set<Event>();
+    
+    protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
+    {
+        configurationBuilder
+            .Properties<DateTimeOffset>()
+            .HaveConversion<DateTimeOffsetConverter>();
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

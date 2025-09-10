@@ -10,7 +10,7 @@ using MassTransit.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Migrations;
 using Shouldly;
-using Testcontainers.MsSql;
+using Testcontainers.PostgreSql;
 using WebHost;
 
 namespace Integration.Api;
@@ -28,22 +28,26 @@ public partial class EventControllerSpecs : TruncateDbSpecification
     private const string application_json = "application/json";
     private const string name = "wibble";
     private const string new_name = "wobble";
-    private readonly DateTimeOffset event_start_date = DateTimeOffset.Now.AddDays(3);
-    private readonly DateTimeOffset event_end_date = DateTimeOffset.Now.AddDays(3).AddHours(2);
-    private readonly DateTimeOffset new_event_start_date = DateTimeOffset.Now.AddDays(1);
-    private readonly DateTimeOffset new_event_end_date = DateTimeOffset.Now.AddDays(1).AddHours(2);
-    private readonly DateTimeOffset past_event_start_date = DateTimeOffset.Now.AddDays(-1);
+    private readonly DateTimeOffset event_start_date = DateTimeOffset.UtcNow.AddDays(3);
+    private readonly DateTimeOffset event_end_date = DateTimeOffset.UtcNow.AddDays(3).AddHours(2);
+    private readonly DateTimeOffset new_event_start_date = DateTimeOffset.UtcNow.AddDays(1);
+    private readonly DateTimeOffset new_event_end_date = DateTimeOffset.UtcNow.AddDays(1).AddHours(2);
+    private readonly DateTimeOffset past_event_start_date = DateTimeOffset.UtcNow.AddDays(-1);
     private const decimal price = 12.34m;
     private const decimal new_price = 23.45m;
-    private static MsSqlContainer database = null!;
+    private static PostgreSqlContainer database = null!;
     private ITestHarness testHarness = null!;
 
     protected override void before_all()
     {
-        database = new MsSqlBuilder().WithPortBinding(1433, true).Build();
+        database = new PostgreSqlBuilder()
+            .WithDatabase("TicketBuddy")
+            .WithUsername("sa")
+            .WithPassword("yourStrong(!)Password")
+            .WithPortBinding(1433, true)
+            .Build();
         database.StartAsync().Await();
-        database.ExecScriptAsync("CREATE DATABASE [TicketBuddy.Events]").GetAwaiter().GetResult();
-        Migration.Upgrade(database.GetTicketBuddyConnectionString());
+        Migration.Upgrade(database.GetConnectionString());
     }
     
     protected override void before_each()
@@ -51,7 +55,7 @@ public partial class EventControllerSpecs : TruncateDbSpecification
         base.before_each();
         content = null!;
         returned_id = Guid.Empty;
-        factory = new IntegrationWebApplicationFactory<Program>(database.GetTicketBuddyConnectionString());
+        factory = new IntegrationWebApplicationFactory<Program>(database.GetConnectionString());
         client = factory.CreateClient();
         testHarness = factory.Services.GetRequiredService<ITestHarness>();
         testHarness.Start().Await();
@@ -59,7 +63,7 @@ public partial class EventControllerSpecs : TruncateDbSpecification
 
     protected override void after_each()
     {
-        Truncate(database.GetTicketBuddyConnectionString());
+        Truncate(database.GetConnectionString());
         testHarness.Stop().Await();
         client.Dispose();
         factory.Dispose();
@@ -78,7 +82,7 @@ public partial class EventControllerSpecs : TruncateDbSpecification
 
     private void a_request_to_create_an_event_imminently()
     {
-        create_content(name, DateTimeOffset.Now.AddSeconds(1), DateTimeOffset.Now.AddSeconds(2), Venue.FirstDirectArenaLeeds, price);
+        create_content(name, DateTimeOffset.UtcNow.AddSeconds(1), DateTimeOffset.UtcNow.AddSeconds(2), Venue.FirstDirectArenaLeeds, price);
     }
     
     private void a_request_to_create_an_event_with_a_date_in_the_past()
@@ -239,7 +243,8 @@ public partial class EventControllerSpecs : TruncateDbSpecification
         response_code.ShouldBe(HttpStatusCode.OK);
         theEvent.Id.ShouldBe(returned_id);
         theEvent.EventName.ToString().ShouldBe(name);
-        theEvent.StartDate.ShouldBe(event_start_date);
+        (theEvent.StartDate.ToUniversalTime() - event_start_date.ToUniversalTime()).TotalMilliseconds.ShouldBeLessThan(1);
+        (theEvent.EndDate.ToUniversalTime() - event_end_date.ToUniversalTime()).TotalMilliseconds.ShouldBeLessThan(1);
         theEvent.Venue.ShouldBe(Venue.FirstDirectArenaLeeds);
         theEvent.Price.ShouldBe(price);
     }
@@ -271,7 +276,8 @@ public partial class EventControllerSpecs : TruncateDbSpecification
         response_code.ShouldBe(HttpStatusCode.OK);
         theEvent.Id.ShouldBe(returned_id);
         theEvent.EventName.ToString().ShouldBe(new_name);
-        theEvent.StartDate.ShouldBe(new_event_start_date);
+        (theEvent.StartDate.ToUniversalTime() - new_event_start_date.ToUniversalTime()).TotalMilliseconds.ShouldBeLessThan(1);
+        (theEvent.EndDate.ToUniversalTime() - new_event_end_date.ToUniversalTime()).TotalMilliseconds.ShouldBeLessThan(1);
         theEvent.Venue.ShouldBe(Venue.FirstDirectArenaLeeds);
         theEvent.Price.ShouldBe(new_price);
     }    

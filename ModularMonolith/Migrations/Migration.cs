@@ -7,11 +7,11 @@ public static class Migration
 {
     public static bool Upgrade(string connectionString)
     {
-        EnsureDatabase.For.SqlDatabase(connectionString);
+        EnsureDatabase.For.PostgresqlDatabase(connectionString);
 
         var upgrader =
             DeployChanges.To
-                .SqlDatabase(connectionString)
+                .PostgresqlDatabase(connectionString)
                 .WithScriptsEmbeddedInAssembly(Assembly.GetExecutingAssembly())
                 .LogToConsole()
                 .Build();

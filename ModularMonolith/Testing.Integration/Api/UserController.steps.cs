@@ -7,7 +7,7 @@ using Domain.Users.Entities;
 using Domain.Users.Primitives;
 using Migrations;
 using Shouldly;
-using Testcontainers.MsSql;
+using Testcontainers.PostgreSql;
 using WebHost;
 
 namespace Integration.Api;
@@ -26,14 +26,18 @@ public partial class UserControllerSpecs : TruncateDbSpecification
     private const string email = "wibble@wobble.com";
     private const string new_name = "wobble";
     private const string new_email = "wobble@wibble.com";
-    private static MsSqlContainer database = null!;
+    private static PostgreSqlContainer database = null!;
 
     protected override void before_all()
     {
-        database = new MsSqlBuilder().WithPortBinding(1433, true).Build();
+        database = new PostgreSqlBuilder()
+            .WithDatabase("TicketBuddy")
+            .WithUsername("sa")
+            .WithPassword("yourStrong(!)Password")
+            .WithPortBinding(1433, true)
+            .Build();
         database.StartAsync().Await();
-        database.ExecScriptAsync("CREATE DATABASE [TicketBuddy.Users]").GetAwaiter().GetResult();
-        Migration.Upgrade(database.GetTicketBuddyConnectionString());
+        Migration.Upgrade(database.GetConnectionString());
     }
     
     protected override void before_each()
@@ -41,13 +45,13 @@ public partial class UserControllerSpecs : TruncateDbSpecification
         base.before_each();
         content = null!;
         returned_id = Guid.Empty;
-        factory = new IntegrationWebApplicationFactory<Program>(database.GetTicketBuddyConnectionString());
+        factory = new IntegrationWebApplicationFactory<Program>(database.GetConnectionString());
         client = factory.CreateClient();
     }
 
     protected override void after_each()
     {
-        Truncate(database.GetTicketBuddyConnectionString());
+        Truncate(database.GetConnectionString());
         client.Dispose();
         factory.Dispose();
     }

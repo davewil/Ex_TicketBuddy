@@ -84,16 +84,16 @@ public static class Program
     {
         var eventData = new[]
         {
-            (Name: "Summer Rock Festival", StartDate: DateTimeOffset.Now.AddDays(30), EndDate: DateTimeOffset.Now.AddDays(30).AddHours(1), Venue: Venue.O2ArenaLondon, Price: 50m),
-            (Name: "Classical Symphony", StartDate: DateTimeOffset.Now.AddDays(45), EndDate: DateTimeOffset.Now.AddDays(45).AddHours(1),Venue: Venue.RoyalAlbertHallLondon, Price: 75m),
-            (Name: "International Football Match", StartDate: DateTimeOffset.Now.AddDays(60), EndDate: DateTimeOffset.Now.AddDays(60).AddHours(1),Venue: Venue.WembleyStadiumLondon, Price: 100m),
-            (Name: "Comedy Night Special", StartDate: DateTimeOffset.Now.AddDays(15), EndDate: DateTimeOffset.Now.AddDays(15).AddHours(1),Venue: Venue.ManchesterArena, Price: 30m),
-            (Name: "Tech Conference 2025", StartDate: DateTimeOffset.Now.AddDays(90), EndDate: DateTimeOffset.Now.AddDays(90).AddHours(1), Venue: Venue.PrincipalityStadiumCardiff, Price: 200m),
-            (Name: "Jazz Evening", StartDate: DateTimeOffset.Now.AddDays(20), EndDate: DateTimeOffset.Now.AddDays(20).AddHours(1), Venue: Venue.O2ArenaLondon, Price: 60m),
-            (Name: "Pop Concert", StartDate: DateTimeOffset.Now.AddDays(25), EndDate: DateTimeOffset.Now.AddDays(25).AddHours(1), Venue: Venue.RoyalAlbertHallLondon, Price: 80m),
-            (Name: "Basketball Championship", StartDate: DateTimeOffset.Now.AddDays(35), EndDate: DateTimeOffset.Now.AddDays(35).AddHours(1), Venue: Venue.WembleyStadiumLondon, Price: 120m),
-            (Name: "Theater Play", StartDate: DateTimeOffset.Now.AddDays(40), EndDate: DateTimeOffset.Now.AddDays(40).AddHours(1), Venue: Venue.ManchesterArena, Price: 45m),
-            (Name: "Business Summit", StartDate: DateTimeOffset.Now.AddDays(70), EndDate: DateTimeOffset.Now.AddDays(70).AddHours(1), Venue: Venue.PrincipalityStadiumCardiff, Price: 250m)
+            (Name: "Summer Rock Festival", StartDate: DateTime.Now.AddDays(30), EndDate: DateTime.Now.AddDays(30).AddHours(1), Venue: Venue.O2ArenaLondon, Price: 50m),
+            (Name: "Classical Symphony", StartDate: DateTime.Now.AddDays(45), EndDate: DateTime.Now.AddDays(45).AddHours(1),Venue: Venue.RoyalAlbertHallLondon, Price: 75m),
+            (Name: "International Football Match", StartDate: DateTime.Now.AddDays(60), EndDate: DateTime.Now.AddDays(60).AddHours(1),Venue: Venue.WembleyStadiumLondon, Price: 100m),
+            (Name: "Comedy Night Special", StartDate: DateTime.Now.AddDays(15), EndDate: DateTime.Now.AddDays(15).AddHours(1),Venue: Venue.ManchesterArena, Price: 30m),
+            (Name: "Tech Conference 2025", StartDate: DateTime.Now.AddDays(90), EndDate: DateTime.Now.AddDays(90).AddHours(1), Venue: Venue.PrincipalityStadiumCardiff, Price: 200m),
+            (Name: "Jazz Evening", StartDate: DateTime.Now.AddDays(20), EndDate: DateTime.Now.AddDays(20).AddHours(1), Venue: Venue.O2ArenaLondon, Price: 60m),
+            (Name: "Pop Concert", StartDate: DateTime.Now.AddDays(25), EndDate: DateTime.Now.AddDays(25).AddHours(1), Venue: Venue.RoyalAlbertHallLondon, Price: 80m),
+            (Name: "Basketball Championship", StartDate: DateTime.Now.AddDays(35), EndDate: DateTime.Now.AddDays(35).AddHours(1), Venue: Venue.WembleyStadiumLondon, Price: 120m),
+            (Name: "Theater Play", StartDate: DateTime.Now.AddDays(40), EndDate: DateTime.Now.AddDays(40).AddHours(1), Venue: Venue.ManchesterArena, Price: 45m),
+            (Name: "Business Summit", StartDate: DateTime.Now.AddDays(70), EndDate: DateTime.Now.AddDays(70).AddHours(1), Venue: Venue.PrincipalityStadiumCardiff, Price: 250m)
         };
 
         foreach (var eventInfo in eventData)

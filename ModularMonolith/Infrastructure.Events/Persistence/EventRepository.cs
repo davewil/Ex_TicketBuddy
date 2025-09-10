@@ -46,7 +46,7 @@ public class EventRepository(EventDbContext eventDbContext, IPublishEndpoint pub
     public async Task<IList<Event>> GetAll()
     {
         return await eventDbContext.Events
-            .Where(e => e.StartDate > DateTimeOffset.Now)
+            .Where(e => e.StartDate > DateTimeOffset.UtcNow)
             .OrderBy(e => e.StartDate)
             .ToListAsync();
     }
